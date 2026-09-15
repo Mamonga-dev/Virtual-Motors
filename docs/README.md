@@ -1,111 +1,103 @@
+<div align="center">
+
+<img src="./assets/virtual%20motors.png" width="280" alt="Virtual Motors">
+
 # Virtual Motors
 
-Loja virtual (e-commerce) desenvolvida em grupo, com catálogo de produtos, carrinho de compras e finalização de pedido.
+**E-commerce desenvolvido em grupo com metodologia Scrum**
+
+Catálogo de produtos • Carrinho • Compras • Administração
+
+</div>
+
+---
 
 ## Sobre o projeto
 
-O **Virtual Motors** é um projeto de loja virtual desenvolvido por um grupo de 5 pessoas, organizado com papéis de Scrum Master, Analistas e Developers, seguindo um fluxo de trabalho baseado em Scrum.
+O **Virtual Motors** é uma loja virtual desenvolvida por uma equipe de 5 pessoas, utilizando um fluxo de trabalho baseado em **Scrum**.
 
-O objetivo é construir uma plataforma de compras online funcional e simples de usar, cobrindo desde a exibição dos produtos até a finalização da compra.
+O sistema tem como objetivo oferecer uma experiência simples de compra, desde a visualização dos produtos até a finalização do pedido.
 
-## Requisitos Funcionais — Trabalho Final
+---
 
-> Todas as equipes deverão implementar, obrigatoriamente, as funcionalidades descritas nesta seção.
+## Funcionalidades
 
-### 6.1 Usuários
-O sistema deverá possuir:
-- Cadastro de usuários
-- Validação dos dados informados
+### Usuários
+- Cadastro e validação de usuários
 - Verificação de e-mail
-- Login
-- Logout
+- Login e logout
 - Controle de acesso
-- Diferenciação entre usuário comum e administrador
+- Perfis de usuário e administrador
 
-### 6.2 Administração de usuários
-Usuários com perfil de administrador deverão possuir acesso a uma área administrativa contendo:
-- Cadastro de usuários
-- Consulta de usuários
-- Alteração de usuários
-- Exclusão de usuários
-- Lista dinâmica de usuários
-- Pesquisa de usuários
+### Administração
+- Gerenciamento de usuários
+- Cadastro, consulta, alteração e exclusão
+- Pesquisa e listagem dinâmica
+- Gerenciamento de produtos
+- Cadastro, consulta, alteração e exclusão
+- Pesquisa e visualização de produtos
 
-### 6.3 Administração de produtos
-Usuários administradores deverão possuir acesso ao gerenciamento dos produtos. O sistema deverá permitir:
-- Cadastrar produtos
-- Consultar produtos
-- Alterar produtos
-- Excluir produtos
-- Visualizar informações dos produtos
-- Pesquisar produtos
+### Loja
+- Catálogo de produtos
+- Pesquisa de produtos
+- Detalhes e disponibilidade
+- Carrinho de compras
+- Alteração de quantidade e remoção de itens
+- Cálculo de subtotal e total
+- Finalização da compra
 
-### 6.4 Catálogo de produtos
-O sistema deverá disponibilizar uma área pública ou destinada aos usuários autenticados para consulta dos produtos, permitindo:
-- Listar produtos
-- Pesquisar produtos
-- Visualizar detalhes de um produto
-- Apresentar informações relevantes do produto
-- Informar disponibilidade ou estoque, quando aplicável
+### Conta e pedidos
+- Visualização e alteração dos dados da conta
+- Alteração de senha e contato
+- Histórico de compras
+- Consulta dos detalhes dos pedidos
 
-### 6.5 Carrinho de compras
-O usuário deverá possuir um carrinho de compras funcional, que permita:
-- Adicionar produtos
-- Alterar quantidades
-- Remover produtos
-- Visualizar os produtos adicionados
-- Calcular subtotais
-- Calcular o valor total
-- Finalizar a compra
-
-### 6.6 Gerenciamento da conta
-O usuário deverá possuir uma área para gerenciamento de sua conta. Deverá ser possível, conforme definido pela equipe:
-- Visualizar dados cadastrais
-- Alterar dados pessoais
-- Alterar informações de contato
-- Alterar senha
-- Consultar informações relacionadas à sua conta
-
-### 6.7 Histórico de compras
-O usuário deverá possuir acesso ao seu histórico de compras. O sistema deverá permitir:
-- Listar compras realizadas
-- Pesquisar compras
-- Visualizar detalhes de uma compra
-- Visualizar os produtos pertencentes a uma compra
-- Visualizar valores e informações relevantes da compra
-
-### 6.8 Consumo de API
-A aplicação deverá consumir pelo menos uma API externa, com finalidade relacionada ao sistema. Exemplos:
+### API externa
+A aplicação deverá integrar uma **API externa relacionada ao funcionamento do sistema**, como:
 - Consulta de CEP
-- Cálculo ou consulta de frete
+- Cálculo de frete
 - Cotação de moedas
 - Localização
-- Informações relacionadas ao segmento escolhido
-- Outra API aprovada pelos professores
 
-> A API deverá ser efetivamente integrada ao funcionamento da aplicação. Não será considerado suficiente apenas apresentar os dados de uma API em uma página sem relação funcional com o sistema.
-- Painel administrativo (a definir)
-
-## Equipe
-
-| Papel | Responsabilidade |
-|---|---|
-| Scrum Master | Organiza reuniões, remove impedimentos, conduz o processo |
-| Analistas | Levantam requisitos e validam entregas |
-| Developers | Implementam as funcionalidades do sistema |
-
-## Status do projeto
-
-🚧 Em desenvolvimento — planejamento e definições técnicas em andamento.
+---
 
 ## Tecnologias
 
-Back-end, Front-end, banco de dados SQL, JS, CSS, PHP....
+- **Front-end:** HTML, CSS e JavaScript
+- **Back-end:** PHP
+- **Banco de dados:** SQL
+- **API:** a definir
 
-## Como rodar o projeto
+> A stack poderá ser atualizada conforme as definições técnicas da equipe.
 
-_Em breve, assim que a stack for definida._
+---
+
+## Equipe
+
+| Função | Responsabilidade |
+|---|---|
+| Scrum Master | Organização e acompanhamento do projeto |
+| Analistas | Levantamento de requisitos e validações |
+| Developers | Desenvolvimento e implementação |
+
+**Equipe:** 5 integrantes
+
+---
+
+## Status
+
+🚧 **Em desenvolvimento**
+
+Planejamento e definições técnicas em andamento.
+
+---
+
+## Como executar
+
+As instruções de instalação e execução serão adicionadas após a definição da stack e configuração do ambiente.
+
+---
 
 ## Licença
 
-MIT License
+Este projeto está sob a licença **MIT**.
