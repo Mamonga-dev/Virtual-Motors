@@ -1,13 +1,12 @@
 <div align="center">
 
-<img src="./assets/virtual-motors.png" width="280" alt="Virtual Motors">
+<img src="../assets/virtual-motors.png" width="280" alt="Virtual Motors">
 
 # Virtual Motors
 
 **E-commerce desenvolvido em grupo com metodologia Scrum**
 
 </div>
-
 ---
 
 ## Sobre o projeto
