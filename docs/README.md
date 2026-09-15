@@ -1,10 +1,10 @@
-# Vendix
+# VirtualMotors
 
 Loja virtual (e-commerce) desenvolvida em grupo, com catálogo de produtos, carrinho de compras e finalização de pedido.
 
 ## Sobre o projeto
 
-O **Vendix** é um projeto de loja virtual desenvolvido por um grupo de 5 pessoas, organizado com papéis de Scrum Master, Analistas e Developers, seguindo um fluxo de trabalho baseado em Scrum.
+O **VirtualMotors** é um projeto de loja virtual desenvolvido por um grupo de 5 pessoas, organizado com papéis de Scrum Master, Analistas e Developers, seguindo um fluxo de trabalho baseado em Scrum.
 
 O objetivo é construir uma plataforma de compras online funcional e simples de usar, cobrindo desde a exibição dos produtos até a finalização da compra.
 
