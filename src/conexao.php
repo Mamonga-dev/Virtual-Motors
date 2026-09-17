@@ -2,7 +2,7 @@
 $servidor = "localhost";
 $usuario = "root";
 $senha = "";
-$banco = "vendix";
+$banco = "loja_carros";
 
 try {
     $conexao = new PDO("mysql:host=$servidor;dbname=$banco", $usuario, $senha);
