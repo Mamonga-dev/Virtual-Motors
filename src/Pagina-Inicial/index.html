@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Virtual Motors | Veículos Premium</title>
+
+    <meta
+        name="description"
+        content="Encontre seu próximo veículo na Virtual Motors."
+    >
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <div class="container header-content">
+
+            <a href="#inicio" class="logo">
+                <img src="./VM.png" alt="Virtual Motors">
+            </a>
+
+            <nav class="nav" id="mainNav">
+                <a href="#inicio">Início</a>
+                <a href="#veiculos">Veículos</a>
+                <a href="#sobre">Sobre nós</a>
+                <a href="#contato">Contato</a>
+            </nav>
+
+            <a href="#veiculos" class="header-button">
+                Ver veículos
+            </a>
+
+            <button
+                class="menu-button"
+                id="menuButton"
+                aria-label="Abrir menu"
+            >
+                ☰
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTEÚDO -->
+    <main>
+
+        <!-- HERO -->
+        <section class="hero" id="inicio">
+
+            <div class="container hero-content">
+
+                <span class="hero-tag">
+                    VIRTUAL MOTORS
+                </span>
+
+                <h1>
+                    Seu próximo carro
+                    <strong>está aqui.</strong>
+                </h1>
+
+                <p>
+                    Veículos selecionados para quem busca qualidade,
+                    confiança e uma experiência diferenciada.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="#veiculos" class="button button-primary">
+                        Ver veículos
+                    </a>
+
+                    <a href="#contato" class="button button-outline">
+                        Fale conosco
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- BUSCA -->
+        <section class="search-section">
+
+            <div class="container">
+
+                <div class="search-box">
+
+                    <div class="search-title">
+
+                        <span>🔎</span>
+
+                        <div>
+                            <h2>Encontre seu veículo</h2>
+                            <p>
+                                Pesquise entre nossos veículos disponíveis
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <form class="search-form" id="searchForm">
+
+                        <div class="input-group">
+
+                            <label for="vehicleType">
+                                Tipo
+                            </label>
+
+                            <select id="vehicleType">
+
+                                <option value="">
+                                    Todos
+                                </option>
+
+                                <option value="carro">
+                                    Carros
+                                </option>
+
+                                <option value="suv">
+                                    SUVs
+                                </option>
+
+                                <option value="pickup">
+                                    Picapes
+                                </option>
+
+                                <option value="moto">
+                                    Motos
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="brand">
+                                Marca
+                            </label>
+
+                            <select id="brand">
+
+                                <option value="">
+                                    Todas
+                                </option>
+
+                                <option value="toyota">
+                                    Toyota
+                                </option>
+
+                                <option value="honda">
+                                    Honda
+                                </option>
+
+                                <option value="volkswagen">
+                                    Volkswagen
+                                </option>
+
+                                <option value="chevrolet">
+                                    Chevrolet
+                                </option>
+
+                                <option value="ford">
+                                    Ford
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="price">
+                                Preço máximo
+                            </label>
+
+                            <select id="price">
+
+                                <option value="">
+                                    Qualquer preço
+                                </option>
+
+                                <option value="50000">
+                                    Até R$ 50 mil
+                                </option>
+
+                                <option value="100000">
+                                    Até R$ 100 mil
+                                </option>
+
+                                <option value="150000">
+                                    Até R$ 150 mil
+                                </option>
+
+                                <option value="200000">
+                                    Até R$ 200 mil
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="button button-primary search-button"
+                        >
+                            Buscar
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- VEÍCULOS -->
+        <section class="vehicles-section" id="veiculos">
+
+            <div class="container">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <span class="section-tag">
+                            ESTOQUE
+                        </span>
+
+                        <h2>
+                            Veículos em destaque
+                        </h2>
+
+                    </div>
+
+                    <a href="#" class="view-all">
+                        Ver todos →
+                    </a>
+
+                </div>
+
+
+                <div class="vehicle-grid">
+
+
+                    <!-- VEÍCULO 1 -->
+                    <article class="vehicle-card">
+
+                        <div class="vehicle-image">
+
+                            <span class="vehicle-badge">
+                                Destaque
+                            </span>
+
+                            <img
+                                src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80"
+                                alt="Toyota Corolla"
+                            >
+
+                        </div>
+
+                        <div class="vehicle-info">
+
+                            <span class="vehicle-year">
+                                2024 • Automático
+                            </span>
+
+                            <h3>
+                                Toyota Corolla
+                            </h3>
+
+                            <p class="vehicle-description">
+                                2.0 Flex • Completo
+                            </p>
+
+                            <div class="vehicle-footer">
+
+                                <div>
+
+                                    <small>
+                                        A partir de
+                                    </small>
+
+                                    <strong>
+                                        R$ 129.990
+                                    </strong>
+
+                                </div>
+
+                                <a
+                                    href="#contato"
+                                    class="vehicle-arrow"
+                                >
+                                    →
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- VEÍCULO 2 -->
+                    <article class="vehicle-card">
+
+                        <div class="vehicle-image">
+
+                            <span class="vehicle-badge">
+                                Seminovo
+                            </span>
+
+                            <img
+                                src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=900&q=80"
+                                alt="Volkswagen T-Cross"
+                            >
+
+                        </div>
+
+                        <div class="vehicle-info">
+
+                            <span class="vehicle-year">
+                                2023 • Automático
+                            </span>
+
+                            <h3>
+                                Volkswagen T-Cross
+                            </h3>
+
+                            <p class="vehicle-description">
+                                1.4 TSI • Highline
+                            </p>
+
+                            <div class="vehicle-footer">
+
+                                <div>
+
+                                    <small>
+                                        A partir de
+                                    </small>
+
+                                    <strong>
+                                        R$ 119.990
+                                    </strong>
+
+                                </div>
+
+                                <a
+                                    href="#contato"
+                                    class="vehicle-arrow"
+                                >
+                                    →
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- VEÍCULO 3 -->
+                    <article class="vehicle-card">
+
+                        <div class="vehicle-image">
+
+                            <span class="vehicle-badge">
+                                Oportunidade
+                            </span>
+
+                            <img
+                                src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=900&q=80"
+                                alt="Honda Civic"
+                            >
+
+                        </div>
+
+                        <div class="vehicle-info">
+
+                            <span class="vehicle-year">
+                                2022 • Automático
+                            </span>
+
+                            <h3>
+                                Honda Civic
+                            </h3>
+
+                            <p class="vehicle-description">
+                                2.0 • Touring
+                            </p>
+
+                            <div class="vehicle-footer">
+
+                                <div>
+
+                                    <small>
+                                        A partir de
+                                    </small>
+
+                                    <strong>
+                                        R$ 154.990
+                                    </strong>
+
+                                </div>
+
+                                <a
+                                    href="#contato"
+                                    class="vehicle-arrow"
+                                >
+                                    →
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- DIFERENCIAIS -->
+        <section class="features-section" id="sobre">
+
+            <div class="container">
+
+                <div class="section-header centered">
+
+                    <span class="section-tag">
+                        POR QUE A VIRTUAL MOTORS?
+                    </span>
+
+                    <h2>
+                        Comprar seu carro pode ser
+                        uma experiência diferente.
+                    </h2>
+
+                </div>
+
+
+                <div class="features-grid">
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            ✓
+                        </div>
+
+                        <h3>
+                            Veículos selecionados
+                        </h3>
+
+                        <p>
+                            Trabalhamos com veículos escolhidos
+                            para oferecer qualidade e segurança.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            ◆
+                        </div>
+
+                        <h3>
+                            Atendimento personalizado
+                        </h3>
+
+                        <p>
+                            Nossa equipe está pronta para ajudar
+                            você a encontrar o veículo ideal.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            $
+                        </div>
+
+                        <h3>
+                            Negociação transparente
+                        </h3>
+
+                        <p>
+                            Condições claras e uma negociação
+                            feita de forma simples e transparente.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            ★
+                        </div>
+
+                        <h3>
+                            Experiência premium
+                        </h3>
+
+                        <p>
+                            Uma experiência pensada para você
+                            desde o primeiro contato.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CTA -->
+        <section class="cta-section" id="contato">
+
+            <div class="container">
+
+                <div class="cta">
+
+                    <div>
+
+                        <span class="section-tag">
+                            FALE CONOSCO
+                        </span>
+
+                        <h2>
+                            Encontrou o carro ideal?
+                        </h2>
+
+                        <p>
+                            Entre em contato com nossa equipe
+                            e saiba mais sobre nossos veículos.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="https://wa.me/5500000000000"
+                        class="button button-white"
+                    >
+                        Falar pelo WhatsApp
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <div class="container footer-content">
+
+            <div class="footer-brand">
+
+                <img
+                    src="VM.png"
+                    alt="Virtual Motors"
+                >
+
+                <p>
+                    Seu próximo veículo começa aqui.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Empresa
+                </h4>
+
+                <a href="#sobre">
+                    Sobre nós
+                </a>
+
+                <a href="#veiculos">
+                    Veículos
+                </a>
+
+                <a href="#contato">
+                    Contato
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>
+                    Atendimento
+                </h4>
+
+                <a href="#contato">
+                    WhatsApp
+                </a>
+
+                <a href="#">
+                    Instagram
+                </a>
+
+                <a href="#">
+                    Localização
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <div class="container">
+
+                <p>
+                    © 2026 Virtual Motors.
+                    Todos os direitos reservados.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
