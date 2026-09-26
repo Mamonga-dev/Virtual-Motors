@@ -1,0 +1,15 @@
+# CODEOWNERS - Virtual Motors (Vendix)
+
+# Código-fonte (developers)
+/src/              @loirinhohid @MustyD @Tony7kQ
+
+# Documentação / requisitos (analista)
+/docs/             @yurikb12345-cloud
+*.md               @yurikb12345-cloud
+
+# Assets estáticos
+/assets/           @Mamonga-dev
+/public/           @Mamonga-dev
+
+# Fallback padrão
+*                  @Mamonga-dev
