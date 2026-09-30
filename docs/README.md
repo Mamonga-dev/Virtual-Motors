@@ -4,94 +4,101 @@
 
 # Virtual Motors
 
-**E-commerce desenvolvido em grupo com metodologia Scrum**
+**E-commerce em desenvolvimento com metodologia Scrum**
 
 </div>
----
-
-## Sobre o projeto
-
-O **Virtual Motors** é uma loja virtual desenvolvida por uma equipe de 5 pessoas, utilizando um fluxo de trabalho baseado em **Scrum**.
-
-O sistema tem como objetivo oferecer uma experiência simples de compra, desde a visualização dos produtos até a finalização do pedido.
 
 ---
 
-## Funcionalidades
+## Sprint atual
 
-### Usuários
-- Cadastro e validação de usuários
-- Verificação de e-mail
-- Login e logout
-- Controle de acesso
-- Perfis de usuário e administrador
+Estamos na **Sprint 1**, com foco em estrutura inicial, protótipo, base de dados e primeiros módulos funcionais.
 
-### Administração
-- Gerenciamento de usuários
-- Cadastro, consulta, alteração e exclusão
-- Pesquisa e listagem dinâmica
-- Gerenciamento de produtos
-- Cadastro, consulta, alteração e exclusão
-- Pesquisa e visualização de produtos
+### Status
+- ✅ Estrutura do repositório organizada
+- ✅ Protótipo inicial da interface
+- ✅ Banco de dados e dumps criados
+- ✅ Conexão com MySQL configurada
+- ✅ Busca de veículos e cálculo de parcelas implementados
+- 🔄 Desenvolvimento de páginas, autenticação e integração entre front-end e back-end
 
-### Loja
-- Catálogo de produtos
-- Pesquisa de produtos
-- Detalhes e disponibilidade
-- Carrinho de compras
-- Alteração de quantidade e remoção de itens
-- Cálculo de subtotal e total
-- Finalização da compra
+---
 
-### Conta e pedidos
-- Visualização e alteração dos dados da conta
-- Alteração de senha e contato
-- Histórico de compras
-- Consulta dos detalhes dos pedidos
+## Contexto do projeto
 
-### API externa
-A aplicação deverá integrar uma **API externa relacionada ao funcionamento do sistema**, como:
-- Consulta de CEP
-- Cálculo de frete
-- Cotação de moedas
-- Localização
+O **Virtual Motors** é um e-commerce de veículos, pensado para oferecer uma experiência simples de busca, seleção e compra de carros.
+
+A equipe está trabalhando em um fluxo Scrum com divisão de tarefas por área: front-end, back-end, banco de dados e documentação.
+
+---
+
+## Histórico e branches
+
+Atualmente, o repositório apresenta os seguintes contextos relevantes:
+
+- `main` e `backup-main`: base compartilhada do projeto
+- `rayray`: branch ativa de desenvolvimento com entregas recentes
+- branches remotas como `origin/mustyd`, `origin/tony7kq`, `origin/yuri-nuvem`: evolução paralela da equipe
+
+A branch `rayray` está com commits recentes voltados para cálculo de parcelas, busca de veículos e continuidade da base funcional.
+
+---
+
+## Entregas atuais
+
+### Back-end
+- Conexão com banco de dados em PHP
+- Estrutura de dados para veículos
+- Cálculo de parcelas por valor do veículo
+- Busca e listagem de produtos
+
+### Dados
+- Dumps SQL do banco em `dumps/Virtual motors/`
+- Base inicial para continuidade do desenvolvimento
+
+### Front-end
+- Estrutura inicial da landing page
+- Prototipação visual e identidade do projeto
+
+---
+
+## Próximos passos
+
+- finalizar estrutura da página inicial
+- criar login e cadastro de usuários
+- implementar listagem e cadastro de veículos
+- integrar front-end com back-end
+- validar fluxo completo de compra
 
 ---
 
 ## Tecnologias
 
-- **Front-end:** HTML, CSS e JavaScript
+- **Front-end:** HTML, CSS, JavaScript
 - **Back-end:** PHP
-- **Banco de dados:** SQL
-- **API:** a definir
-
-> A stack poderá ser atualizada conforme as definições técnicas da equipe.
+- **Banco de dados:** MySQL / SQL
+- **Estrutura:** organização em `public/`, `src/`, `assets/` e `docs/`
 
 ---
 
 ## Equipe
 
-| Função | Responsabilidade |
-|---|---|
-| Scrum Master | Organização e acompanhamento do projeto |
-| Analistas | Levantamento de requisitos e validações |
-| Developers | Desenvolvimento e implementação |
-
-**Equipe:** 5 integrantes
+- RayRay — Developer
+- MustyD — Developer
+- Antônio Rodrigues — Developer
+- Yuri_nuvem — Analista
+- mamonga-dev — Scrum Master
 
 ---
 
-## Status
+## Execução local
 
-🚧 **Em desenvolvimento**
+1. configure o ambiente com PHP e MySQL
+2. importe os arquivos SQL da pasta `dumps/`
+3. ajuste as credenciais em `src/conexao.php`
+4. rode a aplicação localmente em um servidor PHP
 
-Planejamento e definições técnicas em andamento.
-
----
-
-## Como executar
-
-As instruções de instalação e execução serão adicionadas após a definição da stack e configuração do ambiente.
+> O projeto segue em evolução e a documentação será ajustada conforme a Sprint avança.
 
 ---
 
