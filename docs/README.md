@@ -91,7 +91,12 @@ Planejamento e definições técnicas em andamento.
 
 ## Como executar
 
-As instruções de instalação e execução serão adicionadas após a definição da stack e configuração do ambiente.
+1. Instale PHP com as extensões PDO e PDO MySQL, além de MySQL ou MariaDB.
+2. Crie o banco `loja_carros` e importe `dumps/Virtual motors/loja_carros_carros.sql`.
+3. Ajuste servidor, usuário e senha em `src/conexao.php` para o ambiente local.
+4. Na raiz do projeto, execute `php -S localhost:8000` e acesse `http://localhost:8000`.
+
+A listagem e a busca da página inicial consultam a tabela `carros`. O banco deve estar ativo para exibir os veículos.
 
 ---
 

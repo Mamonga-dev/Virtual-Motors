@@ -113,100 +113,46 @@
 
                         <div class="input-group">
 
-                            <label for="vehicleType">
-                                Tipo
+                            <label for="vehicleSearch">
+                                Veículo, cor ou jogo
                             </label>
 
-                            <select id="vehicleType">
-
-                                <option value="">
-                                    Todos
-                                </option>
-
-                                <option value="carro">
-                                    Carros
-                                </option>
-
-                                <option value="suv">
-                                    SUVs
-                                </option>
-
-                                <option value="pickup">
-                                    Picapes
-                                </option>
-
-                                <option value="moto">
-                                    Motos
-                                </option>
-
-                            </select>
+                            <input
+                                type="search"
+                                id="vehicleSearch"
+                                name="busca"
+                                placeholder="Ex.: Ferrari, vermelho"
+                            >
 
                         </div>
 
 
                         <div class="input-group">
 
-                            <label for="brand">
-                                Marca
-                            </label>
-
-                            <select id="brand">
-
-                                <option value="">
-                                    Todas
-                                </option>
-
-                                <option value="toyota">
-                                    Toyota
-                                </option>
-
-                                <option value="honda">
-                                    Honda
-                                </option>
-
-                                <option value="volkswagen">
-                                    Volkswagen
-                                </option>
-
-                                <option value="chevrolet">
-                                    Chevrolet
-                                </option>
-
-                                <option value="ford">
-                                    Ford
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <div class="input-group">
-
-                            <label for="price">
+                            <label for="priceMax">
                                 Preço máximo
                             </label>
 
-                            <select id="price">
+                            <select id="priceMax" name="preco_max">
 
                                 <option value="">
                                     Qualquer preço
                                 </option>
 
-                                <option value="50000">
-                                    Até R$ 50 mil
+                                <option value="900000">
+                                    Até R$ 900 mil
                                 </option>
 
-                                <option value="100000">
-                                    Até R$ 100 mil
+                                <option value="1200000">
+                                    Até R$ 1,2 milhão
                                 </option>
 
-                                <option value="150000">
-                                    Até R$ 150 mil
+                                <option value="1800000">
+                                    Até R$ 1,8 milhão
                                 </option>
 
-                                <option value="200000">
-                                    Até R$ 200 mil
+                                <option value="3000000">
+                                    Até R$ 3 milhões
                                 </option>
 
                             </select>
@@ -256,183 +202,8 @@
                 </div>
 
 
-                <div class="vehicle-grid">
-
-
-                    <!-- VEÍCULO 1 -->
-                    <article class="vehicle-card">
-
-                        <div class="vehicle-image">
-
-                            <span class="vehicle-badge">
-                                Destaque
-                            </span>
-
-                            <img
-                                src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80"
-                                alt="Toyota Corolla"
-                            >
-
-                        </div>
-
-                        <div class="vehicle-info">
-
-                            <span class="vehicle-year">
-                                2024 • Automático
-                            </span>
-
-                            <h3>
-                                Toyota Corolla
-                            </h3>
-
-                            <p class="vehicle-description">
-                                2.0 Flex • Completo
-                            </p>
-
-                            <div class="vehicle-footer">
-
-                                <div>
-
-                                    <small>
-                                        A partir de
-                                    </small>
-
-                                    <strong>
-                                        R$ 129.990
-                                    </strong>
-
-                                </div>
-
-                                <a
-                                    href="#contato"
-                                    class="vehicle-arrow"
-                                >
-                                    →
-                                </a>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- VEÍCULO 2 -->
-                    <article class="vehicle-card">
-
-                        <div class="vehicle-image">
-
-                            <span class="vehicle-badge">
-                                Seminovo
-                            </span>
-
-                            <img
-                                src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=900&q=80"
-                                alt="Volkswagen T-Cross"
-                            >
-
-                        </div>
-
-                        <div class="vehicle-info">
-
-                            <span class="vehicle-year">
-                                2023 • Automático
-                            </span>
-
-                            <h3>
-                                Volkswagen T-Cross
-                            </h3>
-
-                            <p class="vehicle-description">
-                                1.4 TSI • Highline
-                            </p>
-
-                            <div class="vehicle-footer">
-
-                                <div>
-
-                                    <small>
-                                        A partir de
-                                    </small>
-
-                                    <strong>
-                                        R$ 119.990
-                                    </strong>
-
-                                </div>
-
-                                <a
-                                    href="#contato"
-                                    class="vehicle-arrow"
-                                >
-                                    →
-                                </a>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- VEÍCULO 3 -->
-                    <article class="vehicle-card">
-
-                        <div class="vehicle-image">
-
-                            <span class="vehicle-badge">
-                                Oportunidade
-                            </span>
-
-                            <img
-                                src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=900&q=80"
-                                alt="Honda Civic"
-                            >
-
-                        </div>
-
-                        <div class="vehicle-info">
-
-                            <span class="vehicle-year">
-                                2022 • Automático
-                            </span>
-
-                            <h3>
-                                Honda Civic
-                            </h3>
-
-                            <p class="vehicle-description">
-                                2.0 • Touring
-                            </p>
-
-                            <div class="vehicle-footer">
-
-                                <div>
-
-                                    <small>
-                                        A partir de
-                                    </small>
-
-                                    <strong>
-                                        R$ 154.990
-                                    </strong>
-
-                                </div>
-
-                                <a
-                                    href="#contato"
-                                    class="vehicle-arrow"
-                                >
-                                    →
-                                </a>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-                </div>
+                <p id="vehicleStatus" class="vehicle-status" role="status" aria-live="polite"></p>
+                <div class="vehicle-grid" id="vehicleGrid"></div>
 
             </div>
 
@@ -657,7 +428,7 @@
     </footer>
 
 
-    <script src="js/script.js"></script>
+    <script src="script.js" defer></script>
 
 </body>
 
