@@ -26,6 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Verifica se a senha digitada corresponde ao hash cadastrado
             if (password_verify($senha, $usuario['senha'])) {
 
+                session_regenerate_id(true);
+
                 // Salva os dados do usuário na sessão
                 $_SESSION['usuario_id'] = $usuario['id'];
                 $_SESSION['usuario_email'] = $usuario['email'];
@@ -33,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Redireciona com alerta de sucesso
                 echo "<script>
                         alert('Login realizado com sucesso!');
-                        window.location.href = 'index.php';
+                    window.location.href = '../../index.html';
                       </script>";
                 exit();
 
@@ -241,7 +243,7 @@ $conn->close();
             Não tem uma conta? <a href="cadastro.php">Criar conta</a>
         </div>
         <div style="margin-top: 15px;">
-            <a href="index.php" style="font-size: 13px; color: #666; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+            <a href="../../index.html" style="font-size: 13px; color: #666; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
                 ← Voltar para a página inicial
             </a>
         </div>

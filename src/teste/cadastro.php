@@ -227,7 +227,7 @@ $conn->close();
             Já tem uma conta? <a href="login.php">Faça login</a>
         </div>
         <div style="margin-top: 15px;">
-            <a href="index.php" style="font-size: 13px; color: #666; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+            <a href="../../index.html" style="font-size: 13px; color: #666; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
                 ← Voltar para a página inicial
             </a>
         </div>
