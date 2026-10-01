@@ -1,50 +1,46 @@
-<? php 
+<?php
 
-require_once 'conexao.php';
+header('Content-Type: application/json; charset=utf-8');
 
-$busca = $_GET['busca'] ?? ''; 
+try {
+    require_once __DIR__ . '/conexao.php';
 
-$resultados = [];
+    $busca = trim((string) ($_GET['busca'] ?? ''));
+    $precoMaximo = $_GET['preco_max'] ?? '';
+    $condicoes = [];
+    $parametros = [];
 
-if (!EMPTY($busca)){
-    $sql = "SELECT * FROM id_carros, nome, cor, descricao WHERE nome LIKE :busca OR descricao LIKE :busca";
-    $stmt =pdo-> prepare($sql);
-    $stmt-> eecute([':busca' => "%$busca%"]);
+    if ($busca !== '') {
+        $condicoes[] = '(nome LIKE :nome OR cor LIKE :cor OR jogo_origem LIKE :jogo_origem)';
+        $termo = '%' . $busca . '%';
+        $parametros['nome'] = $termo;
+        $parametros['cor'] = $termo;
+        $parametros['jogo_origem'] = $termo;
+    }
 
-    $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if ($precoMaximo !== '') {
+        $precoMaximo = filter_var($precoMaximo, FILTER_VALIDATE_FLOAT);
+        if ($precoMaximo === false || $precoMaximo < 0) {
+            http_response_code(400);
+            echo json_encode(['erro' => 'O preço máximo informado é inválido.']);
+            exit;
+        }
 
+        $condicoes[] = 'preco <= :preco_maximo';
+        $parametros['preco_maximo'] = $precoMaximo;
+    }
+
+    $sql = 'SELECT id_carro, nome, cor, preco, jogo_origem FROM carros';
+    if ($condicoes !== []) {
+        $sql .= ' WHERE ' . implode(' AND ', $condicoes);
+    }
+    $sql .= ' ORDER BY nome';
+
+    $consulta = $conexao->prepare($sql);
+    $consulta->execute($parametros);
+
+    echo json_encode($consulta->fetchAll(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+} catch (PDOException $erro) {
+    http_response_code(500);
+    echo json_encode(['erro' => 'Não foi possível consultar os veículos. Verifique a conexão e o banco de dados.']);
 }
-
-
-?>
-
-DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pesquisa de Carros</title>
-
-    </head>
-    <body>
-        <h1>Pesquisa de Carros</h1>
-        <form method="GET" action="pesquisa.php">
-            <input type="text" name="busca" placeholder="Digite o nome ou descrição do carro" value="<?php echo htmlspecialchars($busca); ?>">
-            <button type="submit">Pesquisar</button>
-        </form>
-        <?php if (!empty($busca)): ?>
-            <h2>Resultados para: <?= htmlspecialchars($busca) ?></h2>
-            <?php if (count($resultados) > 0): ?>
-                <?php foreach ($resultados as $carro): ?>
-                    <div>
-                        <h3><?= htmlspecialchars($carro['nome']) ?></h3>
-                        <p>Cor: <?= htmlspecialchars($carro['cor']) ?></p>
-                        <p>Jogo de origem: <?= htmlspecialchars($carro['jogo_origem']) ?></p>
-                        <p>Preço: R$ <?= number_format($carro['preco'], 2, ',', '.') ?></p>
-                    </div>
-                    <hr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>Nenhum carro encontrado.</p>
-            <?php endif; ?>
-        <?php endif; ?>

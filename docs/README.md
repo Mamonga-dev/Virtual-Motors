@@ -91,14 +91,18 @@ A branch `rayray` está com commits recentes voltados para cálculo de parcelas,
 
 ---
 
-## Execução local
-
-1. configure o ambiente com PHP e MySQL
-2. importe os arquivos SQL da pasta `dumps/`
-3. ajuste as credenciais em `src/conexao.php`
-4. rode a aplicação localmente em um servidor PHP
-
 > O projeto segue em evolução e a documentação será ajustada conforme a Sprint avança.
+
+---
+
+## Como executar
+
+1. Instale PHP com as extensões PDO e PDO MySQL, além de MySQL ou MariaDB.
+2. Crie o banco `loja_carros` e importe `dumps/Virtual motors/loja_carros_carros.sql`.
+3. Ajuste servidor, usuário e senha em `src/conexao.php` para o ambiente local.
+4. Na raiz do projeto, execute `php -S localhost:8000` e acesse `http://localhost:8000`.
+
+A listagem e a busca da página inicial consultam a tabela `carros`. O banco deve estar ativo para exibir os veículos.
 
 ---
 
