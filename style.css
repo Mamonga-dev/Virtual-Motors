@@ -137,43 +137,6 @@ select {
     background: var(--red-dark);
 }
 
-.integration-notice {
-    padding: 28px 0;
-    background: var(--gray-light);
-    border-bottom: 1px solid var(--border);
-}
-
-.integration-notice-content {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
-    align-items: center;
-    gap: 32px;
-}
-
-.integration-notice h2 {
-    margin: 4px 0 6px;
-    font-size: 22px;
-}
-
-.integration-notice p,
-.integration-notice li {
-    color: var(--gray);
-    font-size: 14px;
-}
-
-.integration-notice ul {
-    display: grid;
-    gap: 6px;
-    padding-left: 20px;
-}
-
-@media (max-width: 700px) {
-    .integration-notice-content {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-}
-
 .menu-button {
     display: none;
 
