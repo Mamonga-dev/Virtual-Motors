@@ -1,59 +1,52 @@
 <?php
-// Inclui a conexão centralizada
-include 'conexao.php';
+require_once __DIR__ . '/conexao.php';
+
+// Inicia a sessão
+session_start();
 
 $mensagem = "";
-$sucesso = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email'] ?? '');
     $senha = trim($_POST['senha'] ?? '');
-    $confirma_senha = trim($_POST['confirma_senha'] ?? '');
 
-    if (!empty($email) && !empty($senha) && !empty($confirma_senha)) {
+    if (!empty($email) && !empty($senha)) {
 
-        if ($senha === $confirma_senha) {
-            // Verifica se o e-mail já existe
-            $stmt_check = $conn->prepare("SELECT id_usuario FROM usuario WHERE email = ?");
-            $stmt_check->bind_param("s", $email);
-            $stmt_check->execute();
-            $stmt_check->store_result();
+        // Procura o usuário pelo e-mail usando Prepared Statement
+        $stmt = $conexao->prepare("SELECT id_usuario AS id, email, senha FROM usuario WHERE email = ?");
+        $stmt->execute([$email]);
+        $usuario = $stmt->fetch();
 
-            if ($stmt_check->num_rows > 0) {
-                $mensagem = "Este e-mail já está cadastrado.";
+        if ($usuario) {
+
+            // Verifica se a senha digitada corresponde ao hash cadastrado
+            if (password_verify($senha, $usuario['senha'])) {
+
+                session_regenerate_id(true);
+
+                // Salva os dados do usuário na sessão
+                $_SESSION['usuario_id'] = $usuario['id'];
+                $_SESSION['usuario_email'] = $usuario['email'];
+
+                // Redireciona com alerta de sucesso
+                echo "<script>
+                        alert('Login realizado com sucesso!');
+                        window.location.href = '../index.php';
+                      </script>";
+                exit();
+
             } else {
-                // Criptografa a senha
-                $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-
-                // Insere o novo usuário
-                $nome = substr(strstr($email, '@', true) ?: 'Cliente', 0, 100);
-                $tipo_usuario = 'cliente';
-                $stmt = $conn->prepare("INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES (?, ?, ?, ?)");
-                $stmt->bind_param("ssss", $nome, $email, $senha_hash, $tipo_usuario);
-
-                if ($stmt->execute()) {
-                    echo "<script>
-                            alert('Cadastro realizado com sucesso! Faça login para continuar.');
-                            window.location.href = 'login.php';
-                          </script>";
-                    exit();
-                } else {
-                    $mensagem = "Erro ao cadastrar. Tente novamente.";
-                }
-                $stmt->close();
+                $mensagem = "E-mail ou senha incorretos.";
             }
-            $stmt_check->close();
 
         } else {
-            $mensagem = "As senhas não coincidem.";
+            $mensagem = "E-mail ou senha incorretos.";
         }
 
     } else {
         $mensagem = "Preencha todos os campos.";
     }
 }
-
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -61,9 +54,10 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro - Virtual Motors</title>
-    <link rel="stylesheet" href="../../style.css">
+    <title>Login - Virtual Motors</title>
+    <link rel="stylesheet" href="../style.css">
     <style>
+        /* Estilos específicos para a tela de login idêntica à referência */
         body {
             display: flex;
             align-items: center;
@@ -147,6 +141,22 @@ $conn->close();
             box-shadow: 0 0 0 3px rgba(0, 81, 255, 0.1);
         }
 
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 24px;
+            margin-top: -10px;
+        }
+
+        .forgot-password a {
+            font-size: 12px;
+            color: #0051ff;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
         .btn-submit {
             width: 100%;
             height: 48px;
@@ -158,7 +168,6 @@ $conn->close();
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
-            margin-top: 10px;
         }
 
         .btn-submit:hover {
@@ -197,14 +206,14 @@ $conn->close();
             <img src="./VM.png" alt="Virtual Motors">
         </div>
 
-        <h2>Criar Conta</h2>
-        <p class="subtitle">Cadastre-se para aproveitar nossos recursos</p>
+        <h2>VirtualMotors</h2>
+        <p class="subtitle">Acesse sua conta para gerenciar seus pedidos</p>
 
         <?php if (!empty($mensagem)): ?>
             <p class="error-msg"><?php echo $mensagem; ?></p>
         <?php endif; ?>
 
-        <form method="POST" action="cadastro.php" autocomplete="off">
+        <form method="POST" action="login.php" autocomplete="off">
             <div class="form-group">
                 <label>E-MAIL</label>
                 <input type="email" name="email" autocomplete="off" required placeholder="exemplo@email.com">
@@ -215,19 +224,18 @@ $conn->close();
                 <input type="password" name="senha" autocomplete="new-password" required placeholder="••••••••••••">
             </div>
 
-            <div class="form-group">
-                <label>CONFIRMAR SENHA</label>
-                <input type="password" name="confirma_senha" autocomplete="new-password" required placeholder="••••••••••••">
+            <div class="forgot-password">
+                <a href="#">Esqueceu a senha?</a>
             </div>
 
-            <button type="submit" class="btn-submit">Cadastrar</button>
+            <button type="submit" class="btn-submit">Entrar</button>
         </form>
 
         <div class="register-link">
-            Já tem uma conta? <a href="login.php">Faça login</a>
+            Não tem uma conta? <a href="cadastro.php">Criar conta</a>
         </div>
         <div style="margin-top: 15px;">
-            <a href="../../index.html" style="font-size: 13px; color: #666; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+            <a href="../index.php" style="font-size: 13px; color: #666; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
                 ← Voltar para a página inicial
             </a>
         </div>

@@ -1,60 +1,54 @@
 <?php
-// Inclui a conexão centralizada
-include 'conexao.php';
-
-// Inicia a sessão
-session_start();
-
 $mensagem = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = trim($_POST['email'] ?? '');
-    $senha = trim($_POST['senha'] ?? '');
+    $emailEnviado = $_POST['email'] ?? '';
+    $senhaEnviada = $_POST['senha'] ?? '';
+    $confirmacaoEnviada = $_POST['confirma_senha'] ?? '';
+    $email = is_string($emailEnviado) ? trim($emailEnviado) : '';
+    $senha = is_string($senhaEnviada) ? trim($senhaEnviada) : '';
+    $confirma_senha = is_string($confirmacaoEnviada) ? trim($confirmacaoEnviada) : '';
 
-    if (!empty($email) && !empty($senha)) {
-
-        // Procura o usuário pelo e-mail usando Prepared Statement
-        $stmt = $conn->prepare("SELECT id_usuario AS id, email, senha FROM usuario WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-
-        $resultado = $stmt->get_result();
-
-        if ($resultado->num_rows == 1) {
-            $usuario = $resultado->fetch_assoc();
-
-            // Verifica se a senha digitada corresponde ao hash cadastrado
-            if (password_verify($senha, $usuario['senha'])) {
-
-                session_regenerate_id(true);
-
-                // Salva os dados do usuário na sessão
-                $_SESSION['usuario_id'] = $usuario['id'];
-                $_SESSION['usuario_email'] = $usuario['email'];
-
-                // Redireciona com alerta de sucesso
-                echo "<script>
-                        alert('Login realizado com sucesso!');
-                    window.location.href = '../../index.html';
-                      </script>";
-                exit();
-
-            } else {
-                $mensagem = "E-mail ou senha incorretos.";
-            }
-
+    if (!empty($email) && !empty($senha) && !empty($confirma_senha)) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $mensagem = "Informe um e-mail válido.";
+        } elseif (strlen($email) > 100) {
+            $mensagem = "O e-mail deve ter no máximo 100 caracteres.";
+        } elseif ($senha !== $confirma_senha) {
+            $mensagem = "As senhas não coincidem.";
         } else {
-            $mensagem = "E-mail ou senha incorretos.";
+            try {
+                require_once __DIR__ . '/conexao.php';
+
+                $stmt_check = $conexao->prepare("SELECT id_usuario FROM usuario WHERE email = ?");
+                $stmt_check->execute([$email]);
+
+                if ($stmt_check->fetchColumn() !== false) {
+                    $mensagem = "Este e-mail já está cadastrado.";
+                } else {
+                    $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
+                    $nome = substr(strstr($email, '@', true) ?: 'Cliente', 0, 100);
+                    $tipo_usuario = 'cliente';
+                    $stmt = $conexao->prepare("INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES (?, ?, ?, ?)");
+                    $stmt->execute([$nome, $email, $senha_hash, $tipo_usuario]);
+
+                    echo "<script>
+                            alert('Cadastro realizado com sucesso! Faça login para continuar.');
+                            window.location.href = 'login.php';
+                          </script>";
+                    exit();
+                }
+            } catch (PDOException $erro) {
+                $mensagem = $erro->getCode() === '23000'
+                    ? "Este e-mail já está cadastrado."
+                    : "Não foi possível concluir o cadastro. Tente novamente.";
+            }
         }
-
-        $stmt->close();
-
     } else {
         $mensagem = "Preencha todos os campos.";
     }
 }
 
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -62,10 +56,9 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Virtual Motors</title>
-    <link rel="stylesheet" href="../../style.css">
+    <title>Cadastro - Virtual Motors</title>
+    <link rel="stylesheet" href="../style.css">
     <style>
-        /* Estilos específicos para a tela de login idêntica à referência */
         body {
             display: flex;
             align-items: center;
@@ -149,22 +142,6 @@ $conn->close();
             box-shadow: 0 0 0 3px rgba(0, 81, 255, 0.1);
         }
 
-        .forgot-password {
-            text-align: right;
-            margin-bottom: 24px;
-            margin-top: -10px;
-        }
-
-        .forgot-password a {
-            font-size: 12px;
-            color: #0051ff;
-            text-decoration: none;
-        }
-
-        .forgot-password a:hover {
-            text-decoration: underline;
-        }
-
         .btn-submit {
             width: 100%;
             height: 48px;
@@ -176,6 +153,7 @@ $conn->close();
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
+            margin-top: 10px;
         }
 
         .btn-submit:hover {
@@ -214,17 +192,17 @@ $conn->close();
             <img src="./VM.png" alt="Virtual Motors">
         </div>
 
-        <h2>VirtualMotors</h2>
-        <p class="subtitle">Acesse sua conta para gerenciar seus pedidos</p>
+        <h2>Criar Conta</h2>
+        <p class="subtitle">Cadastre-se para aproveitar nossos recursos</p>
 
         <?php if (!empty($mensagem)): ?>
-            <p class="error-msg"><?php echo $mensagem; ?></p>
+            <p class="error-msg"><?php echo htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8'); ?></p>
         <?php endif; ?>
 
-        <form method="POST" action="login.php" autocomplete="off">
+        <form method="POST" action="cadastro.php" autocomplete="off">
             <div class="form-group">
                 <label>E-MAIL</label>
-                <input type="email" name="email" autocomplete="off" required placeholder="exemplo@email.com">
+                <input type="email" name="email" maxlength="100" autocomplete="off" required placeholder="exemplo@email.com">
             </div>
 
             <div class="form-group">
@@ -232,18 +210,19 @@ $conn->close();
                 <input type="password" name="senha" autocomplete="new-password" required placeholder="••••••••••••">
             </div>
 
-            <div class="forgot-password">
-                <a href="#">Esqueceu a senha?</a>
+            <div class="form-group">
+                <label>CONFIRMAR SENHA</label>
+                <input type="password" name="confirma_senha" autocomplete="new-password" required placeholder="••••••••••••">
             </div>
 
-            <button type="submit" class="btn-submit">Entrar</button>
+            <button type="submit" class="btn-submit">Cadastrar</button>
         </form>
 
         <div class="register-link">
-            Não tem uma conta? <a href="cadastro.php">Criar conta</a>
+            Já tem uma conta? <a href="login.php">Faça login</a>
         </div>
         <div style="margin-top: 15px;">
-            <a href="../../index.html" style="font-size: 13px; color: #666; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+            <a href="../index.php" style="font-size: 13px; color: #666; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
                 ← Voltar para a página inicial
             </a>
         </div>
