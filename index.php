@@ -1,3 +1,7 @@
+<?php
+session_start();
+$usuarioEmail = $_SESSION['usuario_email'] ?? null;
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -31,7 +35,12 @@
                 <a href="#veiculos">Veículos</a>
                 <a href="#sobre">Sobre nós</a>
                 <a href="#contato">Contato</a>
-                <a href="./src/teste/login.php">Entrar</a>
+                <?php if ($usuarioEmail !== null): ?>
+                    <a href="#inicio" title="Conectado como <?= htmlspecialchars($usuarioEmail, ENT_QUOTES, 'UTF-8') ?>">Minha conta</a>
+                    <a href="./src/logout.php">Sair</a>
+                <?php else: ?>
+                    <a href="./src/login.php">Entrar</a>
+                <?php endif; ?>
             </nav>
 
             <a href="#veiculos" class="header-button">
