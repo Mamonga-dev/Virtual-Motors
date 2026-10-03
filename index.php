@@ -1,3 +1,7 @@
+<?php
+session_start();
+$usuarioEmail = $_SESSION['usuario_email'] ?? null;
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -31,6 +35,12 @@
                 <a href="#veiculos">Veículos</a>
                 <a href="#sobre">Sobre nós</a>
                 <a href="#contato">Contato</a>
+                <?php if ($usuarioEmail !== null): ?>
+                    <a href="#inicio" title="Conectado como <?= htmlspecialchars($usuarioEmail, ENT_QUOTES, 'UTF-8') ?>">Minha conta</a>
+                    <a href="./src/logout.php">Sair</a>
+                <?php else: ?>
+                    <a href="./src/login.php">Entrar</a>
+                <?php endif; ?>
             </nav>
 
             <a href="#veiculos" class="header-button">
@@ -86,6 +96,21 @@
 
             </div>
 
+        </section>
+
+
+        <section class="integration-notice" aria-labelledby="integration-title">
+            <div class="container integration-notice-content">
+                <div>
+                    <span class="section-tag">STATUS DO PROJETO</span>
+                    <h2 id="integration-title">Pendências da conta</h2>
+                    <p>Login e cadastro estão disponíveis no módulo PHP. No index, ainda falta:</p>
+                </div>
+                <ul>
+                    <li>Exibir a sessão ativa e oferecer a opção de sair da conta.</li>
+                    <li>Implementar recuperação de senha; o link atual ainda não tem fluxo.</li>
+                </ul>
+            </div>
         </section>
 
 
