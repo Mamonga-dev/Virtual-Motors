@@ -17,6 +17,9 @@ $usuarioEmail = $_SESSION['usuario_email'] ?? null;
     >
 
     <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
+    <link rel="apple-touch-icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
+    <link rel="shortcut icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
 </head>
 
 <body>
