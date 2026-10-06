@@ -57,6 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - Virtual Motors</title>
+    <link rel="icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
+    <link rel="apple-touch-icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
+    <link rel="shortcut icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="stylesheet" href="../style.css">
     <style>
         body {
