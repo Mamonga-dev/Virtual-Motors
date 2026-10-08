@@ -106,12 +106,12 @@ $usuarioEmail = $_SESSION['usuario_email'] ?? null;
             <div class="container integration-notice-content">
                 <div>
                     <span class="section-tag">STATUS DO PROJETO</span>
-                    <h2 id="integration-title">Pendências da conta</h2>
-                    <p>Login e cadastro estão disponíveis no módulo PHP. No index, ainda falta:</p>
+                    <h2 id="integration-title">Próximas etapas</h2>
+                    <p>O catálogo e o acesso à conta já estão implementados no código e seguem em validação. Próximas etapas:</p>
                 </div>
                 <ul>
-                    <li>Exibir a sessão ativa e oferecer a opção de sair da conta.</li>
-                    <li>Implementar recuperação de senha; o link atual ainda não tem fluxo.</li>
+                    <li>Implementar a recuperação de senha.</li>
+                    <li>Desenvolver o carrinho e integrar os pedidos à conta do usuário.</li>
                 </ul>
             </div>
         </section>
