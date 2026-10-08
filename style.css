@@ -125,6 +125,23 @@ select {
     gap: 15px;
 }
 
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.user-avatar {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: var(--red);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+}
+
 .welcome-text {
     max-width: 160px;
     overflow: hidden;
@@ -132,6 +149,16 @@ select {
     font-size: 14px;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.logout-link {
+    color: var(--red);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.logout-link:hover {
+    color: #ff4b55;
 }
 
 .header-button {

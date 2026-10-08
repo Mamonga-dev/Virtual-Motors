@@ -46,8 +46,15 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
 
             <div class="user-menu-right">
                 <?php if ($usuarioEmail !== null): ?>
-                    <span class="welcome-text">Olá, <?= htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8') ?></span>
-                    <a class="header-button" href="./src/logout.php">Sair</a>
+                    <span class="user-profile">
+                        <svg class="user-avatar" viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="9" r="3"></circle>
+                            <path d="M6.5 19a5.5 5.5 0 0 1 11 0"></path>
+                        </svg>
+                        <span class="welcome-text">Olá, <?= htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8') ?></span>
+                    </span>
+                    <a class="logout-link" href="./src/logout.php">Sair</a>
                 <?php else: ?>
                     <a class="header-button" href="./src/login.php">Entrar</a>
                 <?php endif; ?>
