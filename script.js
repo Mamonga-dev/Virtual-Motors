@@ -43,6 +43,20 @@ function createVehicleCard(vehicle) {
     const card = document.createElement("article");
     card.className = "vehicle-card";
 
+    const image = document.createElement("div");
+    image.className = "vehicle-image vehicle-image-placeholder";
+
+    const badge = document.createElement("span");
+    badge.className = "vehicle-badge";
+    badge.textContent = "Disponível";
+
+    const placeholder = document.createElement("span");
+    placeholder.className = "vehicle-placeholder";
+    placeholder.setAttribute("aria-hidden", "true");
+    placeholder.textContent = "🚘";
+
+    image.append(badge, placeholder);
+
     const info = document.createElement("div");
     info.className = "vehicle-info";
 
@@ -63,15 +77,32 @@ function createVehicleCard(vehicle) {
     const price = document.createElement("strong");
     price.textContent = currencyFormatter.format(Number(vehicle.preco));
 
-    const contact = document.createElement("a");
-    contact.href = "#contato";
-    contact.className = "vehicle-arrow";
-    contact.setAttribute("aria-label", `Consultar ${vehicle.nome}`);
-    contact.textContent = "→";
+    const addToCart = document.createElement("form");
+    addToCart.className = "add-to-cart";
+    addToCart.method = "post";
+    addToCart.action = "./src/carrinho.php";
 
-    footer.append(price, contact);
+    const action = document.createElement("input");
+    action.type = "hidden";
+    action.name = "acao";
+    action.value = "adicionar";
+
+    const vehicleId = document.createElement("input");
+    vehicleId.type = "hidden";
+    vehicleId.name = "id_carro";
+    vehicleId.value = vehicle.id_carro;
+
+    const addButton = document.createElement("button");
+    addButton.className = "vehicle-arrow";
+    addButton.type = "submit";
+    addButton.title = "Adicionar ao carrinho";
+    addButton.setAttribute("aria-label", `Adicionar ${vehicle.nome} ao carrinho`);
+    addButton.textContent = "🛒";
+
+    addToCart.append(action, vehicleId, addButton);
+    footer.append(price, addToCart);
     info.append(origin, name, description, footer);
-    card.append(info);
+    card.append(image, info);
 
     return card;
 }
@@ -105,9 +136,11 @@ async function loadVehicles() {
     }
 }
 
-searchForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    loadVehicles();
-});
+if (searchForm) {
+    searchForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        loadVehicles();
+    });
 
-loadVehicles();
+    loadVehicles();
+}
