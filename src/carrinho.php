@@ -1,0 +1,202 @@
+<?php
+
+use VirtualMotors\Repository\CarroRepository;
+
+require_once __DIR__ . '/Database.php';
+require_once __DIR__ . '/CarroRepository.php';
+
+session_start();
+
+$chaveCarrinho = 'virtual_motors_carrinho';
+if (!isset($_SESSION[$chaveCarrinho]) || !is_array($_SESSION[$chaveCarrinho])) {
+    $_SESSION[$chaveCarrinho] = [];
+}
+
+$mensagem = $_SESSION['virtual_motors_carrinho_mensagem'] ?? '';
+unset($_SESSION['virtual_motors_carrinho_mensagem']);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $acao = $_POST['acao'] ?? '';
+
+    if ($acao === 'adicionar' && empty($_SESSION['usuario_email'])) {
+        header('Location: login.php');
+        exit;
+    }
+
+    if ($acao === 'adicionar') {
+        $idCarro = filter_var($_POST['id_carro'] ?? '', FILTER_VALIDATE_INT);
+
+        if ($idCarro === false || $idCarro < 1) {
+            $_SESSION['virtual_motors_carrinho_mensagem'] = 'Não foi possível identificar o veículo.';
+        } else {
+            try {
+                $veiculos = (new CarroRepository())->buscarPorIds([$idCarro]);
+                if ($veiculos === []) {
+                    $_SESSION['virtual_motors_carrinho_mensagem'] = 'Este veículo não está mais disponível.';
+                } else {
+                    $idCarro = (int) $veiculos[0]['id_carro'];
+                    $_SESSION[$chaveCarrinho][$idCarro] = (int) ($_SESSION[$chaveCarrinho][$idCarro] ?? 0) + 1;
+                    $_SESSION['virtual_motors_carrinho_mensagem'] = 'Veículo adicionado ao carrinho.';
+                }
+            } catch (PDOException $erro) {
+                error_log($erro->getMessage());
+                $_SESSION['virtual_motors_carrinho_mensagem'] = 'Não foi possível consultar o veículo. Tente novamente.';
+            }
+        }
+    } elseif ($acao === 'remover') {
+        $idCarro = filter_var($_POST['id_carro'] ?? '', FILTER_VALIDATE_INT);
+        if ($idCarro !== false) {
+            unset($_SESSION[$chaveCarrinho][$idCarro]);
+            $_SESSION['virtual_motors_carrinho_mensagem'] = 'Veículo removido do carrinho.';
+        }
+    } elseif ($acao === 'atualizar') {
+        $quantidades = $_POST['quantidade'] ?? [];
+        if (is_array($quantidades)) {
+            foreach ($quantidades as $id => $quantidadeEnviada) {
+                $idCarro = filter_var($id, FILTER_VALIDATE_INT);
+                $quantidade = filter_var($quantidadeEnviada, FILTER_VALIDATE_INT);
+                if ($idCarro === false || !array_key_exists($idCarro, $_SESSION[$chaveCarrinho]) || $quantidade === false) {
+                    continue;
+                }
+
+                if ($quantidade < 1) {
+                    unset($_SESSION[$chaveCarrinho][$idCarro]);
+                } else {
+                    $_SESSION[$chaveCarrinho][$idCarro] = $quantidade;
+                }
+            }
+        }
+        $_SESSION['virtual_motors_carrinho_mensagem'] = 'Carrinho atualizado.';
+    }
+
+    header('Location: carrinho.php');
+    exit;
+}
+
+$veiculos = [];
+$erroBanco = false;
+if ($_SESSION[$chaveCarrinho] !== []) {
+    try {
+        $veiculos = (new CarroRepository())->buscarPorIds(array_keys($_SESSION[$chaveCarrinho]));
+    } catch (PDOException $erro) {
+        error_log($erro->getMessage());
+        http_response_code(500);
+        $erroBanco = true;
+    }
+}
+
+$usuarioEmail = $_SESSION['usuario_email'] ?? null;
+$nomeUsuario = $usuarioEmail !== null ? explode('@', $usuarioEmail)[0] : null;
+$quantidadeCarrinho = array_sum(array_map('intval', $_SESSION[$chaveCarrinho]));
+$totalCarrinho = 0;
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho - Virtual Motors</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <a href="../index.php#inicio" class="logo">
+                <img src="../VM.png" alt="Virtual Motors">
+            </a>
+            <nav class="nav" id="mainNav">
+                <a href="../index.php#inicio">Início</a>
+                <a href="../index.php#veiculos">Veículos</a>
+                <a href="../index.php#sobre">Sobre nós</a>
+                <a href="../index.php#contato">Contato</a>
+                <a href="carrinho.php">Carrinho (<?= $quantidadeCarrinho ?>)</a>
+            </nav>
+            <div class="user-menu-right">
+                <?php if ($usuarioEmail !== null): ?>
+                    <span class="welcome-text">Olá, <?= htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8') ?></span>
+                    <a class="header-button" href="logout.php">Sair</a>
+                <?php else: ?>
+                    <a class="header-button" href="login.php">Entrar</a>
+                <?php endif; ?>
+            </div>
+            <button class="menu-button" id="menuButton" aria-label="Abrir menu">☰</button>
+        </div>
+    </header>
+
+    <main class="cart-wrapper">
+        <div class="cart-title-area">
+            <span>Seu carrinho</span>
+            <h1>Carrinho de compras</h1>
+        </div>
+
+        <?php if ($mensagem !== ''): ?>
+            <p class="cart-message" role="status"><?= htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8') ?></p>
+        <?php endif; ?>
+
+        <?php if ($erroBanco): ?>
+            <p class="cart-message cart-error" role="alert">Não foi possível carregar o carrinho. Verifique a conexão com o banco de dados.</p>
+        <?php elseif ($veiculos === []): ?>
+            <div class="empty-cart">
+                <p>Seu carrinho está vazio.</p>
+                <a href="../index.php#veiculos" class="button button-primary">Ver veículos</a>
+            </div>
+        <?php else: ?>
+            <form id="atualizar-carrinho" method="post" action="carrinho.php">
+                <input type="hidden" name="acao" value="atualizar">
+            </form>
+
+            <div class="cart-layout">
+                <section class="cart-items" aria-label="Itens do carrinho">
+                    <?php foreach ($veiculos as $veiculo): ?>
+                        <?php
+                        $idCarro = (int) $veiculo['id_carro'];
+                        $quantidade = (int) ($_SESSION[$chaveCarrinho][$idCarro] ?? 1);
+                        $subtotal = (float) $veiculo['preco'] * $quantidade;
+                        $totalCarrinho += $subtotal;
+                        ?>
+                        <article class="cart-card">
+                            <div class="cart-item-info">
+                                <div class="cart-item-placeholder" aria-hidden="true">🚘</div>
+                                <div class="cart-item-details">
+                                    <h2><?= htmlspecialchars($veiculo['nome'], ENT_QUOTES, 'UTF-8') ?></h2>
+                                    <div class="cart-item-tags">
+                                        <span class="tag"><?= htmlspecialchars($veiculo['jogo_origem'], ENT_QUOTES, 'UTF-8') ?></span>
+                                        <?php if ($veiculo['cor'] !== null && $veiculo['cor'] !== ''): ?>
+                                            <span class="tag"><?= htmlspecialchars($veiculo['cor'], ENT_QUOTES, 'UTF-8') ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <label class="cart-quantity">
+                                        Quantidade
+                                        <input form="atualizar-carrinho" type="number" name="quantidade[<?= $idCarro ?>]" min="0" step="1" value="<?= $quantidade ?>">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="cart-item-right">
+                                <strong class="cart-item-price">R$ <?= number_format($subtotal, 2, ',', '.') ?></strong>
+                                <form method="post" action="carrinho.php">
+                                    <input type="hidden" name="acao" value="remover">
+                                    <input type="hidden" name="id_carro" value="<?= $idCarro ?>">
+                                    <button class="btn-remove" type="submit" aria-label="Remover <?= htmlspecialchars($veiculo['nome'], ENT_QUOTES, 'UTF-8') ?>">Remover</button>
+                                </form>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                    <button form="atualizar-carrinho" class="button button-primary" type="submit">Atualizar quantidades</button>
+                </section>
+
+                <aside class="order-summary">
+                    <h2>Resumo do pedido</h2>
+                    <div class="summary-row">
+                        <span>Total</span>
+                        <strong>R$ <?= number_format($totalCarrinho, 2, ',', '.') ?></strong>
+                    </div>
+                    <p>A finalização do pedido ainda não está disponível.</p>
+                    <a href="../index.php#veiculos" class="button button-primary">Continuar comprando</a>
+                </aside>
+            </div>
+        <?php endif; ?>
+    </main>
+
+    <script src="../script.js"></script>
+</body>
+</html>

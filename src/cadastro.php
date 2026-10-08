@@ -1,4 +1,10 @@
 <?php
+use VirtualMotors\Service\AuthService;
+
+require_once __DIR__ . '/Database.php';
+require_once __DIR__ . '/UserRepository.php';
+require_once __DIR__ . '/AuthService.php';
+
 $mensagem = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -18,20 +24,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mensagem = "As senhas não coincidem.";
         } else {
             try {
-                require_once __DIR__ . '/conexao.php';
+                $nome = substr(strstr($email, '@', true) ?: 'Cliente', 0, 100);
+                $authService = new AuthService();
 
-                $stmt_check = $conexao->prepare("SELECT id_usuario FROM usuario WHERE email = ?");
-                $stmt_check->execute([$email]);
-
-                if ($stmt_check->fetchColumn() !== false) {
+                if (!$authService->register($nome, $email, $senha)) {
                     $mensagem = "Este e-mail já está cadastrado.";
                 } else {
-                    $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-                    $nome = substr(strstr($email, '@', true) ?: 'Cliente', 0, 100);
-                    $tipo_usuario = 'cliente';
-                    $stmt = $conexao->prepare("INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES (?, ?, ?, ?)");
-                    $stmt->execute([$nome, $email, $senha_hash, $tipo_usuario]);
-
                     echo "<script>
                             alert('Cadastro realizado com sucesso! Faça login para continuar.');
                             window.location.href = 'login.php';
