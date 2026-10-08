@@ -1,5 +1,9 @@
 <?php
-require_once __DIR__ . '/conexao.php';
+use VirtualMotors\Service\AuthService;
+
+require_once __DIR__ . '/Database.php';
+require_once __DIR__ . '/UserRepository.php';
+require_once __DIR__ . '/AuthService.php';
 
 // Inicia a sessão
 session_start();
@@ -12,32 +16,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($email) && !empty($senha)) {
 
-        // Procura o usuário pelo e-mail usando Prepared Statement
-        $stmt = $conexao->prepare("SELECT id_usuario AS id, email, senha FROM usuario WHERE email = ?");
-        $stmt->execute([$email]);
-        $usuario = $stmt->fetch();
+        $authService = new AuthService();
+        $usuario = $authService->validateCredentials($email, $senha);
 
         if ($usuario) {
 
-            // Verifica se a senha digitada corresponde ao hash cadastrado
-            if (password_verify($senha, $usuario['senha'])) {
+            session_regenerate_id(true);
 
-                session_regenerate_id(true);
+            // Salva os dados do usuário na sessão
+            $_SESSION['usuario_id'] = $usuario['id'];
+            $_SESSION['usuario_email'] = $usuario['email'];
 
-                // Salva os dados do usuário na sessão
-                $_SESSION['usuario_id'] = $usuario['id'];
-                $_SESSION['usuario_email'] = $usuario['email'];
-
-                // Redireciona com alerta de sucesso
-                echo "<script>
+            // Redireciona com alerta de sucesso
+            echo "<script>
                         alert('Login realizado com sucesso!');
                         window.location.href = '../index.php';
                       </script>";
-                exit();
-
-            } else {
-                $mensagem = "E-mail ou senha incorretos.";
-            }
+            exit();
 
         } else {
             $mensagem = "E-mail ou senha incorretos.";
