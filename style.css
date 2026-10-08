@@ -119,6 +119,15 @@ select {
     color: var(--red);
 }
 
+.welcome-text {
+    max-width: 180px;
+    overflow: hidden;
+    color: #dddddd;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .header-button {
     background: var(--red);
     color: white;
