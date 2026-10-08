@@ -2,6 +2,8 @@
 session_start();
 $usuarioEmail = $_SESSION['usuario_email'] ?? null;
 $nomeUsuario = $usuarioEmail !== null ? explode('@', $usuarioEmail)[0] : null;
+$carrinho = $_SESSION['virtual_motors_carrinho'] ?? [];
+$quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -35,22 +37,21 @@ $nomeUsuario = $usuarioEmail !== null ? explode('@', $usuarioEmail)[0] : null;
             </a>
 
             <nav class="nav" id="mainNav">
-                <a href="#inicio">Início</a>
+                <a href="./index.php">Início</a>
                 <a href="#veiculos">Veículos</a>
                 <a href="#sobre">Sobre nós</a>
                 <a href="#contato">Contato</a>
-                <?php if ($usuarioEmail !== null): ?>
-                    <span class="welcome-text">Olá, <?= htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8') ?></span>
-                    <a href="#inicio" title="Conectado como <?= htmlspecialchars($usuarioEmail, ENT_QUOTES, 'UTF-8') ?>">Minha conta</a>
-                    <a href="./src/logout.php">Sair</a>
-                <?php else: ?>
-                    <a href="./src/login.php">Entrar</a>
-                <?php endif; ?>
+                <a href="./src/carrinho.php">Carrinho (<?= $quantidadeCarrinho ?>)</a>
             </nav>
 
-            <a href="#veiculos" class="header-button">
-                Ver veículos
-            </a>
+            <div class="user-menu-right">
+                <?php if ($usuarioEmail !== null): ?>
+                    <span class="welcome-text">Olá, <?= htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8') ?></span>
+                    <a class="header-button" href="./src/logout.php">Sair</a>
+                <?php else: ?>
+                    <a class="header-button" href="./src/login.php">Entrar</a>
+                <?php endif; ?>
+            </div>
 
             <button
                 class="menu-button"
@@ -104,21 +105,6 @@ $nomeUsuario = $usuarioEmail !== null ? explode('@', $usuarioEmail)[0] : null;
         </section>
 
 
-        <section class="integration-notice" aria-labelledby="integration-title">
-            <div class="container integration-notice-content">
-                <div>
-                    <span class="section-tag">STATUS DO PROJETO</span>
-                    <h2 id="integration-title">Próximas etapas</h2>
-                    <p>O catálogo e o acesso à conta já estão implementados no código e seguem em validação. Próximas etapas:</p>
-                </div>
-                <ul>
-                    <li>Implementar a recuperação de senha.</li>
-                    <li>Desenvolver o carrinho e integrar os pedidos à conta do usuário.</li>
-                </ul>
-            </div>
-        </section>
-
-
         <!-- BUSCA -->
         <section class="search-section">
 
@@ -144,7 +130,7 @@ $nomeUsuario = $usuarioEmail !== null ? explode('@', $usuarioEmail)[0] : null;
                         <div class="input-group">
 
                             <label for="vehicleSearch">
-                                Veículo, cor ou jogo
+                                Veículo, cor ou jogo de origem
                             </label>
 
                             <input
@@ -225,7 +211,7 @@ $nomeUsuario = $usuarioEmail !== null ? explode('@', $usuarioEmail)[0] : null;
 
                     </div>
 
-                    <a href="#" class="view-all">
+                    <a href="#veiculos" class="view-all">
                         Ver todos →
                     </a>
 
