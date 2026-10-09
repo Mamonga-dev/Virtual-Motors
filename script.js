@@ -195,3 +195,40 @@ if (searchForm) {
 
     loadVehicles();
 }
+
+const cepInput = document.getElementById("cep");
+const cepButton = document.getElementById("consultCep");
+const cepStatus = document.getElementById("cepStatus");
+
+cepInput?.addEventListener("input", () => {
+    const digits = cepInput.value.replace(/\D/g, "").slice(0, 8);
+    cepInput.value = digits.length > 5
+        ? `${digits.slice(0, 5)}-${digits.slice(5)}`
+        : digits;
+});
+
+cepButton?.addEventListener("click", () => {
+    const cep = cepInput.value.replace(/\D/g, "");
+    cepStatus.textContent = cep.length === 8
+        ? "A consulta automática de CEP será integrada em breve. Preencha o endereço manualmente."
+        : "Digite um CEP válido com 8 números. A consulta automática será integrada em breve.";
+});
+
+const checkoutResult = document.getElementById("checkoutResult");
+const paymentMethodMessage = document.getElementById("paymentMethodMessage");
+const reviewCheckoutButton = document.getElementById("reviewCheckout");
+
+reviewCheckoutButton?.addEventListener("click", () => {
+    checkoutResult.textContent = "A finalização ainda não está integrada. Nenhum dado ou pagamento foi enviado.";
+});
+
+document.querySelectorAll('input[name="paymentMethod"]').forEach((option) => {
+    option.addEventListener("change", () => {
+        const methodNames = {
+            pix: "Pix",
+            credit: "Cartão de crédito",
+            boleto: "Boleto"
+        };
+        paymentMethodMessage.textContent = `A opção ${methodNames[option.value]} será disponibilizada quando a integração de pagamento estiver pronta.`;
+    });
+});

@@ -45,7 +45,7 @@ A refatoração reorganiza o acesso ao banco no login, cadastro e pesquisa de ve
 | Alta | Testar o carrinho de sessão | Implementado no código; testar adicionar com e sem login, atualizar/remover itens, sessão vazia e banco indisponível. O carrinho usa uma chave de sessão própria e não altera tabelas. |
 | Alta | Alterar quantidade dos itens | Implementado apenas na sessão. A tabela `item_pedido` contém apenas `id_pedido` e `id_carro`; definir/aplicar quantidade antes de persistir pedidos. |
 | Alta | Integrar carrinho e pedidos ao banco | Pendente. As tabelas `pedido` e `item_pedido` existem nos dumps, mas ainda não há gravação PHP de pedidos. Implementar transação e associação ao usuário autenticado. |
-| Média | Finalizar compra | Pendente. O carrinho mostra o total calculado no servidor com os preços atuais, mas não cria pedidos nem processa pagamentos. `src/calcula.php` calcula somente parcelas. |
+| Média | Finalizar compra | A tela de entrega e pagamento está disponível em `src/pagamento.php`, integrada ao carrinho. O CEP é apenas visual e ainda não consulta serviços externos; pedidos e pagamentos continuam sem integração. |
 | Alta | Integrar carrinho e pedidos ao banco | As tabelas `pedido` e `item_pedido` existem nos dumps, mas não há consultas PHP para elas. Implementar gravação transacional e associação ao usuário autenticado. |
 | Média | Testar integração completa | Pendente. Após testar a refatoração, validar catálogo, filtros, cadastro, login/logout, detalhes, carrinho e gravação de pedido com PHP e MySQL ativos. |
 | Baixa | Reutilizar estilos nas telas de autenticação | Parcial. A página inicial usa classes compartilhadas em `style.css`, mas login e cadastro repetem estilos em blocos `<style>` próprios. |

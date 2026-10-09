@@ -102,7 +102,7 @@ $totalCarrinho = 0;
     <header class="header">
         <div class="container header-content">
             <a href="../index.php#inicio" class="logo">
-                <img src="../assets/vm.png" alt="Virtual Motors">
+                <img src="../VM.png" alt="Virtual Motors">
             </a>
             <nav class="nav" id="mainNav">
                 <a href="../index.php#inicio">Início</a>
@@ -191,8 +191,9 @@ $totalCarrinho = 0;
                         <span>Total</span>
                         <strong>R$ <?= number_format($totalCarrinho, 2, ',', '.') ?></strong>
                     </div>
-                    <p>A finalização do pedido ainda não está disponível.</p>
-                    <a href="../index.php#veiculos" class="button button-primary">Continuar comprando</a>
+                    <p>Revise seus itens e informe o endereço na próxima etapa.</p>
+                    <a href="pagamento.php" class="button button-primary">Ir para pagamento</a>
+                    <a href="../index.php#veiculos" class="cart-continue-link">Continuar comprando</a>
                 </aside>
             </div>
         <?php endif; ?>

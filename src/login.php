@@ -15,29 +15,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $senha = trim($_POST['senha'] ?? '');
 
     if (!empty($email) && !empty($senha)) {
+        try {
+            $authService = new AuthService();
+            $usuario = $authService->validateCredentials($email, $senha);
 
-        $authService = new AuthService();
-        $usuario = $authService->validateCredentials($email, $senha);
+            if ($usuario) {
+                session_regenerate_id(true);
+                $_SESSION['usuario_id'] = $usuario['id'];
+                $_SESSION['usuario_email'] = $usuario['email'];
 
-        if ($usuario) {
+                echo "<script>
+                            alert('Login realizado com sucesso!');
+                            window.location.href = '../index.php';
+                          </script>";
+                exit();
+            }
 
-            session_regenerate_id(true);
-
-            // Salva os dados do usuário na sessão
-            $_SESSION['usuario_id'] = $usuario['id'];
-            $_SESSION['usuario_email'] = $usuario['email'];
-
-            // Redireciona com alerta de sucesso
-            echo "<script>
-                        alert('Login realizado com sucesso!');
-                        window.location.href = '../index.php';
-                      </script>";
-            exit();
-
-        } else {
             $mensagem = $authService->accountExists($email)
                 ? "Senha incorreta. Confira sua senha e tente novamente."
                 : "VM ID não encontrada. Crie sua conta para acessar o e-commerce.";
+        } catch (PDOException $erro) {
+            error_log($erro->getMessage());
+            http_response_code(503);
+            $mensagem = "Não foi possível acessar o banco de dados. Inicie o MySQL no XAMPP e tente novamente.";
         }
 
     } else {
