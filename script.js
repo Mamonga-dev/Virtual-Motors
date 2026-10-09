@@ -58,6 +58,10 @@ const sampleVehicles = [
 ];
 
 function getVehicleImage(vehicle) {
+    if (vehicle.imagem) {
+        return vehicle.imagem;
+    }
+
     const vehicleName = String(vehicle.nome || "").toLocaleLowerCase("pt-BR");
     const matchingImage = vehicleImages.find(({ model }) => vehicleName.includes(model));
 
@@ -126,7 +130,7 @@ function createVehicleCard(vehicle) {
     const action = document.createElement("input");
     action.type = "hidden";
     action.name = "acao";
-    action.value = "comprar";
+    action.value = "adicionar";
 
     const vehicleId = document.createElement("input");
     vehicleId.type = "hidden";
@@ -136,7 +140,7 @@ function createVehicleCard(vehicle) {
     const addButton = document.createElement("button");
     addButton.className = "vehicle-arrow";
     addButton.type = "submit";
-    addButton.title = "Adicionar ao carrinho e ir para pagamento";
+    addButton.title = "Adicionar ao carrinho";
     addButton.setAttribute("aria-label", `Adicionar ${vehicle.nome} ao carrinho`);
     addButton.textContent = "🛒";
 

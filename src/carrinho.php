@@ -19,11 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $acao = $_POST['acao'] ?? '';
     $compraAdicionada = false;
 
-    if (in_array($acao, ['adicionar', 'comprar'], true) && empty($_SESSION['usuario_email'])) {
-        header('Location: login.php');
-        exit;
-    }
-
     if (in_array($acao, ['adicionar', 'comprar'], true)) {
         $idCarro = filter_var($_POST['id_carro'] ?? '', FILTER_VALIDATE_INT);
 
@@ -159,7 +154,7 @@ $totalCarrinho = 0;
                         ?>
                         <article class="cart-card">
                             <div class="cart-item-info">
-                                <img class="cart-item-image" src="../assets/image.png" alt="Ilustração de veículo para <?= htmlspecialchars($veiculo['nome'], ENT_QUOTES, 'UTF-8') ?>">
+                                <img class="cart-item-image" src="<?= htmlspecialchars($veiculo['imagem'], ENT_QUOTES, 'UTF-8') ?>" alt="Foto ilustrativa do veículo <?= htmlspecialchars($veiculo['nome'], ENT_QUOTES, 'UTF-8') ?>">
                                 <div class="cart-item-details">
                                     <h2><?= htmlspecialchars($veiculo['nome'], ENT_QUOTES, 'UTF-8') ?></h2>
                                     <div class="cart-item-tags">

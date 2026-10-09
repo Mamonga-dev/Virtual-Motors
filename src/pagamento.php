@@ -203,6 +203,7 @@ $nomeUsuario = explode('@', $usuarioEmail)[0];
                         $totalPedido += $subtotal;
                         ?>
                         <div class="checkout-order-item">
+                            <img class="checkout-order-image" src="<?= htmlspecialchars($veiculo['imagem'], ENT_QUOTES, 'UTF-8') ?>" alt="Foto ilustrativa do veículo <?= htmlspecialchars($veiculo['nome'], ENT_QUOTES, 'UTF-8') ?>">
                             <div>
                                 <strong><?= htmlspecialchars($veiculo['nome'], ENT_QUOTES, 'UTF-8') ?></strong>
                                 <span><?= $quantidade ?> unidade(s)</span>

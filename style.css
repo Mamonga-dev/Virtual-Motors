@@ -695,7 +695,7 @@ select {
 .cart-item-image {
     width: 110px;
     height: 80px;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 5px;
     background: linear-gradient(135deg, #171717, #3b3b3b);
 }
@@ -995,6 +995,7 @@ select {
 
 .checkout-order-item {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     gap: 12px;
     padding: 15px 0;
@@ -1002,8 +1003,17 @@ select {
     font-size: 13px;
 }
 
+.checkout-order-image {
+    width: 58px;
+    height: 44px;
+    flex: 0 0 auto;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
 .checkout-order-item > div {
     display: flex;
+    min-width: 0;
     flex-direction: column;
     gap: 4px;
 }
