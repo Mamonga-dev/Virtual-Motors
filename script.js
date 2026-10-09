@@ -126,7 +126,7 @@ function createVehicleCard(vehicle) {
     const action = document.createElement("input");
     action.type = "hidden";
     action.name = "acao";
-    action.value = "adicionar";
+    action.value = "comprar";
 
     const vehicleId = document.createElement("input");
     vehicleId.type = "hidden";
@@ -136,7 +136,7 @@ function createVehicleCard(vehicle) {
     const addButton = document.createElement("button");
     addButton.className = "vehicle-arrow";
     addButton.type = "submit";
-    addButton.title = "Adicionar ao carrinho";
+    addButton.title = "Adicionar ao carrinho e ir para pagamento";
     addButton.setAttribute("aria-label", `Adicionar ${vehicle.nome} ao carrinho`);
     addButton.textContent = "🛒";
 

@@ -17,13 +17,14 @@ unset($_SESSION['virtual_motors_carrinho_mensagem']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $acao = $_POST['acao'] ?? '';
+    $compraAdicionada = false;
 
-    if ($acao === 'adicionar' && empty($_SESSION['usuario_email'])) {
+    if (in_array($acao, ['adicionar', 'comprar'], true) && empty($_SESSION['usuario_email'])) {
         header('Location: login.php');
         exit;
     }
 
-    if ($acao === 'adicionar') {
+    if (in_array($acao, ['adicionar', 'comprar'], true)) {
         $idCarro = filter_var($_POST['id_carro'] ?? '', FILTER_VALIDATE_INT);
 
         if ($idCarro === false || $idCarro < 1) {
@@ -37,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $idCarro = (int) $veiculos[0]['id_carro'];
                     $_SESSION[$chaveCarrinho][$idCarro] = (int) ($_SESSION[$chaveCarrinho][$idCarro] ?? 0) + 1;
                     $_SESSION['virtual_motors_carrinho_mensagem'] = 'Veículo adicionado ao carrinho.';
+                    $compraAdicionada = true;
                 }
             } catch (PDOException $erro) {
                 error_log($erro->getMessage());
@@ -69,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['virtual_motors_carrinho_mensagem'] = 'Carrinho atualizado.';
     }
 
-    header('Location: carrinho.php');
+    header('Location: ' . ($acao === 'comprar' && $compraAdicionada ? 'pagamento.php' : 'carrinho.php'));
     exit;
 }
 
