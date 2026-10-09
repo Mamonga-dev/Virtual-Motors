@@ -57,6 +57,7 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
                     <a class="logout-link" href="./src/logout.php">Sair</a>
                 <?php else: ?>
                     <a class="header-button" href="./src/login.php">Entrar</a>
+                    <a class="header-button header-button-secondary" href="./src/cadastro.php">Criar conta</a>
                 <?php endif; ?>
             </div>
 
@@ -110,7 +111,6 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
             </div>
 
         </section>
-
 
         <!-- BUSCA -->
         <section class="search-section">
@@ -380,7 +380,7 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
             <div class="footer-brand">
 
                 <img
-                    src="VM.png"
+                    src="./VM.png"
                     alt="Virtual Motors"
                 >
 

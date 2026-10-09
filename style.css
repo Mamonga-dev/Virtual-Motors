@@ -179,6 +179,16 @@ select {
     background: var(--red-dark);
 }
 
+.header-button-secondary {
+    border: 1px solid var(--red);
+    background: transparent;
+    padding: 11px 16px;
+}
+
+.header-button-secondary:hover {
+    background: var(--red-dark);
+}
+
 .menu-button {
     display: none;
 
@@ -198,6 +208,8 @@ select {
 ============================== */
 
 .hero {
+    position: relative;
+    overflow: hidden;
     min-height: 600px;
 
     display: flex;
@@ -215,6 +227,8 @@ select {
 }
 
 .hero-content {
+    position: relative;
+    z-index: 1;
     color: white;
     padding: 80px 0;
 }
@@ -499,20 +513,9 @@ select {
     height: 100%;
 
     object-fit: cover;
+    background: linear-gradient(135deg, #171717, #3b3b3b);
 
     transition: 0.4s;
-}
-
-.vehicle-image-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #242424, #555);
-}
-
-.vehicle-placeholder {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 72px;
 }
 
 .vehicle-card:hover .vehicle-image img {
@@ -689,15 +692,12 @@ select {
     gap: 18px;
 }
 
-.cart-item-placeholder {
+.cart-item-image {
     width: 110px;
     height: 80px;
-    display: grid;
-    place-items: center;
+    object-fit: contain;
     border-radius: 5px;
-    background: linear-gradient(135deg, #242424, #555);
-    color: white;
-    font-size: 42px;
+    background: linear-gradient(135deg, #171717, #3b3b3b);
 }
 
 .cart-item-details h2 {
@@ -1040,12 +1040,17 @@ select {
         height: 72px;
     }
 
+    .header-content {
+        gap: 8px;
+    }
+
     .logo {
         width: 125px;
     }
 
     .user-menu-right {
         margin-left: auto;
+        gap: 8px;
     }
 
     .welcome-text {
@@ -1054,7 +1059,8 @@ select {
 
     .user-menu-right .header-button {
         min-height: 40px;
-        padding: 0 14px;
+        padding: 0 10px;
+        font-size: 12px;
     }
 
     .nav {
@@ -1168,5 +1174,16 @@ select {
 
     .footer-brand {
         grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 360px) {
+    .logo {
+        width: 92px;
+    }
+
+    .user-menu-right .header-button {
+        padding: 0 7px;
+        font-size: 11px;
     }
 }

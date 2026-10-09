@@ -189,12 +189,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="login-card">
         <!-- Logotipo Redondo -->
-        <div class="login-logo">
-            <img src="./VM.png" alt="Virtual Motors">
-        </div>
+        <a class="login-logo" href="../index.php" aria-label="Voltar para a página inicial">
+            <img src="../assets/vm.png" alt="Virtual Motors">
+        </a>
 
-        <h2>Criar Conta</h2>
-        <p class="subtitle">Cadastre-se para aproveitar nossos recursos</p>
+        <h2>Criar VM ID</h2>
+        <p class="subtitle">Crie sua conta para acessar o e-commerce</p>
 
         <?php if (!empty($mensagem)): ?>
             <p class="error-msg"><?php echo htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8'); ?></p>

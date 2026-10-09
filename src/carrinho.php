@@ -102,7 +102,7 @@ $totalCarrinho = 0;
     <header class="header">
         <div class="container header-content">
             <a href="../index.php#inicio" class="logo">
-                <img src="../VM.png" alt="Virtual Motors">
+                <img src="../assets/vm.png" alt="Virtual Motors">
             </a>
             <nav class="nav" id="mainNav">
                 <a href="../index.php#inicio">Início</a>
@@ -117,6 +117,7 @@ $totalCarrinho = 0;
                     <a class="header-button" href="logout.php">Sair</a>
                 <?php else: ?>
                     <a class="header-button" href="login.php">Entrar</a>
+                    <a class="header-button header-button-secondary" href="cadastro.php">Criar conta</a>
                 <?php endif; ?>
             </div>
             <button class="menu-button" id="menuButton" aria-label="Abrir menu">☰</button>
@@ -156,7 +157,7 @@ $totalCarrinho = 0;
                         ?>
                         <article class="cart-card">
                             <div class="cart-item-info">
-                                <div class="cart-item-placeholder" aria-hidden="true">🚘</div>
+                                <img class="cart-item-image" src="../assets/image.png" alt="Ilustração de veículo para <?= htmlspecialchars($veiculo['nome'], ENT_QUOTES, 'UTF-8') ?>">
                                 <div class="cart-item-details">
                                     <h2><?= htmlspecialchars($veiculo['nome'], ENT_QUOTES, 'UTF-8') ?></h2>
                                     <div class="cart-item-tags">

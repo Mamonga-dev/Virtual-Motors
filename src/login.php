@@ -35,7 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
 
         } else {
-            $mensagem = "E-mail ou senha incorretos.";
+            $mensagem = $authService->accountExists($email)
+                ? "Senha incorreta. Confira sua senha e tente novamente."
+                : "VM ID não encontrada. Crie sua conta para acessar o e-commerce.";
         }
 
     } else {
@@ -200,15 +202,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="login-card">
         <!-- Logotipo Redondo -->
-        <div class="login-logo">
-            <img src="./VM.png" alt="Virtual Motors">
-        </div>
+        <a class="login-logo" href="../index.php" aria-label="Voltar para a página inicial">
+            <img src="../assets/vm.png" alt="Virtual Motors">
+        </a>
 
-        <h2>VirtualMotors</h2>
-        <p class="subtitle">Acesse sua conta para gerenciar seus pedidos</p>
+        <h2>VM ID</h2>
+        <p class="subtitle">Acesse sua conta VM ID para continuar</p>
 
         <?php if (!empty($mensagem)): ?>
-            <p class="error-msg"><?php echo $mensagem; ?></p>
+            <p class="error-msg" role="alert"><?php echo htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8'); ?></p>
         <?php endif; ?>
 
         <form method="POST" action="login.php" autocomplete="off">

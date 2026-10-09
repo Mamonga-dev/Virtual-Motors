@@ -39,23 +39,64 @@ const currencyFormatter = new Intl.NumberFormat("pt-BR", {
     currency: "BRL"
 });
 
+const vehicleImages = [
+    { model: "ferrari", src: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1200&q=85" },
+    { model: "lamborghini", src: "https://images.unsplash.com/photo-1614200187524-dc4b892acf16?auto=format&fit=crop&w=1200&q=85" },
+    { model: "porsche", src: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=85" },
+    { model: "nissan", src: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1200&q=85" },
+    { model: "bmw", src: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=1200&q=85" },
+    { model: "mclaren", src: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=85" }
+];
+
+const sampleVehicles = [
+    { id_carro: 1, nome: "Ferrari 488 GTB", cor: "Vermelho", preco: 2500000, jogo_origem: "Forza Horizon" },
+    { id_carro: 2, nome: "Lamborghini Huracán", cor: "Amarelo", preco: 3000000, jogo_origem: "Forza Horizon" },
+    { id_carro: 3, nome: "Porsche 911", cor: "Preto", preco: 1800000, jogo_origem: "Need for Speed" },
+    { id_carro: 4, nome: "Nissan Skyline GT-R", cor: "Azul", preco: 900000, jogo_origem: "Need for Speed" },
+    { id_carro: 5, nome: "BMW M4", cor: "Branco", preco: 1200000, jogo_origem: "Forza Horizon" },
+    { id_carro: 6, nome: "McLaren 720S", cor: "Laranja", preco: 2800000, jogo_origem: "Forza Horizon" }
+];
+
+function getVehicleImage(vehicle) {
+    const vehicleName = String(vehicle.nome || "").toLocaleLowerCase("pt-BR");
+    const matchingImage = vehicleImages.find(({ model }) => vehicleName.includes(model));
+
+    return matchingImage?.src || vehicleImages[0].src;
+}
+
+function filterSampleVehicles() {
+    const term = vehicleSearch.value.trim().toLocaleLowerCase("pt-BR");
+    const maxPrice = Number(priceMax.value) || Infinity;
+
+    return sampleVehicles.filter((vehicle) => {
+        const searchableText = `${vehicle.nome} ${vehicle.cor} ${vehicle.jogo_origem}`
+            .toLocaleLowerCase("pt-BR");
+
+        return searchableText.includes(term) && vehicle.preco <= maxPrice;
+    });
+}
+
 function createVehicleCard(vehicle) {
     const card = document.createElement("article");
     card.className = "vehicle-card";
 
     const image = document.createElement("div");
-    image.className = "vehicle-image vehicle-image-placeholder";
+    image.className = "vehicle-image";
+
+    const vehicleImage = document.createElement("img");
+    vehicleImage.src = getVehicleImage(vehicle);
+    vehicleImage.alt = `Foto ilustrativa do veículo ${vehicle.nome}`;
+    vehicleImage.loading = "lazy";
+    vehicleImage.addEventListener("error", () => {
+        vehicleImage.src = "./assets/image.png";
+        vehicleImage.alt = `Ilustração de veículo para ${vehicle.nome}`;
+    }, { once: true });
 
     const badge = document.createElement("span");
     badge.className = "vehicle-badge";
     badge.textContent = "Disponível";
 
-    const placeholder = document.createElement("span");
-    placeholder.className = "vehicle-placeholder";
-    placeholder.setAttribute("aria-hidden", "true");
-    placeholder.textContent = "🚘";
-
-    image.append(badge, placeholder);
+    image.append(vehicleImage, badge);
 
     const info = document.createElement("div");
     info.className = "vehicle-info";
@@ -108,8 +149,9 @@ function createVehicleCard(vehicle) {
 }
 
 async function loadVehicles() {
-    vehicleStatus.textContent = "Carregando veículos...";
-    vehicleGrid.replaceChildren();
+    const sampleCatalog = filterSampleVehicles();
+    vehicleGrid.replaceChildren(...sampleCatalog.map(createVehicleCard));
+    vehicleStatus.textContent = "Carregando estoque atualizado. Exibindo catálogo de demonstração.";
 
     const parametros = new URLSearchParams();
     if (vehicleSearch.value.trim()) {
@@ -119,8 +161,13 @@ async function loadVehicles() {
         parametros.set("preco_max", priceMax.value);
     }
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
     try {
-        const resposta = await fetch(`./src/pesquisa.php?${parametros.toString()}`);
+        const resposta = await fetch(`./src/pesquisa.php?${parametros.toString()}`, {
+            signal: controller.signal
+        });
         const veiculos = await resposta.json();
 
         if (!resposta.ok) {
@@ -132,7 +179,11 @@ async function loadVehicles() {
             ? `${veiculos.length} veículo(s) encontrado(s).`
             : "Nenhum veículo encontrado para esses filtros.";
     } catch (error) {
-        vehicleStatus.textContent = "Não foi possível carregar os veículos. Verifique se o servidor PHP e o banco estão ativos.";
+        const vehicles = filterSampleVehicles();
+        vehicleGrid.replaceChildren(...vehicles.map(createVehicleCard));
+        vehicleStatus.textContent = `Não foi possível consultar o banco de dados. Exibindo catálogo de demonstração: ${vehicles.length} veículo(s).`;
+    } finally {
+        clearTimeout(timeoutId);
     }
 }
 
