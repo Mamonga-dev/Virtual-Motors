@@ -28,6 +28,11 @@ class AuthService
         return $usuario;
     }
 
+    public function accountExists(string $email): bool
+    {
+        return $this->userRepository->emailExists($email);
+    }
+
     public function register(string $nome, string $email, string $senha, string $tipoUsuario = 'cliente'): bool
     {
         if ($this->userRepository->emailExists($email)) {

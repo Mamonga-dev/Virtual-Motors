@@ -1,6 +1,8 @@
 <?php
 use VirtualMotors\Service\AuthService;
 
+session_start();
+
 require_once __DIR__ . '/Database.php';
 require_once __DIR__ . '/UserRepository.php';
 require_once __DIR__ . '/AuthService.php';
@@ -54,24 +56,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
     <title>Cadastro - Virtual Motors</title>
     <link rel="icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="apple-touch-icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="shortcut icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="stylesheet" href="../style.css">
     <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-color: #f8f9fa;
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
         .login-card {
-            background: #ffffff;
+            background: var(--surface);
+            color: var(--text);
             width: 100%;
             max-width: 440px;
             padding: 40px;
@@ -101,14 +95,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         .login-card h2 {
             font-size: 22px;
-            color: #111;
+            color: var(--text);
             margin-bottom: 6px;
             font-weight: 700;
         }
 
         .login-card p.subtitle {
             font-size: 13px;
-            color: #666;
+            color: var(--muted);
             margin-bottom: 30px;
         }
 
@@ -121,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             display: block;
             font-size: 11px;
             font-weight: 700;
-            color: #444;
+            color: var(--text);
             letter-spacing: 0.5px;
             margin-bottom: 8px;
         }
@@ -130,8 +124,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             width: 100%;
             height: 46px;
             padding: 0 14px;
-            border: 1px solid #dcdcdc;
+            border: 1px solid var(--border);
             border-radius: 8px;
+            background: var(--field-bg);
+            color: var(--text);
             font-size: 14px;
             outline: none;
             box-sizing: border-box;
@@ -164,7 +160,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .register-link {
             margin-top: 24px;
             font-size: 13px;
-            color: #666;
+            color: var(--muted);
         }
 
         .register-link a {
@@ -185,16 +181,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     </style>
 </head>
-<body>
+<body class="auth-page">
+    <?php
+    $headerBasePath = '../';
+    require __DIR__ . '/header.php';
+    ?>
 
+    <main class="auth-main">
     <div class="login-card">
         <!-- Logotipo Redondo -->
-        <div class="login-logo">
-            <img src="./VM.png" alt="Virtual Motors">
-        </div>
+        <a class="login-logo" href="../index.php" aria-label="Voltar para a página inicial">
+            <img src="../assets/vm.png" alt="Virtual Motors">
+        </a>
 
-        <h2>Criar Conta</h2>
-        <p class="subtitle">Cadastre-se para aproveitar nossos recursos</p>
+        <h2>Criar VM ID</h2>
+        <p class="subtitle">Crie sua conta para acessar o e-commerce</p>
 
         <?php if (!empty($mensagem)): ?>
             <p class="error-msg"><?php echo htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8'); ?></p>
@@ -223,11 +224,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Já tem uma conta? <a href="login.php">Faça login</a>
         </div>
         <div style="margin-top: 15px;">
-            <a href="../index.php" style="font-size: 13px; color: #666; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+            <a href="../index.php" style="font-size: 13px; color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
                 ← Voltar para a página inicial
             </a>
         </div>
     </div>
+    </main>
 
+    <script src="../script.js" defer></script>
 </body>
 </html>

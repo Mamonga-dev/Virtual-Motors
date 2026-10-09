@@ -17,13 +17,9 @@ unset($_SESSION['virtual_motors_carrinho_mensagem']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $acao = $_POST['acao'] ?? '';
+    $compraAdicionada = false;
 
-    if ($acao === 'adicionar' && empty($_SESSION['usuario_email'])) {
-        header('Location: login.php');
-        exit;
-    }
-
-    if ($acao === 'adicionar') {
+    if (in_array($acao, ['adicionar', 'comprar'], true)) {
         $idCarro = filter_var($_POST['id_carro'] ?? '', FILTER_VALIDATE_INT);
 
         if ($idCarro === false || $idCarro < 1) {
@@ -37,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $idCarro = (int) $veiculos[0]['id_carro'];
                     $_SESSION[$chaveCarrinho][$idCarro] = (int) ($_SESSION[$chaveCarrinho][$idCarro] ?? 0) + 1;
                     $_SESSION['virtual_motors_carrinho_mensagem'] = 'Veículo adicionado ao carrinho.';
+                    $compraAdicionada = true;
                 }
             } catch (PDOException $erro) {
                 error_log($erro->getMessage());
@@ -69,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['virtual_motors_carrinho_mensagem'] = 'Carrinho atualizado.';
     }
 
-    header('Location: carrinho.php');
+    header('Location: ' . ($acao === 'comprar' && $compraAdicionada ? 'pagamento.php' : 'carrinho.php'));
     exit;
 }
 
@@ -85,9 +82,6 @@ if ($_SESSION[$chaveCarrinho] !== []) {
     }
 }
 
-$usuarioEmail = $_SESSION['usuario_email'] ?? null;
-$nomeUsuario = $usuarioEmail !== null ? explode('@', $usuarioEmail)[0] : null;
-$quantidadeCarrinho = array_sum(array_map('intval', $_SESSION[$chaveCarrinho]));
 $totalCarrinho = 0;
 ?>
 <!DOCTYPE html>
@@ -95,33 +89,15 @@ $totalCarrinho = 0;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
     <title>Carrinho - Virtual Motors</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <header class="header">
-        <div class="container header-content">
-            <a href="../index.php#inicio" class="logo">
-                <img src="../VM.png" alt="Virtual Motors">
-            </a>
-            <nav class="nav" id="mainNav">
-                <a href="../index.php#inicio">Início</a>
-                <a href="../index.php#veiculos">Veículos</a>
-                <a href="../index.php#sobre">Sobre nós</a>
-                <a href="../index.php#contato">Contato</a>
-                <a href="carrinho.php">Carrinho (<?= $quantidadeCarrinho ?>)</a>
-            </nav>
-            <div class="user-menu-right">
-                <?php if ($usuarioEmail !== null): ?>
-                    <span class="welcome-text">Olá, <?= htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8') ?></span>
-                    <a class="header-button" href="logout.php">Sair</a>
-                <?php else: ?>
-                    <a class="header-button" href="login.php">Entrar</a>
-                <?php endif; ?>
-            </div>
-            <button class="menu-button" id="menuButton" aria-label="Abrir menu">☰</button>
-        </div>
-    </header>
+    <?php
+    $headerBasePath = '../';
+    require __DIR__ . '/header.php';
+    ?>
 
     <main class="cart-wrapper">
         <div class="cart-title-area">
@@ -156,7 +132,7 @@ $totalCarrinho = 0;
                         ?>
                         <article class="cart-card">
                             <div class="cart-item-info">
-                                <div class="cart-item-placeholder" aria-hidden="true">🚘</div>
+                                <img class="cart-item-image" src="<?= htmlspecialchars($veiculo['imagem'], ENT_QUOTES, 'UTF-8') ?>" alt="Foto ilustrativa do veículo <?= htmlspecialchars($veiculo['nome'], ENT_QUOTES, 'UTF-8') ?>">
                                 <div class="cart-item-details">
                                     <h2><?= htmlspecialchars($veiculo['nome'], ENT_QUOTES, 'UTF-8') ?></h2>
                                     <div class="cart-item-tags">
@@ -190,13 +166,14 @@ $totalCarrinho = 0;
                         <span>Total</span>
                         <strong>R$ <?= number_format($totalCarrinho, 2, ',', '.') ?></strong>
                     </div>
-                    <p>A finalização do pedido ainda não está disponível.</p>
-                    <a href="../index.php#veiculos" class="button button-primary">Continuar comprando</a>
+                    <p>Revise seus itens e informe o endereço na próxima etapa.</p>
+                    <a href="pagamento.php" class="button button-primary">Ir para pagamento</a>
+                    <a href="../index.php#veiculos" class="cart-continue-link">Continuar comprando</a>
                 </aside>
             </div>
         <?php endif; ?>
     </main>
 
-    <script src="../script.js"></script>
+    <script src="../script.js" defer></script>
 </body>
 </html>
