@@ -1,9 +1,5 @@
 <?php
 session_start();
-$usuarioEmail = $_SESSION['usuario_email'] ?? null;
-$nomeUsuario = $usuarioEmail !== null ? explode('@', $usuarioEmail)[0] : null;
-$carrinho = $_SESSION['virtual_motors_carrinho'] ?? [];
-$quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -11,6 +7,7 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
 
     <title>Virtual Motors | Veículos Premium</title>
 
@@ -27,51 +24,11 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
 
 <body>
 
-    <!-- HEADER -->
-    <header class="header">
-
-        <div class="container header-content">
-
-            <a href="#inicio" class="logo">
-                <img src="./VM.png" alt="Virtual Motors">
-            </a>
-
-            <nav class="nav" id="mainNav">
-                <a href="./index.php">Início</a>
-                <a href="#veiculos">Veículos</a>
-                <a href="#sobre">Sobre nós</a>
-                <a href="#contato">Contato</a>
-                <a href="./src/carrinho.php">Carrinho (<?= $quantidadeCarrinho ?>)</a>
-            </nav>
-
-            <div class="user-menu-right">
-                <?php if ($usuarioEmail !== null): ?>
-                    <span class="user-profile">
-                        <svg class="user-avatar" viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <circle cx="12" cy="9" r="3"></circle>
-                            <path d="M6.5 19a5.5 5.5 0 0 1 11 0"></path>
-                        </svg>
-                        <span class="welcome-text">Olá, <?= htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8') ?></span>
-                    </span>
-                    <a class="logout-link" href="./src/logout.php">Sair</a>
-                <?php else: ?>
-                    <a class="header-button" href="./src/login.php">Entrar</a>
-                    <a class="header-button header-button-secondary" href="./src/cadastro.php">Criar conta</a>
-                <?php endif; ?>
-            </div>
-
-            <button
-                class="menu-button"
-                id="menuButton"
-                aria-label="Abrir menu"
-            >
-                ☰
-            </button>
-
-        </div>
-
-    </header>
+    <?php
+    $headerBasePath = './';
+    $headerPaginaInicial = true;
+    require __DIR__ . '/src/header.php';
+    ?>
 
 
     <!-- CONTEÚDO -->

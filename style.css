@@ -14,8 +14,8 @@ html {
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    color: #111111;
-    background: #ffffff;
+    color: var(--text);
+    background: var(--page-bg);
     line-height: 1.5;
 }
 
@@ -40,6 +40,7 @@ select {
 ============================== */
 
 :root {
+    color-scheme: light;
     --red: #E50914;
     --red-dark: #b80710;
 
@@ -52,6 +53,14 @@ select {
     --gray: #6B7280;
 
     --border: #E5E7EB;
+    --page-bg: #FFFFFF;
+    --surface: #FFFFFF;
+    --text: #111111;
+    --muted: #6B7280;
+    --field-bg: #FFFFFF;
+    --notice-bg: #fff5f5;
+    --notice-text: #7f1d1d;
+    --selected-bg: #fff8f8;
 }
 
 
@@ -123,6 +132,27 @@ select {
     display: flex;
     align-items: center;
     gap: 15px;
+}
+
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    background: transparent;
+    color: white;
+    font-size: 19px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.theme-toggle:hover {
+    border-color: var(--red);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .user-profile {
@@ -343,7 +373,7 @@ select {
 
     padding: 28px;
 
-    background: white;
+    background: var(--surface);
 
     border-radius: 8px;
 
@@ -367,7 +397,7 @@ select {
     align-items: center;
     justify-content: center;
 
-    background: #fff0f1;
+    background: var(--selected-bg);
 
     border-radius: 50%;
 }
@@ -398,7 +428,7 @@ select {
 }
 
 .input-group label {
-    color: #555;
+    color: var(--muted);
 
     font-size: 12px;
     font-weight: 700;
@@ -410,7 +440,8 @@ select {
 
     padding: 0 12px;
 
-    background: white;
+    background: var(--field-bg);
+    color: var(--text);
 
     border: 1px solid var(--border);
 
@@ -435,7 +466,7 @@ select {
 
 .vehicles-section {
     padding: 90px 0;
-    background: white;
+    background: var(--page-bg);
 }
 
 .section-header {
@@ -482,7 +513,7 @@ select {
 .vehicle-card {
     overflow: hidden;
 
-    background: white;
+    background: var(--surface);
 
     border: 1px solid var(--border);
 
@@ -671,7 +702,8 @@ select {
 .cart-card,
 .order-summary,
 .empty-cart {
-    background: white;
+    background: var(--surface);
+    color: var(--text);
     border: 1px solid var(--border);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
@@ -744,7 +776,7 @@ select {
     padding: 8px 10px;
     border: 1px solid var(--border);
     border-radius: 4px;
-    background: white;
+    background: var(--field-bg);
     color: var(--red-dark);
     cursor: pointer;
 }
@@ -805,7 +837,8 @@ select {
 .checkout-summary {
     min-width: 0;
     padding: 26px;
-    background: white;
+    background: var(--surface);
+    color: var(--text);
     border: 1px solid var(--border);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
@@ -816,8 +849,8 @@ select {
     padding: 14px 16px;
     border-left: 4px solid var(--red);
     border-radius: 4px;
-    background: #fff5f5;
-    color: #7f1d1d;
+    background: var(--notice-bg);
+    color: var(--notice-text);
     font-size: 13px;
 }
 
@@ -841,7 +874,7 @@ select {
     flex: 0 0 auto;
     place-items: center;
     border-radius: 50%;
-    background: #fff0f1;
+    background: var(--selected-bg);
     color: var(--red);
     font-weight: 800;
 }
@@ -873,7 +906,7 @@ select {
 }
 
 .checkout-field label {
-    color: #444;
+    color: var(--text);
     font-size: 12px;
     font-weight: 700;
 }
@@ -890,7 +923,8 @@ select {
     padding: 0 12px;
     border: 1px solid var(--border);
     border-radius: 5px;
-    background: white;
+    background: var(--field-bg);
+    color: var(--text);
     outline: none;
 }
 
@@ -914,7 +948,7 @@ select {
     min-height: 46px;
     padding: 0 14px;
     border: 1px solid var(--border);
-    color: var(--black);
+    color: var(--text);
     cursor: pointer;
 }
 
@@ -947,7 +981,7 @@ select {
 
 .payment-method:has(input:checked) {
     border-color: var(--red);
-    background: #fff8f8;
+    background: var(--selected-bg);
 }
 
 .payment-method input {
@@ -1115,7 +1149,8 @@ select {
 .feature {
     padding: 30px;
 
-    background: white;
+    background: var(--surface);
+    color: var(--text);
 
     border-radius: 7px;
 }
@@ -1130,7 +1165,7 @@ select {
 
     margin-bottom: 20px;
 
-    background: #fff0f1;
+    background: var(--selected-bg);
     color: var(--red);
 
     border-radius: 5px;
@@ -1479,5 +1514,61 @@ select {
     .user-menu-right .header-button {
         padding: 0 7px;
         font-size: 11px;
+    }
+}
+
+.auth-page {
+    min-height: 100vh;
+}
+
+.auth-main {
+    min-height: calc(100vh - 82px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --page-bg: #111315;
+    --surface: #1c1f22;
+    --text: #f3f4f6;
+    --muted: #a1a1aa;
+    --gray-light: #292d32;
+    --gray: #a1a1aa;
+    --border: #3b3f45;
+    --field-bg: #151719;
+    --notice-bg: #321f20;
+    --notice-text: #ffc9cb;
+    --selected-bg: #302124;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --page-bg: #111315;
+        --surface: #1c1f22;
+        --text: #f3f4f6;
+        --muted: #a1a1aa;
+        --gray-light: #292d32;
+        --gray: #a1a1aa;
+        --border: #3b3f45;
+        --field-bg: #151719;
+        --notice-bg: #321f20;
+        --notice-text: #ffc9cb;
+        --selected-bg: #302124;
+    }
+}
+
+@media (max-width: 600px) {
+    .auth-main {
+        min-height: calc(100vh - 72px);
+        padding: 28px 14px;
+    }
+
+    .theme-toggle {
+        width: 36px;
+        height: 36px;
     }
 }

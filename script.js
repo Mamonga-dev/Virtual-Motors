@@ -10,6 +10,47 @@ menuButton?.addEventListener("click", () => {
     mainNav.classList.toggle("active");
 });
 
+const themeToggle = document.getElementById("themeToggle");
+const colorSchemePreference = window.matchMedia("(prefers-color-scheme: dark)");
+let savedTheme = null;
+
+try {
+    const storedTheme = window.localStorage.getItem("vm-theme");
+    if (storedTheme === "light" || storedTheme === "dark") {
+        savedTheme = storedTheme;
+    }
+} catch (error) {
+    console.error("Não foi possível ler a preferência de tema salva.", error);
+}
+
+function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    if (themeToggle) {
+        const nextTheme = theme === "dark" ? "claro" : "escuro";
+        themeToggle.textContent = theme === "dark" ? "☀" : "☾";
+        themeToggle.setAttribute("aria-label", `Ativar modo ${nextTheme}`);
+        themeToggle.title = `Ativar modo ${nextTheme}`;
+    }
+}
+
+applyTheme(savedTheme || (colorSchemePreference.matches ? "dark" : "light"));
+
+colorSchemePreference.addEventListener("change", (event) => {
+    if (savedTheme === null) {
+        applyTheme(event.matches ? "dark" : "light");
+    }
+});
+
+themeToggle?.addEventListener("click", () => {
+    savedTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    applyTheme(savedTheme);
+    try {
+        window.localStorage.setItem("vm-theme", savedTheme);
+    } catch (error) {
+        console.error("Não foi possível salvar a preferência de tema.", error);
+    }
+});
+
 
 // Fecha o menu depois de clicar em um link
 

@@ -82,9 +82,6 @@ if ($_SESSION[$chaveCarrinho] !== []) {
     }
 }
 
-$usuarioEmail = $_SESSION['usuario_email'] ?? null;
-$nomeUsuario = $usuarioEmail !== null ? explode('@', $usuarioEmail)[0] : null;
-$quantidadeCarrinho = array_sum(array_map('intval', $_SESSION[$chaveCarrinho]));
 $totalCarrinho = 0;
 ?>
 <!DOCTYPE html>
@@ -92,34 +89,15 @@ $totalCarrinho = 0;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
     <title>Carrinho - Virtual Motors</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <header class="header">
-        <div class="container header-content">
-            <a href="../index.php#inicio" class="logo">
-                <img src="../VM.png" alt="Virtual Motors">
-            </a>
-            <nav class="nav" id="mainNav">
-                <a href="../index.php#inicio">Início</a>
-                <a href="../index.php#veiculos">Veículos</a>
-                <a href="../index.php#sobre">Sobre nós</a>
-                <a href="../index.php#contato">Contato</a>
-                <a href="carrinho.php">Carrinho (<?= $quantidadeCarrinho ?>)</a>
-            </nav>
-            <div class="user-menu-right">
-                <?php if ($usuarioEmail !== null): ?>
-                    <span class="welcome-text">Olá, <?= htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8') ?></span>
-                    <a class="header-button" href="logout.php">Sair</a>
-                <?php else: ?>
-                    <a class="header-button" href="login.php">Entrar</a>
-                    <a class="header-button header-button-secondary" href="cadastro.php">Criar conta</a>
-                <?php endif; ?>
-            </div>
-            <button class="menu-button" id="menuButton" aria-label="Abrir menu">☰</button>
-        </div>
-    </header>
+    <?php
+    $headerBasePath = '../';
+    require __DIR__ . '/header.php';
+    ?>
 
     <main class="cart-wrapper">
         <div class="cart-title-area">
@@ -196,6 +174,6 @@ $totalCarrinho = 0;
         <?php endif; ?>
     </main>
 
-    <script src="../script.js"></script>
+    <script src="../script.js" defer></script>
 </body>
 </html>

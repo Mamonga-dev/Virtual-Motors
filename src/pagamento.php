@@ -31,40 +31,23 @@ try {
 }
 
 $totalPedido = 0;
-$quantidadeCarrinho = array_sum(array_map('intval', $itensCarrinho));
-$usuarioEmail = (string) $_SESSION['usuario_email'];
-$nomeUsuario = explode('@', $usuarioEmail)[0];
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
     <meta name="description" content="Confira seu pedido Virtual Motors e preencha os dados de entrega.">
     <title>Pagamento - Virtual Motors</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="icon" href="../assets/vm.png" type="image/png">
 </head>
 <body>
-    <header class="header">
-        <div class="container header-content">
-            <a href="../index.php#inicio" class="logo">
-                <img src="../VM.png" alt="Virtual Motors">
-            </a>
-            <nav class="nav" id="mainNav">
-                <a href="../index.php#inicio">Início</a>
-                <a href="../index.php#veiculos">Veículos</a>
-                <a href="../index.php#sobre">Sobre nós</a>
-                <a href="../index.php#contato">Contato</a>
-                <a href="carrinho.php">Carrinho (<?= $quantidadeCarrinho ?>)</a>
-            </nav>
-            <div class="user-menu-right">
-                <span class="welcome-text">Olá, <?= htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8') ?></span>
-                <a class="logout-link" href="logout.php">Sair</a>
-            </div>
-            <button class="menu-button" id="menuButton" aria-label="Abrir menu">☰</button>
-        </div>
-    </header>
+    <?php
+    $headerBasePath = '../';
+    require __DIR__ . '/header.php';
+    ?>
 
     <main class="cart-wrapper checkout-wrapper">
         <div class="cart-title-area">
