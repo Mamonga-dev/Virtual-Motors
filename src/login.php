@@ -31,9 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit();
             }
 
-            $mensagem = $authService->accountExists($email)
-                ? "Senha incorreta. Confira sua senha e tente novamente."
-                : "VM ID não encontrada. Crie sua conta para acessar o e-commerce.";
+            $mensagem = "E-mail ou senha incorretos.";
         } catch (PDOException $erro) {
             error_log($erro->getMessage());
             http_response_code(503);
