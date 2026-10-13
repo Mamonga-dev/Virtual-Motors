@@ -25,7 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['usuario_email'] = $usuario['email'];
 
                 echo "<script>
-                            alert('Login realizado com sucesso!');
                             window.location.href = '../index.php';
                           </script>";
                 exit();
