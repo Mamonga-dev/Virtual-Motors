@@ -9,9 +9,9 @@ Revisado em 2026-10-08 com base nos cartões do quadro da Sprint 1 e nos arquivo
 | Funcionalidade | Status no código | Evidência |
 |---|---|---|
 | Página inicial, catálogo e navbar | Implementado | [index.php](../index.php), [style.css](../style.css) |
-| Buscar veículos no banco por nome, cor ou jogo de origem e filtrar por preço máximo | Implementado; refatoração para repositório em teste, falta teste integrado | [script.js](../script.js), [src/pesquisa.php](../src/pesquisa.php), [src/CarroRepository.php](../src/CarroRepository.php) |
+| Buscar veículos no banco por nome, cor ou jogo de origem e filtrar por preço máximo | Implementado; refatoração para repositório em teste, falta teste integrado | [script.js](../script.js), [src/pesquisa.php](../src/pesquisa.php), [src/carrorepository.php](../src/carrorepository.php) |
 | Exibir nome, cor, origem e preço nos resultados | Implementado | [script.js](../script.js) |
-| Login, cadastro de usuário e logout | Implementado no código; refatoração para serviço em teste | [src/login.php](../src/login.php), [src/cadastro.php](../src/cadastro.php), [src/logout.php](../src/logout.php), [src/AuthService.php](../src/AuthService.php) |
+| Login, cadastro de usuário e logout | Implementado no código; refatoração para serviço em teste | [src/login.php](../src/login.php), [src/cadastro.php](../src/cadastro.php), [src/logout.php](../src/logout.php), [src/authservice.php](../src/authservice.php) |
 | Sessão de autenticação | Implementado; guarda ID e e-mail do usuário | [src/login.php](../src/login.php), [index.php](../index.php) |
 | Carrinho de sessão | Implementado no código; adicionar exige login, permite atualizar/remover itens e calcula total com preços atuais do banco; integração em teste | [src/carrinho.php](../src/carrinho.php), [script.js](../script.js), [index.php](../index.php) |
 | Conexão PHP/MySQL com PDO | Implementado | [src/conexao.php](../src/conexao.php) |
@@ -30,10 +30,10 @@ A refatoração reorganiza o acesso ao banco no login, cadastro e pesquisa de ve
 | [src/cadastro.php](../src/cadastro.php) | Valida os dados recebidos e registra o usuário via `AuthService`. |
 | [src/pesquisa.php](../src/pesquisa.php) | Valida o filtro de preço e retorna resultados JSON obtidos pelo repositório. |
 | [src/carrinho.php](../src/carrinho.php) | Adiciona, lista, atualiza e remove itens do carrinho na sessão; consulta os dados e preços dos carros existentes. |
-| [src/CarroRepository.php](../src/CarroRepository.php) | Consulta carros por nome, cor, jogo de origem, preço máximo e IDs com prepared statements. |
-| [src/AuthService.php](../src/AuthService.php) | Valida credenciais e registra usuários através do repositório de usuários. |
-| [src/UserRepository.php](../src/UserRepository.php) | Busca, verifica e cria usuários no banco. |
-| [src/Database.php](../src/Database.php) | Fornece a conexão PDO compartilhada com o banco de dados. |
+| [src/carrorepository.php](../src/carrorepository.php) | Consulta carros por nome, cor, jogo de origem, preço máximo e IDs com prepared statements. |
+| [src/authservice.php](../src/authservice.php) | Valida credenciais e registra usuários através do repositório de usuários. |
+| [src/userrepository.php](../src/userrepository.php) | Busca, verifica e cria usuários no banco. |
+| [src/database.php](../src/database.php) | Fornece a conexão PDO compartilhada com o banco de dados. |
 
 ## Pendências priorizadas
 

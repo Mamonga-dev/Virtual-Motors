@@ -3,9 +3,9 @@ use VirtualMotors\Service\AuthService;
 
 session_start();
 
-require_once __DIR__ . '/Database.php';
-require_once __DIR__ . '/UserRepository.php';
-require_once __DIR__ . '/AuthService.php';
+require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/userrepository.php';
+require_once __DIR__ . '/authservice.php';
 
 $mensagem = "";
 

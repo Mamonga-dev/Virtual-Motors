@@ -2,8 +2,8 @@
 
 use VirtualMotors\Repository\CarroRepository;
 
-require_once __DIR__ . '/Database.php';
-require_once __DIR__ . '/CarroRepository.php';
+require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/carrorepository.php';
 
 session_start();
 

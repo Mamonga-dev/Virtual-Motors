@@ -1,9 +1,9 @@
 <?php
 use VirtualMotors\Service\AuthService;
 
-require_once __DIR__ . '/Database.php';
-require_once __DIR__ . '/UserRepository.php';
-require_once __DIR__ . '/AuthService.php';
+require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/userrepository.php';
+require_once __DIR__ . '/authservice.php';
 
 // Inicia a sessão
 session_start();

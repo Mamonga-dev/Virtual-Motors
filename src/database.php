@@ -9,17 +9,38 @@ class Database
 {
     private static ?PDO $connection = null;
 
+    private static function carregarConfig(): array
+    {
+        $servidorNome = $_SERVER['SERVER_NAME'] ?? '';
+        $ambienteLocal = in_array($servidorNome, ['localhost', '127.0.0.1'], true);
+        $arquivoConfigProducao = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config.producao.php';
+
+        if (!$ambienteLocal && is_file($arquivoConfigProducao)) {
+            return require $arquivoConfigProducao;
+        }
+
+        return [
+            'host' => '127.0.0.1',
+            'port' => 3306,
+            'database' => 'loja_carros',
+            'username' => 'root',
+            'password' => '',
+        ];
+    }
+
     public static function getConnection(): PDO
     {
         if (self::$connection === null) {
-            $servidor = '127.0.0.1';
-            $usuario = 'root';
-            $senha = '';
-            $banco = 'loja_carros';
+            $config = self::carregarConfig();
+            $servidor = $config['host'];
+            $porta = (int) $config['port'];
+            $banco = $config['database'];
+            $usuario = $config['username'];
+            $senha = $config['password'];
 
             try {
                 $socket = @stream_socket_client(
-                    "tcp://{$servidor}:3306",
+                    "tcp://{$servidor}:{$porta}",
                     $codigoErro,
                     $mensagemErro,
                     1
@@ -39,7 +60,7 @@ class Database
                 }
 
                 self::$connection = new PDO(
-                    "mysql:host={$servidor};port=3306;dbname={$banco};charset=utf8mb4;connect_timeout=1",
+                    "mysql:host={$servidor};port={$porta};dbname={$banco};charset=utf8mb4;connect_timeout=1",
                     $usuario,
                     $senha,
                     [
