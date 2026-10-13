@@ -1,0 +1,9 @@
+<?php
+
+return [
+    'host' => 'db.example.com',
+    'port' => 3306,
+    'database' => 'virtual_motors',
+    'username' => 'db_user',
+    'password' => 'change_me',
+];
