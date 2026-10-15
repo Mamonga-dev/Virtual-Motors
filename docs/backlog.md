@@ -15,7 +15,7 @@ Revisado em 2026-10-08 com base nos cartões do quadro da Sprint 1 e nos arquivo
 | Sessão de autenticação | Implementado; guarda ID e e-mail do usuário | [src/login.php](../src/login.php), [index.php](../index.php) |
 | Carrinho de sessão | Implementado no código; adicionar exige login, permite atualizar/remover itens e calcula total com preços atuais do banco; integração em teste | [src/carrinho.php](../src/carrinho.php), [script.js](../script.js), [index.php](../index.php) |
 | Conexão PHP/MySQL com PDO | Implementado | [src/conexao.php](../src/conexao.php) |
-| Estrutura de tabelas para carros, usuários, pedidos e itens de pedido | Existe nos dumps SQL | [dumps/Virtual motors/loja_carros_carros.sql](../dumps/Virtual%20motors/loja_carros_carros.sql), [dumps/Virtual motors/loja_carros_usuario.sql](../dumps/Virtual%20motors/loja_carros_usuario.sql), [dumps/Virtual motors/loja_carros_pedido.sql](../dumps/Virtual%20motors/loja_carros_pedido.sql), [dumps/Virtual motors/loja_carros_item_pedido.sql](../dumps/Virtual%20motors/loja_carros_item_pedido.sql) |
+| Estrutura de tabelas para carros, usuários, pedidos e itens de pedido | Existe nos dumps SQL | [dump/virtualmotors/loja_carros_carros.sql](../dump/virtualmotors/loja_carros_carros.sql), [dump/virtualmotors/loja_carros_usuario.sql](../dump/virtualmotors/loja_carros_usuario.sql), [dump/virtualmotors/loja_carros_pedido.sql](../dump/virtualmotors/loja_carros_pedido.sql), [dump/virtualmotors/loja_carros_item_pedido.sql](../dump/virtualmotors/loja_carros_item_pedido.sql) |
 | Cálculo simples do valor de uma parcela | Implementado como endpoint isolado; não é total de carrinho | [src/calcula.php](../src/calcula.php) |
 
 ## Refatoração para orientação a objetos — em teste

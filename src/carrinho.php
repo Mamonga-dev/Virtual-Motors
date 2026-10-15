@@ -17,6 +17,11 @@ unset($_SESSION['virtual_motors_carrinho_mensagem']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $acao = $_POST['acao'] ?? '';
+    if ($acao === 'adicionar' && empty($_SESSION['usuario_email'])) {
+        header('Location: login.php');
+        exit;
+    }
+
     $compraAdicionada = false;
 
     if (in_array($acao, ['adicionar', 'comprar'], true)) {
