@@ -1,0 +1,18 @@
+<?php
+
+return [
+    'local' => [
+        'host' => '127.0.0.1',
+        'port' => 3306,
+        'database' => 'loja_carros',
+        'username' => 'root',
+        'password' => '',
+    ],
+    'production' => [
+        'host' => 'seu-host-mysql',
+        'port' => 3306,
+        'database' => 'seu_banco',
+        'username' => 'seu_usuario',
+        'password' => 'sua_senha',
+    ],
+];
