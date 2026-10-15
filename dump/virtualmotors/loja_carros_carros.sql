@@ -28,6 +28,7 @@ CREATE TABLE `carros` (
   `cor` varchar(30) DEFAULT NULL,
   `preco` decimal(10,2) NOT NULL,
   `jogo_origem` varchar(100) NOT NULL,
+  `imagem_url` varchar(2048) DEFAULT NULL,
   PRIMARY KEY (`id_carro`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -38,7 +39,7 @@ CREATE TABLE `carros` (
 
 LOCK TABLES `carros` WRITE;
 /*!40000 ALTER TABLE `carros` DISABLE KEYS */;
-INSERT INTO `carros` VALUES (1,'Ferrari 488 GTB','Vermelho',2500000.00,'Forza Horizon'),(2,'Lamborghini Huracán','Amarelo',3000000.00,'Forza Horizon'),(3,'Porsche 911','Preto',1800000.00,'Need for Speed'),(4,'Nissan Skyline GT-R','Azul',900000.00,'Need for Speed'),(5,'BMW M4','Branco',1200000.00,'Forza Horizon'),(6,'McLaren 720S','Laranja',2800000.00,'Forza Horizon');
+INSERT INTO `carros` (`id_carro`, `nome`, `cor`, `preco`, `jogo_origem`) VALUES (1,'Ferrari 488 GTB','Vermelho',2500000.00,'Forza Horizon'),(2,'Lamborghini Huracán','Amarelo',3000000.00,'Forza Horizon'),(3,'Porsche 911','Preto',1800000.00,'Need for Speed'),(4,'Nissan Skyline GT-R','Azul',900000.00,'Need for Speed'),(5,'BMW M4','Branco',1200000.00,'Forza Horizon'),(6,'McLaren 720S','Laranja',2800000.00,'Forza Horizon');
 /*!40000 ALTER TABLE `carros` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

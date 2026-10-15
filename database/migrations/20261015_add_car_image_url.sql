@@ -1,0 +1,2 @@
+ALTER TABLE carros
+    ADD COLUMN imagem_url VARCHAR(2048) NULL DEFAULT NULL AFTER jogo_origem;

@@ -13,7 +13,28 @@ class Database
     {
         $servidorNome = $_SERVER['SERVER_NAME'] ?? '';
         $ambienteLocal = in_array($servidorNome, ['localhost', '127.0.0.1'], true);
+        $arquivoConfigPrivada = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'database.config.php';
         $arquivoConfigProducao = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config.producao.php';
+
+        if (is_file($arquivoConfigPrivada)) {
+            $configuracoes = require $arquivoConfigPrivada;
+            $ambiente = $ambienteLocal ? 'local' : 'production';
+
+            if (!is_array($configuracoes) || !isset($configuracoes[$ambiente]) || !is_array($configuracoes[$ambiente])) {
+                throw new \RuntimeException("A configuração do banco para o ambiente '{$ambiente}' é inválida.");
+            }
+
+            $config = $configuracoes[$ambiente];
+            foreach (['host', 'database', 'username', 'password'] as $chave) {
+                if (!isset($config[$chave]) || !is_string($config[$chave])) {
+                    throw new \RuntimeException("A configuração do banco não contém um valor válido para '{$chave}'.");
+                }
+            }
+
+            $config['port'] = isset($config['port']) ? (int) $config['port'] : 3306;
+
+            return $config;
+        }
 
         if (!$ambienteLocal && is_file($arquivoConfigProducao)) {
             return require $arquivoConfigProducao;

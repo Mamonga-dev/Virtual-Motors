@@ -53,7 +53,7 @@ A branch `rayray` está com commits recentes voltados para cálculo de parcelas,
 - Busca e listagem de produtos
 
 ### Dados
-- Dumps SQL do banco em `dumps/Virtual motors/`
+- Dumps SQL do banco em `dump/virtualmotors/`
 - Base inicial para continuidade do desenvolvimento
 
 ### Front-end
@@ -98,11 +98,16 @@ A branch `rayray` está com commits recentes voltados para cálculo de parcelas,
 ## Como executar
 
 1. Instale PHP com as extensões PDO e PDO MySQL, além de MySQL ou MariaDB.
-2. Crie o banco `loja_carros` e importe `dumps/Virtual motors/loja_carros_carros.sql`.
-3. Ajuste servidor, usuário e senha em `src/conexao.php` para o ambiente local.
-4. Na raiz do projeto, execute `php -S localhost:8000` e acesse `http://localhost:8000`.
+2. Crie o banco `loja_carros` e importe `dump/virtualmotors/loja_carros_carros.sql`.
+3. Para bancos já existentes, execute uma vez `database/migrations/20261015_add_car_image_url.sql` para habilitar links de imagem nos produtos.
+4. Para desenvolvimento local, copie `database.config.php.example` para `database.config.php` e ajuste os dados locais. O arquivo `database.config.php` é privado e não deve ser versionado.
+5. Na raiz do projeto, execute `php -S localhost:8000` e acesse `http://localhost:8000`.
 
 A listagem e a busca da página inicial consultam a tabela `carros`. O banco deve estar ativo para exibir os veículos.
+
+### Configuração do servidor
+
+Crie `database.config.php` na raiz publicada do projeto, usando `database.config.php.example` como modelo e preenchendo `production` com as credenciais fornecidas pela hospedagem. O código escolhe `local` para `localhost` e `127.0.0.1`, e `production` para os demais hosts. Envie esse arquivo privado uma única vez pelo SFTP; depois, configure-o como exclusão da sincronização para evitar sobrescrevê-lo. O `.gitignore` impede o envio pelo GitHub, mas não controla as exclusões da extensão SFTP.
 
 ---
 
