@@ -1,23 +1,32 @@
 ### AL ###
-#Template for AL projects for Dynamics 365 Business Central
-#launch.json folder
+# Template for AL projects for Dynamics 365 Business Central
+# launch.json folder
 .vscode/
-#Cache folder
+# Cache folder
 .alcache/
-#Symbols folder
+# Symbols folder
 .alpackages/
-#Snapshots folder
+# Snapshots folder
 .snapshots/
-#Testing Output folder
+# Testing Output folder
 .output/
-#Extension App-file
+# Extension App-file
 *.app
-#Rapid Application Development File
+# Rapid Application Development File
 rad.json
-#Translation Base-file
+# Translation Base-file
 *.g.xlf
-#License-files
+# License-files
 *.bclicense
 *.flf
-#Test results file
+# Test results file
 TestResults.xml
+
+### Virtual Motors ###
+# Configuração do VS Code (inclui .vscode/sftp.json, com a senha do FTP)
+# Já coberto pela linha ".vscode/" acima, mantido aqui por segurança
+.vscode/sftp.json
+
+# Credenciais do banco de produção (InfinityFree)
+# Cada computador cria o seu; nunca vai pro GitHub
+config.producao.php

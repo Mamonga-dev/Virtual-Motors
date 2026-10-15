@@ -123,7 +123,6 @@ class CarroRepository
                     break;
                 }
             }
-
             $imagemUrl = $veiculo['imagem_url'] ?? null;
             if (is_string($imagemUrl) && filter_var($imagemUrl, FILTER_VALIDATE_URL)) {
                 $esquema = strtolower((string) parse_url($imagemUrl, PHP_URL_SCHEME));

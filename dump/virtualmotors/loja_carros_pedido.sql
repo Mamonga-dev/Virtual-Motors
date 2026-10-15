@@ -16,31 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `carros`
+-- Table structure for table `pedido`
 --
 
-DROP TABLE IF EXISTS `carros`;
+DROP TABLE IF EXISTS `pedido`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `carros` (
-  `id_carro` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) NOT NULL,
-  `cor` varchar(30) DEFAULT NULL,
-  `preco` decimal(10,2) NOT NULL,
-  `jogo_origem` varchar(100) NOT NULL,
-  `imagem_url` varchar(2048) DEFAULT NULL,
-  PRIMARY KEY (`id_carro`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `pedido` (
+  `id_pedido` int(11) NOT NULL AUTO_INCREMENT,
+  `id_usuario` int(11) NOT NULL,
+  `data_entrega` date DEFAULT NULL,
+  `valor_total` decimal(10,2) NOT NULL,
+  `pagamento` varchar(50) NOT NULL,
+  `status_pedido` varchar(30) NOT NULL,
+  PRIMARY KEY (`id_pedido`),
+  KEY `id_usuario` (`id_usuario`),
+  CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `carros`
+-- Dumping data for table `pedido`
 --
 
-LOCK TABLES `carros` WRITE;
-/*!40000 ALTER TABLE `carros` DISABLE KEYS */;
-INSERT INTO `carros` (`id_carro`, `nome`, `cor`, `preco`, `jogo_origem`) VALUES (1,'Ferrari 488 GTB','Vermelho',2500000.00,'Forza Horizon'),(2,'Lamborghini Huracán','Amarelo',3000000.00,'Forza Horizon'),(3,'Porsche 911','Preto',1800000.00,'Need for Speed'),(4,'Nissan Skyline GT-R','Azul',900000.00,'Need for Speed'),(5,'BMW M4','Branco',1200000.00,'Forza Horizon'),(6,'McLaren 720S','Laranja',2800000.00,'Forza Horizon'),(7,'Ferrari 488 GTB','Vermelho',2500000.00,'Forza Horizon'),(8,'Lamborghini Huracán','Amarelo',3000000.00,'Forza Horizon'),(9,'Porsche 911','Preto',1800000.00,'Need for Speed'),(10,'Nissan Skyline GT-R','Azul',900000.00,'Need for Speed'),(11,'BMW M4','Branco',1200000.00,'Forza Horizon'),(12,'McLaren 720S','Laranja',2800000.00,'Forza Horizon');
-/*!40000 ALTER TABLE `carros` ENABLE KEYS */;
+LOCK TABLES `pedido` WRITE;
+/*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-24  9:20:44
+-- Dump completed on 2026-10-15  9:13:55
