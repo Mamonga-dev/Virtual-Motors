@@ -77,6 +77,17 @@ body.admin-layout {
     padding: 32px clamp(16px, 4vw, 48px);
 }
 
+.admin-page-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+}
+
+.admin-field small {
+    color: var(--admin-suave);
+    font-size: 13px;
+}
+
 .admin-main h1,
 .admin-main h2 {
     font-family: var(--admin-titulo);

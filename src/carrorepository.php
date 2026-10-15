@@ -28,7 +28,7 @@ class CarroRepository
 
         $marcadores = implode(', ', array_fill(0, count($ids), '?'));
         $consulta = Database::getConnection()->prepare(
-            "SELECT id_carro, nome, cor, preco, jogo_origem FROM carros WHERE id_carro IN ({$marcadores}) ORDER BY nome"
+            "SELECT id_carro, nome, cor, preco, jogo_origem, imagem_url FROM carros WHERE id_carro IN ({$marcadores}) ORDER BY nome"
         );
         $consulta->execute($ids);
 
@@ -69,7 +69,7 @@ class CarroRepository
             $parametros['preco_maximo'] = $precoMaximo;
         }
 
-        $sql = 'SELECT id_carro, nome, cor, preco, jogo_origem FROM carros';
+        $sql = 'SELECT id_carro, nome, cor, preco, jogo_origem, imagem_url FROM carros';
         if ($condicoes !== []) {
             $sql .= ' WHERE ' . implode(' AND ', $condicoes);
         }
@@ -121,6 +121,14 @@ class CarroRepository
                 if (str_contains($nome, $modelo)) {
                     $veiculo['imagem'] = $imagem;
                     break;
+                }
+            }
+
+            $imagemUrl = $veiculo['imagem_url'] ?? null;
+            if (is_string($imagemUrl) && filter_var($imagemUrl, FILTER_VALIDATE_URL)) {
+                $esquema = strtolower((string) parse_url($imagemUrl, PHP_URL_SCHEME));
+                if (in_array($esquema, ['http', 'https'], true)) {
+                    $veiculo['imagem'] = $imagemUrl;
                 }
             }
         }

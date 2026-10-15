@@ -133,6 +133,9 @@ $totalPedidos = (int) ($pedidoStats[0]['total'] ?? 0);
 </nav>
 
 <main class="admin-main">
+    <div class="admin-page-actions">
+        <a class="admin-button secondary" href="../index.php">← Voltar à página inicial</a>
+    </div>
     <h1>Painel administrativo</h1>
     <p class="admin-sub">Resumo dos dados registrados na loja.</p>
 

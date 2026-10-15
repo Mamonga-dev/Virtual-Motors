@@ -41,6 +41,17 @@ function produtos_post_string(string $key): string
     return is_string($value) ? trim($value) : '';
 }
 
+function produtos_imagem_url_valida(string $url): bool
+{
+    if (filter_var($url, FILTER_VALIDATE_URL) === false) {
+        return false;
+    }
+
+    $esquema = strtolower((string) parse_url($url, PHP_URL_SCHEME));
+
+    return in_array($esquema, ['http', 'https'], true);
+}
+
 $csrfToken = $_SESSION['admin_csrf_token'] ?? null;
 if (!is_string($csrfToken) || $csrfToken === '') {
     $csrfToken = bin2hex(random_bytes(32));
@@ -55,6 +66,7 @@ $valoresFormulario = [
     'cor' => '',
     'preco' => '',
     'jogo_origem' => '',
+    'imagem_url' => '',
 ];
 
 $mensagemFlash = $_SESSION['admin_produtos_mensagem'] ?? null;
@@ -106,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'cor' => produtos_post_string('cor'),
                 'preco' => produtos_post_string('preco'),
                 'jogo_origem' => produtos_post_string('jogo_origem'),
+                'imagem_url' => produtos_post_string('imagem_url'),
             ];
             $idCarro = filter_var($_POST['id_carro'] ?? null, FILTER_VALIDATE_INT);
             $precoNormalizado = str_replace(',', '.', $valoresFormulario['preco']);
@@ -125,17 +138,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($valoresFormulario['jogo_origem'] === '' || strlen($valoresFormulario['jogo_origem']) > 100) {
                 throw new InvalidArgumentException('Informe um jogo de origem de até 100 caracteres.');
             }
+            if ($valoresFormulario['imagem_url'] !== '') {
+                if (
+                    strlen($valoresFormulario['imagem_url']) > 2048
+                    || !produtos_imagem_url_valida($valoresFormulario['imagem_url'])
+                ) {
+                    throw new InvalidArgumentException('Informe uma URL de imagem válida começando com http:// ou https://.');
+                }
+            }
 
             $parametros = [
                 'nome' => $valoresFormulario['nome'],
                 'cor' => $valoresFormulario['cor'] !== '' ? $valoresFormulario['cor'] : null,
                 'preco' => $precoNormalizado,
                 'jogo_origem' => $valoresFormulario['jogo_origem'],
+                'imagem_url' => $valoresFormulario['imagem_url'] !== '' ? $valoresFormulario['imagem_url'] : null,
             ];
 
             if ($acao === 'criar') {
                 $salvar = $pdo->prepare(
-                    'INSERT INTO carros (nome, cor, preco, jogo_origem) VALUES (:nome, :cor, :preco, :jogo_origem)'
+                    'INSERT INTO carros (nome, cor, preco, jogo_origem, imagem_url) VALUES (:nome, :cor, :preco, :jogo_origem, :imagem_url)'
                 );
                 $salvar->execute($parametros);
                 $_SESSION['admin_produtos_mensagem'] = 'Produto cadastrado com sucesso.';
@@ -148,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $parametros['id_carro'] = $idCarro;
                 $salvar = $pdo->prepare(
-                    'UPDATE carros SET nome = :nome, cor = :cor, preco = :preco, jogo_origem = :jogo_origem WHERE id_carro = :id_carro'
+                    'UPDATE carros SET nome = :nome, cor = :cor, preco = :preco, jogo_origem = :jogo_origem, imagem_url = :imagem_url WHERE id_carro = :id_carro'
                 );
                 $salvar->execute($parametros);
                 $_SESSION['admin_produtos_mensagem'] = 'Produto atualizado com sucesso.';
@@ -193,7 +215,7 @@ try {
     $offset = ($pagina - 1) * $porPagina;
 
     $consultaProdutos = $pdo->prepare(
-        'SELECT id_carro, nome, cor, preco, jogo_origem FROM carros'
+        'SELECT id_carro, nome, cor, preco, jogo_origem, imagem_url FROM carros'
         . $condicao
         . ' ORDER BY id_carro DESC LIMIT ' . $porPagina . ' OFFSET ' . $offset
     );
@@ -213,7 +235,7 @@ $idEditarEnviado = filter_var($_GET['editar'] ?? null, FILTER_VALIDATE_INT);
 if ($idEditarEnviado !== false && $idEditarEnviado !== null && $idEditarEnviado > 0) {
     try {
         $consultaEdicao = $pdo->prepare(
-            'SELECT id_carro, nome, cor, preco, jogo_origem FROM carros WHERE id_carro = :id_carro'
+            'SELECT id_carro, nome, cor, preco, jogo_origem, imagem_url FROM carros WHERE id_carro = :id_carro'
         );
         $consultaEdicao->execute(['id_carro' => $idEditarEnviado]);
         $produtoEditando = $consultaEdicao->fetch(PDO::FETCH_ASSOC) ?: null;
@@ -226,6 +248,7 @@ if ($idEditarEnviado !== false && $idEditarEnviado !== null && $idEditarEnviado 
                 'cor' => (string) ($produtoEditando['cor'] ?? ''),
                 'preco' => (string) ($produtoEditando['preco'] ?? ''),
                 'jogo_origem' => (string) ($produtoEditando['jogo_origem'] ?? ''),
+                'imagem_url' => (string) ($produtoEditando['imagem_url'] ?? ''),
             ];
         }
     } catch (PDOException $exception) {
@@ -266,6 +289,9 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
 </nav>
 
 <main class="admin-main">
+    <div class="admin-page-actions">
+        <a class="admin-button secondary" href="../index.php">← Voltar à página inicial</a>
+    </div>
     <h1>Gerenciar produtos</h1>
     <p class="admin-sub">Cadastre, pesquise e atualize os carros disponíveis no catálogo.</p>
 
@@ -301,6 +327,11 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
             <div class="admin-field">
                 <label for="jogo_origem">Jogo de origem</label>
                 <input id="jogo_origem" name="jogo_origem" maxlength="100" required value="<?= produtos_escape($valoresFormulario['jogo_origem']) ?>">
+            </div>
+            <div class="admin-field">
+                <label for="imagem_url">Link da imagem (URL)</label>
+                <input id="imagem_url" name="imagem_url" type="url" maxlength="2048" value="<?= produtos_escape($valoresFormulario['imagem_url']) ?>" placeholder="https://exemplo.com/carro.jpg">
+                <small>Opcional. Use um link direto para uma imagem pública; se deixar vazio, o catálogo usa a imagem padrão.</small>
             </div>
             <div class="admin-actions">
                 <button class="admin-button" type="submit"><?= $produtoEditando !== null ? 'Salvar alterações' : 'Cadastrar produto' ?></button>
@@ -339,6 +370,7 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
                         <th scope="col">Cor</th>
                         <th scope="col">Preço</th>
                         <th scope="col">Jogo de origem</th>
+                        <th scope="col">Imagem</th>
                         <th scope="col">Ações</th>
                     </tr>
                     </thead>
@@ -350,6 +382,13 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
                             <td><?= produtos_escape($produto['cor'] ?? '') ?></td>
                             <td>R$ <?= number_format((float) $produto['preco'], 2, ',', '.') ?></td>
                             <td><?= produtos_escape($produto['jogo_origem']) ?></td>
+                            <td>
+                                <?php if (is_string($produto['imagem_url']) && produtos_imagem_url_valida($produto['imagem_url'])): ?>
+                                    <a class="admin-link" href="<?= produtos_escape($produto['imagem_url']) ?>" target="_blank" rel="noopener noreferrer">Ver imagem</a>
+                                <?php else: ?>
+                                    Sem imagem
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <div class="admin-actions">
                                     <a class="admin-link" href="produtos.php?editar=<?= (int) $produto['id_carro'] ?>">Editar</a>
