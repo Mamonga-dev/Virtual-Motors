@@ -9,14 +9,17 @@ $headerPaginaInicial = $headerPaginaInicial ?? false;
 $headerEmail = $_SESSION['usuario_email'] ?? null;
 $headerNome = $headerEmail !== null ? explode('@', $headerEmail)[0] : null;
 $headerCarrinho = $_SESSION['virtual_motors_carrinho'] ?? [];
+$headerPaginaSobreNos = $headerPaginaSobreNos ?? false;
 $headerQuantidadeCarrinho = is_array($headerCarrinho)
     ? array_sum(array_map('intval', $headerCarrinho))
     : 0;
 $headerInicio = $headerPaginaInicial ? '#inicio' : $headerBasePath . 'index.php#inicio';
 $headerVeiculos = $headerPaginaInicial ? '#veiculos' : $headerBasePath . 'index.php#veiculos';
-$headerSobre = $headerPaginaInicial ? '#sobre' : $headerBasePath . 'index.php#sobre';
+$headerSobre = $headerBasePath . 'src/sobre-nos.php';
 $headerContato = $headerPaginaInicial ? '#contato' : $headerBasePath . 'index.php#contato';
-$headerCarrinhoHref = $headerPaginaInicial ? './src/carrinho.php' : 'carrinho.php';
+$headerCarrinhoHref = $headerPaginaInicial || $headerPaginaSobreNos
+    ? $headerBasePath . 'src/carrinho.php'
+    : 'carrinho.php';
 $headerLogin = $headerBasePath . 'src/login.php';
 $headerCadastro = $headerBasePath . 'src/cadastro.php';
 $headerLogout = $headerBasePath . 'src/logout.php';
@@ -30,7 +33,10 @@ $headerLogout = $headerBasePath . 'src/logout.php';
         <nav class="nav" id="mainNav">
             <a href="<?= htmlspecialchars($headerInicio, ENT_QUOTES, 'UTF-8') ?>">Início</a>
             <a href="<?= htmlspecialchars($headerVeiculos, ENT_QUOTES, 'UTF-8') ?>">Veículos</a>
-            <a href="<?= htmlspecialchars($headerSobre, ENT_QUOTES, 'UTF-8') ?>">Sobre nós</a>
+            <a
+                href="<?= htmlspecialchars($headerSobre, ENT_QUOTES, 'UTF-8') ?>"
+                <?= $headerPaginaSobreNos ? 'aria-current="page"' : '' ?>
+            >Sobre nós</a>
             <a href="<?= htmlspecialchars($headerContato, ENT_QUOTES, 'UTF-8') ?>">Contato</a>
             <a href="<?= htmlspecialchars($headerCarrinhoHref, ENT_QUOTES, 'UTF-8') ?>">Carrinho (<?= $headerQuantidadeCarrinho ?>)</a>
         </nav>

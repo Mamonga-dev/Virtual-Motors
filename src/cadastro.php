@@ -33,7 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mensagem = "Este e-mail já está cadastrado.";
                 } else {
                     echo "<script>
-                            alert('Cadastro realizado com sucesso! Faça login para continuar.');
                             window.location.href = 'login.php';
                           </script>";
                     exit();
