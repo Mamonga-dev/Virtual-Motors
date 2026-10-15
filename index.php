@@ -19,7 +19,7 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
         content="Encontre seu próximo veículo na Virtual Motors."
     >
 
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css?v=custom-icons">
     <link rel="icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="apple-touch-icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="shortcut icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
@@ -51,6 +51,7 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
                 <?php else: ?>
                     <a class="header-button" href="./src/login.php">Entrar</a>
                 <?php endif; ?>
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ativar modo escuro" title="Ativar modo escuro">☾</button>
             </div>
 
             <button
@@ -114,7 +115,7 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
 
                     <div class="search-title">
 
-                        <span>🔎</span>
+                        <span><img src="./assets/search-icon.png" alt="" aria-hidden="true"></span>
 
                         <div>
                             <h2>Encontre seu veículo</h2>
@@ -444,7 +445,7 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
     </footer>
 
 
-    <script src="script.js" defer></script>
+    <script src="script.js?v=custom-icons" defer></script>
 
 </body>
 

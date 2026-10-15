@@ -52,6 +52,20 @@ select {
     --gray: #6B7280;
 
     --border: #E5E7EB;
+    --header-bg: #F3F4F6;
+    --header-text: #111111;
+    --header-muted: #4B5563;
+    --theme-toggle-border: #111111;
+    --footer-bg: #F3F4F6;
+    --footer-text: #111111;
+    --footer-muted: #4B5563;
+    --footer-border: #D1D5DB;
+    --hero-overlay-start: rgba(255, 255, 255, 0.78);
+    --hero-overlay-mid: rgba(255, 255, 255, 0.55);
+    --hero-overlay-end: rgba(255, 255, 255, 0.16);
+    --hero-text: #111111;
+    --hero-muted: #333333;
+    --hero-outline: rgba(17, 17, 17, 0.5);
 }
 
 
@@ -71,13 +85,24 @@ select {
 
 .header {
     height: 82px;
-    background: var(--black);
-    color: var(--white);
+    background: var(--header-bg);
+    color: var(--header-text);
 
     position: sticky;
     top: 0;
 
     z-index: 1000;
+    transition: transform 0.24s ease;
+}
+
+.header.header-hidden {
+    transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .header {
+        transition: none;
+    }
 }
 
 .header-content {
@@ -107,7 +132,9 @@ select {
 }
 
 .nav a {
-    color: #dddddd;
+    position: relative;
+    padding-bottom: 5px;
+    color: var(--header-muted);
 
     font-size: 14px;
     font-weight: 600;
@@ -115,8 +142,26 @@ select {
     transition: 0.2s;
 }
 
+.nav a::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--red);
+    content: "";
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.18s ease-out;
+}
+
 .nav a:hover {
     color: var(--red);
+}
+
+.nav a:hover::after,
+.nav a:focus-visible::after {
+    transform: scaleX(1);
 }
 
 .user-menu-right {
@@ -125,10 +170,30 @@ select {
     gap: 15px;
 }
 
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--theme-toggle-border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--header-text);
+    font-size: 19px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.theme-toggle:hover {
+    background: rgba(229, 9, 20, 0.08);
+}
+
 .welcome-text {
     max-width: 160px;
     overflow: hidden;
-    color: #dddddd;
+    color: var(--header-muted);
     font-size: 14px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -156,7 +221,7 @@ select {
     display: none;
 
     background: transparent;
-    color: white;
+    color: var(--header-text);
 
     border: none;
 
@@ -179,16 +244,16 @@ select {
     background:
         linear-gradient(
             90deg,
-            rgba(17, 17, 17, 0.98),
-            rgba(17, 17, 17, 0.75),
-            rgba(17, 17, 17, 0.25)
+            var(--hero-overlay-start),
+            var(--hero-overlay-mid),
+            var(--hero-overlay-end)
         ),
-        url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1800&q=85")
+        url("https://wallpapers.com/images/featured/lightning-mcqueen-oj6zk2gdlb3tt3pn.jpg")
         center / cover;
 }
 
 .hero-content {
-    color: white;
+    color: var(--hero-text);
     padding: 80px 0;
 }
 
@@ -222,7 +287,7 @@ select {
 .hero p {
     max-width: 560px;
 
-    color: #dddddd;
+    color: var(--hero-muted);
 
     font-size: 18px;
 
@@ -270,8 +335,8 @@ select {
 }
 
 .button-outline {
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    color: white;
+    border: 1px solid var(--hero-outline);
+    color: var(--hero-text);
 }
 
 .button-outline:hover {
@@ -329,6 +394,12 @@ select {
     background: #fff0f1;
 
     border-radius: 50%;
+}
+
+.search-title > span img {
+    width: 27px;
+    height: 27px;
+    object-fit: contain;
 }
 
 .search-title h2 {
@@ -579,8 +650,14 @@ select {
     transition: 0.2s;
 }
 
+.cart-icon {
+    width: 23px;
+    height: 23px;
+    object-fit: contain;
+}
+
 .vehicle-arrow:hover {
-    background: var(--red);
+    background: var(--graphite);
 }
 
 .add-to-cart {
@@ -876,8 +953,8 @@ select {
 ============================== */
 
 .footer {
-    background: var(--black);
-    color: white;
+    background: var(--footer-bg);
+    color: var(--footer-text);
 }
 
 .footer-content {
@@ -898,7 +975,7 @@ select {
 }
 
 .footer-brand p {
-    color: #999;
+    color: var(--footer-muted);
 
     font-size: 13px;
 }
@@ -917,7 +994,7 @@ select {
 }
 
 .footer-column a {
-    color: #999;
+    color: var(--footer-muted);
 
     font-size: 13px;
 }
@@ -929,13 +1006,31 @@ select {
 .footer-bottom {
     padding: 20px 0;
 
-    border-top: 1px solid #292929;
+    border-top: 1px solid var(--footer-border);
 }
 
 .footer-bottom p {
-    color: #777;
+    color: var(--footer-muted);
 
     font-size: 12px;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --header-bg: #111315;
+    --header-text: #F3F4F6;
+    --header-muted: #D1D5DB;
+    --theme-toggle-border: #FFFFFF;
+    --footer-bg: #111315;
+    --footer-text: #F3F4F6;
+    --footer-muted: #A1A1AA;
+    --footer-border: #3B3F45;
+    --hero-overlay-start: rgba(17, 17, 17, 0.98);
+    --hero-overlay-mid: rgba(17, 17, 17, 0.78);
+    --hero-overlay-end: rgba(17, 17, 17, 0.38);
+    --hero-text: #FFFFFF;
+    --hero-muted: #DDDDDD;
+    --hero-outline: rgba(255, 255, 255, 0.5);
 }
 
 

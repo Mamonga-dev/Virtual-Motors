@@ -5,6 +5,78 @@
 
 const menuButton = document.getElementById("menuButton");
 const mainNav = document.getElementById("mainNav");
+const themeToggle = document.getElementById("themeToggle");
+const pageHeader = document.querySelector(".header");
+
+let previousScrollY = window.scrollY;
+let accumulatedScrollDelta = 0;
+
+window.addEventListener("scroll", () => {
+    if (!pageHeader) return;
+
+    const currentScrollY = window.scrollY;
+    accumulatedScrollDelta += currentScrollY - previousScrollY;
+    previousScrollY = currentScrollY;
+
+    if (currentScrollY <= pageHeader.offsetHeight) {
+        pageHeader.classList.remove("header-hidden");
+        accumulatedScrollDelta = 0;
+        return;
+    }
+
+    if (mainNav?.classList.contains("active")) {
+        pageHeader.classList.remove("header-hidden");
+        accumulatedScrollDelta = 0;
+        return;
+    }
+
+    if (accumulatedScrollDelta >= 8) {
+        pageHeader.classList.add("header-hidden");
+        accumulatedScrollDelta = 0;
+    } else if (accumulatedScrollDelta <= -8) {
+        pageHeader.classList.remove("header-hidden");
+        accumulatedScrollDelta = 0;
+    }
+}, { passive: true });
+
+function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    if (!themeToggle) return;
+
+    const nextTheme = theme === "dark" ? "claro" : "escuro";
+    themeToggle.textContent = theme === "dark" ? "☀" : "☾";
+    themeToggle.setAttribute("aria-label", `Ativar modo ${nextTheme}`);
+    themeToggle.title = `Ativar modo ${nextTheme}`;
+}
+
+let savedTheme = null;
+try {
+    const storedTheme = window.localStorage.getItem("vm-theme");
+    if (storedTheme === "light" || storedTheme === "dark") {
+        savedTheme = storedTheme;
+    }
+} catch (error) {
+    console.error("Não foi possível ler a preferência de tema salva.", error);
+}
+
+const colorSchemePreference = window.matchMedia("(prefers-color-scheme: dark)");
+applyTheme(savedTheme || (colorSchemePreference.matches ? "dark" : "light"));
+
+colorSchemePreference.addEventListener("change", (event) => {
+    if (savedTheme === null) {
+        applyTheme(event.matches ? "dark" : "light");
+    }
+});
+
+themeToggle?.addEventListener("click", () => {
+    savedTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    applyTheme(savedTheme);
+    try {
+        window.localStorage.setItem("vm-theme", savedTheme);
+    } catch (error) {
+        console.error("Não foi possível salvar a preferência de tema.", error);
+    }
+});
 
 menuButton?.addEventListener("click", () => {
     mainNav.classList.toggle("active");
@@ -97,7 +169,12 @@ function createVehicleCard(vehicle) {
     addButton.type = "submit";
     addButton.title = "Adicionar ao carrinho";
     addButton.setAttribute("aria-label", `Adicionar ${vehicle.nome} ao carrinho`);
-    addButton.textContent = "🛒";
+    const cartIcon = document.createElement("img");
+    cartIcon.className = "cart-icon";
+    cartIcon.src = "./assets/cart-icon.png";
+    cartIcon.alt = "";
+    cartIcon.setAttribute("aria-hidden", "true");
+    addButton.append(cartIcon);
 
     addToCart.append(action, vehicleId, addButton);
     footer.append(price, addToCart);
