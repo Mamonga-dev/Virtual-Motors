@@ -1,9 +1,5 @@
 <?php
 session_start();
-$usuarioEmail = $_SESSION['usuario_email'] ?? null;
-$nomeUsuario = $usuarioEmail !== null ? explode('@', $usuarioEmail)[0] : null;
-$carrinho = $_SESSION['virtual_motors_carrinho'] ?? [];
-$quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -11,6 +7,7 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
 
     <title>Virtual Motors | Veículos Premium</title>
 
@@ -19,7 +16,7 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
         content="Encontre seu próximo veículo na Virtual Motors."
     >
 
-    <link rel="stylesheet" href="./style.css?v=custom-icons">
+    <link rel="stylesheet" href="./style.css?v=main-merge">
     <link rel="icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="apple-touch-icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="shortcut icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
@@ -27,44 +24,11 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
 
 <body>
 
-    <!-- HEADER -->
-    <header class="header">
-
-        <div class="container header-content">
-
-            <a href="#inicio" class="logo">
-                <img src="./VM.png" alt="Virtual Motors">
-            </a>
-
-            <nav class="nav" id="mainNav">
-                <a href="./index.php">Início</a>
-                <a href="#veiculos">Veículos</a>
-                <a href="#sobre">Sobre nós</a>
-                <a href="#contato">Contato</a>
-                <a href="./src/carrinho.php">Carrinho (<?= $quantidadeCarrinho ?>)</a>
-            </nav>
-
-            <div class="user-menu-right">
-                <?php if ($usuarioEmail !== null): ?>
-                    <span class="welcome-text">Olá, <?= htmlspecialchars($nomeUsuario, ENT_QUOTES, 'UTF-8') ?></span>
-                    <a class="header-button" href="./src/logout.php">Sair</a>
-                <?php else: ?>
-                    <a class="header-button" href="./src/login.php">Entrar</a>
-                <?php endif; ?>
-                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ativar modo escuro" title="Ativar modo escuro">☾</button>
-            </div>
-
-            <button
-                class="menu-button"
-                id="menuButton"
-                aria-label="Abrir menu"
-            >
-                ☰
-            </button>
-
-        </div>
-
-    </header>
+    <?php
+    $headerBasePath = './';
+    $headerPaginaInicial = true;
+    require __DIR__ . '/src/header.php';
+    ?>
 
 
     <!-- CONTEÚDO -->
@@ -104,7 +68,6 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
             </div>
 
         </section>
-
 
         <!-- BUSCA -->
         <section class="search-section">
@@ -374,7 +337,7 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
             <div class="footer-brand">
 
                 <img
-                    src="VM.png"
+                    src="./VM.png"
                     alt="Virtual Motors"
                 >
 
@@ -445,7 +408,7 @@ $quantidadeCarrinho = array_sum(array_map('intval', $carrinho));
     </footer>
 
 
-    <script src="script.js?v=custom-icons" defer></script>
+    <script src="script.js?v=main-merge" defer></script>
 
 </body>
 

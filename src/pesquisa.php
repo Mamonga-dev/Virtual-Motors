@@ -5,8 +5,8 @@ use VirtualMotors\Repository\CarroRepository;
 header('Content-Type: application/json; charset=utf-8');
 
 try {
-    require_once __DIR__ . '/Database.php';
-    require_once __DIR__ . '/CarroRepository.php';
+    require_once __DIR__ . '/database.php';
+    require_once __DIR__ . '/carrorepository.php';
 
     $busca = trim((string) ($_GET['busca'] ?? ''));
     $precoMaximo = $_GET['preco_max'] ?? '';

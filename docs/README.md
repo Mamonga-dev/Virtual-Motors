@@ -53,7 +53,7 @@ A branch `rayray` está com commits recentes voltados para cálculo de parcelas,
 - Busca e listagem de produtos
 
 ### Dados
-- Dumps SQL do banco em `dumps/Virtual motors/`
+- Dumps SQL do banco em `dump/virtualmotors/`
 - Base inicial para continuidade do desenvolvimento
 
 ### Front-end
@@ -98,7 +98,7 @@ A branch `rayray` está com commits recentes voltados para cálculo de parcelas,
 ## Como executar
 
 1. Instale PHP com as extensões PDO e PDO MySQL, além de MySQL ou MariaDB.
-2. Crie o banco `loja_carros` e importe `dumps/Virtual motors/loja_carros_carros.sql`.
+2. Crie o banco `loja_carros` e importe `dump/virtualmotors/loja_carros_carros.sql`.
 3. Ajuste servidor, usuário e senha em `src/conexao.php` para o ambiente local.
 4. Na raiz do projeto, execute `php -S localhost:8000` e acesse `http://localhost:8000`.
 

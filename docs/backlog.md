@@ -9,13 +9,13 @@ Revisado em 2026-10-08 com base nos cartões do quadro da Sprint 1 e nos arquivo
 | Funcionalidade | Status no código | Evidência |
 |---|---|---|
 | Página inicial, catálogo e navbar | Implementado | [index.php](../index.php), [style.css](../style.css) |
-| Buscar veículos no banco por nome, cor ou jogo de origem e filtrar por preço máximo | Implementado; refatoração para repositório em teste, falta teste integrado | [script.js](../script.js), [src/pesquisa.php](../src/pesquisa.php), [src/CarroRepository.php](../src/CarroRepository.php) |
+| Buscar veículos no banco por nome, cor ou jogo de origem e filtrar por preço máximo | Implementado; refatoração para repositório em teste, falta teste integrado | [script.js](../script.js), [src/pesquisa.php](../src/pesquisa.php), [src/carrorepository.php](../src/carrorepository.php) |
 | Exibir nome, cor, origem e preço nos resultados | Implementado | [script.js](../script.js) |
-| Login, cadastro de usuário e logout | Implementado no código; refatoração para serviço em teste | [src/login.php](../src/login.php), [src/cadastro.php](../src/cadastro.php), [src/logout.php](../src/logout.php), [src/AuthService.php](../src/AuthService.php) |
+| Login, cadastro de usuário e logout | Implementado no código; refatoração para serviço em teste | [src/login.php](../src/login.php), [src/cadastro.php](../src/cadastro.php), [src/logout.php](../src/logout.php), [src/authservice.php](../src/authservice.php) |
 | Sessão de autenticação | Implementado; guarda ID e e-mail do usuário | [src/login.php](../src/login.php), [index.php](../index.php) |
 | Carrinho de sessão | Implementado no código; adicionar exige login, permite atualizar/remover itens e calcula total com preços atuais do banco; integração em teste | [src/carrinho.php](../src/carrinho.php), [script.js](../script.js), [index.php](../index.php) |
 | Conexão PHP/MySQL com PDO | Implementado | [src/conexao.php](../src/conexao.php) |
-| Estrutura de tabelas para carros, usuários, pedidos e itens de pedido | Existe nos dumps SQL | [dumps/Virtual motors/loja_carros_carros.sql](../dumps/Virtual%20motors/loja_carros_carros.sql), [dumps/Virtual motors/loja_carros_usuario.sql](../dumps/Virtual%20motors/loja_carros_usuario.sql), [dumps/Virtual motors/loja_carros_pedido.sql](../dumps/Virtual%20motors/loja_carros_pedido.sql), [dumps/Virtual motors/loja_carros_item_pedido.sql](../dumps/Virtual%20motors/loja_carros_item_pedido.sql) |
+| Estrutura de tabelas para carros, usuários, pedidos e itens de pedido | Existe nos dumps SQL | [dump/virtualmotors/loja_carros_carros.sql](../dump/virtualmotors/loja_carros_carros.sql), [dump/virtualmotors/loja_carros_usuario.sql](../dump/virtualmotors/loja_carros_usuario.sql), [dump/virtualmotors/loja_carros_pedido.sql](../dump/virtualmotors/loja_carros_pedido.sql), [dump/virtualmotors/loja_carros_item_pedido.sql](../dump/virtualmotors/loja_carros_item_pedido.sql) |
 | Cálculo simples do valor de uma parcela | Implementado como endpoint isolado; não é total de carrinho | [src/calcula.php](../src/calcula.php) |
 
 ## Refatoração para orientação a objetos — em teste
@@ -30,10 +30,10 @@ A refatoração reorganiza o acesso ao banco no login, cadastro e pesquisa de ve
 | [src/cadastro.php](../src/cadastro.php) | Valida os dados recebidos e registra o usuário via `AuthService`. |
 | [src/pesquisa.php](../src/pesquisa.php) | Valida o filtro de preço e retorna resultados JSON obtidos pelo repositório. |
 | [src/carrinho.php](../src/carrinho.php) | Adiciona, lista, atualiza e remove itens do carrinho na sessão; consulta os dados e preços dos carros existentes. |
-| [src/CarroRepository.php](../src/CarroRepository.php) | Consulta carros por nome, cor, jogo de origem, preço máximo e IDs com prepared statements. |
-| [src/AuthService.php](../src/AuthService.php) | Valida credenciais e registra usuários através do repositório de usuários. |
-| [src/UserRepository.php](../src/UserRepository.php) | Busca, verifica e cria usuários no banco. |
-| [src/Database.php](../src/Database.php) | Fornece a conexão PDO compartilhada com o banco de dados. |
+| [src/carrorepository.php](../src/carrorepository.php) | Consulta carros por nome, cor, jogo de origem, preço máximo e IDs com prepared statements. |
+| [src/authservice.php](../src/authservice.php) | Valida credenciais e registra usuários através do repositório de usuários. |
+| [src/userrepository.php](../src/userrepository.php) | Busca, verifica e cria usuários no banco. |
+| [src/database.php](../src/database.php) | Fornece a conexão PDO compartilhada com o banco de dados. |
 
 ## Pendências priorizadas
 
@@ -45,7 +45,7 @@ A refatoração reorganiza o acesso ao banco no login, cadastro e pesquisa de ve
 | Alta | Testar o carrinho de sessão | Implementado no código; testar adicionar com e sem login, atualizar/remover itens, sessão vazia e banco indisponível. O carrinho usa uma chave de sessão própria e não altera tabelas. |
 | Alta | Alterar quantidade dos itens | Implementado apenas na sessão. A tabela `item_pedido` contém apenas `id_pedido` e `id_carro`; definir/aplicar quantidade antes de persistir pedidos. |
 | Alta | Integrar carrinho e pedidos ao banco | Pendente. As tabelas `pedido` e `item_pedido` existem nos dumps, mas ainda não há gravação PHP de pedidos. Implementar transação e associação ao usuário autenticado. |
-| Média | Finalizar compra | Pendente. O carrinho mostra o total calculado no servidor com os preços atuais, mas não cria pedidos nem processa pagamentos. `src/calcula.php` calcula somente parcelas. |
+| Média | Finalizar compra | A tela de entrega e pagamento está disponível em `src/pagamento.php`, integrada ao carrinho. O CEP é apenas visual e ainda não consulta serviços externos; pedidos e pagamentos continuam sem integração. |
 | Alta | Integrar carrinho e pedidos ao banco | As tabelas `pedido` e `item_pedido` existem nos dumps, mas não há consultas PHP para elas. Implementar gravação transacional e associação ao usuário autenticado. |
 | Média | Testar integração completa | Pendente. Após testar a refatoração, validar catálogo, filtros, cadastro, login/logout, detalhes, carrinho e gravação de pedido com PHP e MySQL ativos. |
 | Baixa | Reutilizar estilos nas telas de autenticação | Parcial. A página inicial usa classes compartilhadas em `style.css`, mas login e cadastro repetem estilos em blocos `<style>` próprios. |
