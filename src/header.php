@@ -7,6 +7,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 $headerBasePath = $headerBasePath ?? '../';
 $headerPaginaInicial = $headerPaginaInicial ?? false;
 $headerEmail = $_SESSION['usuario_email'] ?? null;
+$headerTipoUsuario = $_SESSION['tipo_usuario'] ?? null;
 $headerNome = $headerEmail !== null ? explode('@', $headerEmail)[0] : null;
 $headerCarrinho = $_SESSION['virtual_motors_carrinho'] ?? [];
 $headerQuantidadeCarrinho = is_array($headerCarrinho)
@@ -45,6 +46,9 @@ $headerLogout = $headerBasePath . 'src/logout.php';
                     </svg>
                     <span class="welcome-text">Olá, <?= htmlspecialchars($headerNome, ENT_QUOTES, 'UTF-8') ?></span>
                 </span>
+                <?php if ($headerTipoUsuario === 'admin'): ?>
+                    <a class="header-button" href="<?= htmlspecialchars($headerBasePath, ENT_QUOTES, 'UTF-8') ?>admin/dashboard.php">Administração</a>
+                <?php endif; ?>
                 <a class="logout-link" href="<?= htmlspecialchars($headerLogout, ENT_QUOTES, 'UTF-8') ?>">Sair</a>
             <?php else: ?>
                 <a class="header-button" href="<?= htmlspecialchars($headerLogin, ENT_QUOTES, 'UTF-8') ?>">Entrar</a>

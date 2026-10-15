@@ -23,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 session_regenerate_id(true);
                 $_SESSION['usuario_id'] = $usuario['id'];
                 $_SESSION['usuario_email'] = $usuario['email'];
+                $_SESSION['tipo_usuario'] = $usuario['tipo_usuario'];
 
                 echo "<script>
                             alert('Login realizado com sucesso!');
