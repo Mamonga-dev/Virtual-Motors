@@ -354,7 +354,7 @@ session_start();
                     Empresa
                 </h4>
 
-                <a href="#sobre">
+                <a href="./src/sobre-nos.php">
                     Sobre nós
                 </a>
 
