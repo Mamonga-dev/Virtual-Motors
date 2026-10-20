@@ -220,8 +220,34 @@ function createVehicleCard(vehicle) {
     cartIcon.setAttribute("aria-hidden", "true");
     addButton.append(cartIcon);
 
+    const buyNow = document.createElement("form");
+    buyNow.className = "buy-now-form";
+    buyNow.method = "post";
+    buyNow.action = "./src/pagamento.php";
+
+    const directAction = document.createElement("input");
+    directAction.type = "hidden";
+    directAction.name = "acao";
+    directAction.value = "comprar_direto";
+
+    const directVehicleId = document.createElement("input");
+    directVehicleId.type = "hidden";
+    directVehicleId.name = "id_carro";
+    directVehicleId.value = vehicle.id_carro;
+
+    const buyButton = document.createElement("button");
+    buyButton.className = "button button-primary vehicle-buy-now";
+    buyButton.type = "submit";
+    buyButton.textContent = "Comprar agora";
+    buyButton.setAttribute("aria-label", `Comprar ${vehicle.nome} sem adicionar ao carrinho`);
+
+    buyNow.append(directAction, directVehicleId, buyButton);
+
     addToCart.append(action, vehicleId, addButton);
-    footer.append(price, addToCart);
+    const actions = document.createElement("div");
+    actions.className = "vehicle-actions";
+    actions.append(buyNow, addToCart);
+    footer.append(price, actions);
     info.append(origin, name, description, footer);
     card.append(image, info);
 
@@ -286,11 +312,39 @@ cepInput?.addEventListener("input", () => {
         : digits;
 });
 
-cepButton?.addEventListener("click", () => {
+cepButton?.addEventListener("click", async () => {
     const cep = cepInput.value.replace(/\D/g, "");
-    cepStatus.textContent = cep.length === 8
-        ? "A consulta automática de CEP será integrada em breve. Preencha o endereço manualmente."
-        : "Digite um CEP válido com 8 números. A consulta automática será integrada em breve.";
+    if (cep.length !== 8) {
+        cepStatus.textContent = "Digite um CEP válido com 8 números.";
+        cepInput.focus();
+        return;
+    }
+
+    cepButton.disabled = true;
+    cepStatus.textContent = "Consultando CEP...";
+
+    try {
+        const endpoint = new URL(cepButton.dataset.endpoint, window.location.href);
+        endpoint.searchParams.set("cep", cep);
+        const resposta = await fetch(endpoint);
+        const endereco = await resposta.json();
+
+        if (!resposta.ok) {
+            throw new Error(endereco.erro || "Não foi possível consultar este CEP.");
+        }
+
+        document.getElementById("address").value = endereco.logradouro || "";
+        document.getElementById("neighborhood").value = endereco.bairro || "";
+        document.getElementById("city").value = endereco.localidade || "";
+        document.getElementById("state").value = endereco.uf || "";
+        cepStatus.textContent = "Endereço preenchido. Confira os dados e informe o número.";
+    } catch (error) {
+        cepStatus.textContent = error instanceof TypeError
+            ? "Não foi possível conectar ao serviço de CEP. Tente novamente ou preencha o endereço manualmente."
+            : error.message;
+    } finally {
+        cepButton.disabled = false;
+    }
 });
 
 const checkoutResult = document.getElementById("checkoutResult");
