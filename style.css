@@ -599,6 +599,7 @@ select {
 
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
 
     margin-top: 20px;
     padding-top: 18px;
@@ -646,6 +647,27 @@ select {
 
 .add-to-cart {
     margin: 0;
+}
+
+.vehicle-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.buy-now-form {
+    flex: 1;
+    margin: 0;
+}
+
+.vehicle-buy-now {
+    min-height: 40px;
+    width: 100%;
+    padding: 0 12px;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
 }
 
 .add-to-cart .vehicle-arrow {
@@ -1106,6 +1128,26 @@ select {
 
     .payment-method {
         min-height: auto;
+    }
+
+    .vehicle-footer {
+        flex-wrap: wrap;
+    }
+
+    .vehicle-footer > strong {
+        width: 100%;
+    }
+
+    .vehicle-actions {
+        width: 100%;
+    }
+
+    .add-to-cart {
+        flex: 0 0 auto;
+    }
+
+    .vehicle-buy-now {
+        width: 100%;
     }
 
     .cep-input-row {

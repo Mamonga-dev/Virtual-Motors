@@ -7,14 +7,42 @@ require_once __DIR__ . '/carrorepository.php';
 
 session_start();
 
+$chaveCarrinho = 'virtual_motors_carrinho';
+$chaveCompraDireta = 'virtual_motors_compra_direta';
+$compraDireta = false;
+$idCarroDireto = null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['acao'] ?? '') === 'comprar_direto') {
+    $idCarroDireto = filter_var($_POST['id_carro'] ?? '', FILTER_VALIDATE_INT);
+    if ($idCarroDireto === false || $idCarroDireto < 1) {
+        $_SESSION['virtual_motors_carrinho_mensagem'] = 'Não foi possível identificar o veículo para compra.';
+        header('Location: carrinho.php');
+        exit;
+    }
+
+    $_SESSION[$chaveCompraDireta] = (int) $idCarroDireto;
+}
+
 if (empty($_SESSION['usuario_email'])) {
     header('Location: login.php');
     exit;
 }
 
-$chaveCarrinho = 'virtual_motors_carrinho';
+if (isset($_SESSION[$chaveCompraDireta])) {
+    $idCarroDireto = filter_var($_SESSION[$chaveCompraDireta], FILTER_VALIDATE_INT);
+    unset($_SESSION[$chaveCompraDireta]);
+    $compraDireta = $idCarroDireto !== false && $idCarroDireto > 0;
+}
+
 $itensCarrinho = $_SESSION[$chaveCarrinho] ?? [];
-if (!is_array($itensCarrinho) || $itensCarrinho === []) {
+
+if ($compraDireta) {
+    $itensPedido = [(int) $idCarroDireto => 1];
+} else {
+    $itensPedido = $itensCarrinho;
+}
+
+if (!is_array($itensPedido) || $itensPedido === []) {
     header('Location: carrinho.php');
     exit;
 }
@@ -23,7 +51,7 @@ $veiculos = [];
 $erroBanco = false;
 
 try {
-    $veiculos = (new CarroRepository())->buscarPorIds(array_keys($itensCarrinho));
+    $veiculos = (new CarroRepository())->buscarPorIds(array_keys($itensPedido));
 } catch (PDOException $erro) {
     error_log($erro->getMessage());
     http_response_code(500);
@@ -84,9 +112,9 @@ $totalPedido = 0;
                             <label for="cep">CEP</label>
                             <div class="cep-input-row">
                                 <input id="cep" name="cep" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="9" placeholder="00000-000">
-                                <button class="button button-outline checkout-cep-button" id="consultCep" type="button">Consultar CEP</button>
+                                <button class="button button-outline checkout-cep-button" id="consultCep" type="button" data-endpoint="consulta_cep.php">Consultar CEP</button>
                             </div>
-                            <p class="checkout-help" id="cepStatus" role="status">A consulta de CEP será integrada em breve. Você pode preencher o endereço manualmente.</p>
+                            <p class="checkout-help" id="cepStatus" role="status" aria-live="polite">Informe o CEP e consulte para preencher o endereço automaticamente.</p>
                         </div>
 
                         <div class="checkout-fields-grid">
@@ -181,7 +209,7 @@ $totalPedido = 0;
                     <?php foreach ($veiculos as $veiculo): ?>
                         <?php
                         $idCarro = (int) $veiculo['id_carro'];
-                        $quantidade = (int) ($itensCarrinho[$idCarro] ?? 1);
+                        $quantidade = (int) ($itensPedido[$idCarro] ?? 1);
                         $subtotal = (float) $veiculo['preco'] * $quantidade;
                         $totalPedido += $subtotal;
                         ?>
