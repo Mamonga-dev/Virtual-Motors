@@ -7,6 +7,10 @@ require_once __DIR__ . '/carrorepository.php';
 
 session_start();
 
+$modoVisualizacao = ($_GET['visualizacao'] ?? '') === '1';
+$temaVisualizacao = in_array($_GET['tema'] ?? '', ['light', 'dark'], true)
+    ? $_GET['tema']
+    : null;
 $chaveCarrinho = 'virtual_motors_carrinho';
 $chaveCompraDireta = 'virtual_motors_compra_direta';
 $compraDireta = false;
@@ -28,7 +32,7 @@ if (empty($_SESSION['usuario_email'])) {
     exit;
 }
 
-if (isset($_SESSION[$chaveCompraDireta])) {
+if (!$modoVisualizacao && isset($_SESSION[$chaveCompraDireta])) {
     $idCarroDireto = filter_var($_SESSION[$chaveCompraDireta], FILTER_VALIDATE_INT);
     unset($_SESSION[$chaveCompraDireta]);
     $compraDireta = $idCarroDireto !== false && $idCarroDireto > 0;
@@ -36,13 +40,16 @@ if (isset($_SESSION[$chaveCompraDireta])) {
 
 $itensCarrinho = $_SESSION[$chaveCarrinho] ?? [];
 
-if ($compraDireta) {
+if ($modoVisualizacao) {
+    $pedidoPendente = $_SESSION['virtual_motors_pedido_pendente_qr'] ?? [];
+    $itensPedido = is_array($pedidoPendente['itens'] ?? null) ? $pedidoPendente['itens'] : [];
+} elseif ($compraDireta) {
     $itensPedido = [(int) $idCarroDireto => 1];
 } else {
     $itensPedido = $itensCarrinho;
 }
 
-if (!is_array($itensPedido) || $itensPedido === []) {
+if (!$modoVisualizacao && (!is_array($itensPedido) || $itensPedido === [])) {
     header('Location: carrinho.php');
     exit;
 }
@@ -59,9 +66,25 @@ try {
 }
 
 $totalPedido = 0;
+if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
+    $itensPedidoConfirmados = [];
+    foreach ($veiculos as $veiculo) {
+        $idCarro = (int) $veiculo['id_carro'];
+        $quantidade = (int) ($itensPedido[$idCarro] ?? 1);
+        if ($quantidade > 0) {
+            $itensPedidoConfirmados[$idCarro] = $quantidade;
+        }
+    }
+
+    $_SESSION['virtual_motors_pedido_pendente_qr'] = [
+        'itens' => $itensPedidoConfirmados,
+        'token' => bin2hex(random_bytes(32)),
+    ];
+    unset($_SESSION['virtual_motors_pedido_qr_autorizado']);
+}
 ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR"<?= $temaVisualizacao !== null ? ' data-theme="' . htmlspecialchars($temaVisualizacao, ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,7 +94,7 @@ $totalPedido = 0;
     <link rel="stylesheet" href="../style.css">
     <link rel="icon" href="../assets/vm.png" type="image/png">
 </head>
-<body>
+<body<?= $modoVisualizacao ? ' class="checkout-preview"' : '' ?>>
     <?php
     $headerBasePath = '../';
     require __DIR__ . '/header.php';
@@ -200,8 +223,16 @@ $totalPedido = 0;
                         <p class="payment-method-message" id="paymentMethodMessage" role="status">A opção Pix será disponibilizada quando a integração de pagamento estiver pronta.</p>
                     </section>
 
-                    <p class="checkout-result" id="checkoutResult" role="status" aria-live="polite"></p>
-                    <button class="button button-primary checkout-submit" id="reviewCheckout" type="button">Revisar pedido</button>
+                    <form class="checkout-review-form" method="post" action="qrcode.php">
+                        <input type="hidden" name="acao" value="revisar">
+                        <input type="hidden" name="tema" value="">
+                        <input
+                            type="hidden"
+                            name="token"
+                            value="<?= htmlspecialchars($_SESSION['virtual_motors_pedido_pendente_qr']['token'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                        >
+                        <button class="button button-primary checkout-submit" id="reviewCheckout" type="submit"<?= $modoVisualizacao ? ' disabled' : '' ?>>Revisar pedido</button>
+                    </form>
                 </div>
 
                 <aside class="order-summary checkout-summary">

@@ -60,7 +60,8 @@ try {
 }
 
 const colorSchemePreference = window.matchMedia("(prefers-color-scheme: dark)");
-applyTheme(savedTheme || (colorSchemePreference.matches ? "dark" : "light"));
+const pageTheme = document.documentElement.dataset.theme;
+applyTheme(pageTheme || savedTheme || (colorSchemePreference.matches ? "dark" : "light"));
 
 colorSchemePreference.addEventListener("change", (event) => {
     if (savedTheme === null) {
@@ -347,13 +348,48 @@ cepButton?.addEventListener("click", async () => {
     }
 });
 
-const checkoutResult = document.getElementById("checkoutResult");
 const paymentMethodMessage = document.getElementById("paymentMethodMessage");
-const reviewCheckoutButton = document.getElementById("reviewCheckout");
 
-reviewCheckoutButton?.addEventListener("click", () => {
-    checkoutResult.textContent = "A finalização ainda não está integrada. Nenhum dado ou pagamento foi enviado.";
+const checkoutReviewForm = document.querySelector(".checkout-review-form");
+checkoutReviewForm?.addEventListener("submit", () => {
+    checkoutReviewForm.elements.tema.value = document.documentElement.dataset.theme;
 });
+
+const qrPaymentImage = document.querySelector(".qr-payment-image");
+
+if (qrPaymentImage) {
+    const renderQrOnWhite = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = qrPaymentImage.naturalWidth;
+        canvas.height = qrPaymentImage.naturalHeight;
+
+        const context = canvas.getContext("2d", { willReadFrequently: true });
+        if (!context) {
+            console.error("Não foi possível preparar a imagem do QR Code.");
+            return;
+        }
+
+        context.drawImage(qrPaymentImage, 0, 0);
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+        for (let index = 0; index < imageData.data.length; index += 4) {
+            const color = imageData.data[index + 3] > 80 ? 0 : 255;
+            imageData.data[index] = color;
+            imageData.data[index + 1] = color;
+            imageData.data[index + 2] = color;
+            imageData.data[index + 3] = 255;
+        }
+
+        context.putImageData(imageData, 0, 0);
+        qrPaymentImage.src = canvas.toDataURL("image/png");
+    };
+
+    if (qrPaymentImage.complete) {
+        renderQrOnWhite();
+    } else {
+        qrPaymentImage.addEventListener("load", renderQrOnWhite, { once: true });
+    }
+}
 
 document.querySelectorAll('input[name="paymentMethod"]').forEach((option) => {
     option.addEventListener("change", () => {
