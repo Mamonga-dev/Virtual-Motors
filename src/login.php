@@ -28,10 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     ? 'pagamento.php'
                     : '../index.php';
 
-                echo '<script>
-                    alert("Login realizado com sucesso!");
-                    window.location.href = ' . json_encode($destinoLogin) . ';
-                </script>';
+                header('Location: ' . $destinoLogin);
                 exit();
             }
 

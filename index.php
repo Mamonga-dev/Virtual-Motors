@@ -16,7 +16,7 @@ session_start();
         content="Encontre seu próximo veículo na Virtual Motors."
     >
 
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css?v=main-merge">
     <link rel="icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="apple-touch-icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="shortcut icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
@@ -78,7 +78,7 @@ session_start();
 
                     <div class="search-title">
 
-                        <span>🔎</span>
+                        <span><img src="./assets/search-icon.png" alt="" aria-hidden="true"></span>
 
                         <div>
                             <h2>Encontre seu veículo</h2>
@@ -354,7 +354,7 @@ session_start();
                     Empresa
                 </h4>
 
-                <a href="#sobre">
+                <a href="./src/sobre-nos.php">
                     Sobre nós
                 </a>
 
@@ -408,7 +408,7 @@ session_start();
     </footer>
 
 
-    <script src="script.js" defer></script>
+    <script src="script.js?v=main-merge" defer></script>
 
 </body>
 

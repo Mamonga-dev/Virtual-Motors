@@ -5,15 +5,51 @@
 
 const menuButton = document.getElementById("menuButton");
 const mainNav = document.getElementById("mainNav");
-
-menuButton?.addEventListener("click", () => {
-    mainNav.classList.toggle("active");
-});
-
 const themeToggle = document.getElementById("themeToggle");
-const colorSchemePreference = window.matchMedia("(prefers-color-scheme: dark)");
-let savedTheme = null;
+const pageHeader = document.querySelector(".header");
 
+let previousScrollY = window.scrollY;
+let accumulatedScrollDelta = 0;
+
+window.addEventListener("scroll", () => {
+    if (!pageHeader) return;
+
+    const currentScrollY = window.scrollY;
+    accumulatedScrollDelta += currentScrollY - previousScrollY;
+    previousScrollY = currentScrollY;
+
+    if (currentScrollY <= pageHeader.offsetHeight) {
+        pageHeader.classList.remove("header-hidden");
+        accumulatedScrollDelta = 0;
+        return;
+    }
+
+    if (mainNav?.classList.contains("active")) {
+        pageHeader.classList.remove("header-hidden");
+        accumulatedScrollDelta = 0;
+        return;
+    }
+
+    if (accumulatedScrollDelta >= 8) {
+        pageHeader.classList.add("header-hidden");
+        accumulatedScrollDelta = 0;
+    } else if (accumulatedScrollDelta <= -8) {
+        pageHeader.classList.remove("header-hidden");
+        accumulatedScrollDelta = 0;
+    }
+}, { passive: true });
+
+function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    if (!themeToggle) return;
+
+    const nextTheme = theme === "dark" ? "claro" : "escuro";
+    themeToggle.textContent = theme === "dark" ? "☀" : "☾";
+    themeToggle.setAttribute("aria-label", `Ativar modo ${nextTheme}`);
+    themeToggle.title = `Ativar modo ${nextTheme}`;
+}
+
+let savedTheme = null;
 try {
     const storedTheme = window.localStorage.getItem("vm-theme");
     if (storedTheme === "light" || storedTheme === "dark") {
@@ -23,16 +59,7 @@ try {
     console.error("Não foi possível ler a preferência de tema salva.", error);
 }
 
-function applyTheme(theme) {
-    document.documentElement.dataset.theme = theme;
-    if (themeToggle) {
-        const nextTheme = theme === "dark" ? "claro" : "escuro";
-        themeToggle.textContent = theme === "dark" ? "☀" : "☾";
-        themeToggle.setAttribute("aria-label", `Ativar modo ${nextTheme}`);
-        themeToggle.title = `Ativar modo ${nextTheme}`;
-    }
-}
-
+const colorSchemePreference = window.matchMedia("(prefers-color-scheme: dark)");
 applyTheme(savedTheme || (colorSchemePreference.matches ? "dark" : "light"));
 
 colorSchemePreference.addEventListener("change", (event) => {
@@ -51,6 +78,9 @@ themeToggle?.addEventListener("click", () => {
     }
 });
 
+menuButton?.addEventListener("click", () => {
+    mainNav.classList.toggle("active");
+});
 
 // Fecha o menu depois de clicar em um link
 
@@ -183,7 +213,12 @@ function createVehicleCard(vehicle) {
     addButton.type = "submit";
     addButton.title = "Adicionar ao carrinho";
     addButton.setAttribute("aria-label", `Adicionar ${vehicle.nome} ao carrinho`);
-    addButton.textContent = "🛒";
+    const cartIcon = document.createElement("img");
+    cartIcon.className = "cart-icon";
+    cartIcon.src = "./assets/cart-icon.png";
+    cartIcon.alt = "";
+    cartIcon.setAttribute("aria-hidden", "true");
+    addButton.append(cartIcon);
 
     const buyNow = document.createElement("form");
     buyNow.className = "buy-now-form";
@@ -263,7 +298,6 @@ if (searchForm) {
         event.preventDefault();
         loadVehicles();
     });
-
     loadVehicles();
 }
 
