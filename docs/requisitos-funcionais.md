@@ -21,9 +21,10 @@ Usuários com perfil de administrador deverão possuir acesso a uma área admini
 - cadastro de usuários;
 - consulta de usuários;
 - alteração de usuários;
-- exclusão de usuários;
+- exclusão de usuários sem pedidos associados;
 - lista dinâmica de usuários;
-- [pesquisa](https://apnp.ifsul.edu.br/mod/url/view.php?id=1688186) de usuários.
+- pesquisa por nome, e-mail, telefone ou endereço;
+- alteração de perfil e redefinição opcional de senha.
 
 ## 6.3 Administração de produtos
 
