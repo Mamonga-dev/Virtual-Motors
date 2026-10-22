@@ -285,6 +285,7 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
     <p class="marca">Virtual Motors</p>
     <a href="dashboard.php">Painel</a>
     <a href="produtos.php" aria-current="page">Produtos</a>
+    <a href="usuarios.php">Usuários</a>
     <a class="sair" href="../index.php">Voltar à loja</a>
 </nav>
 

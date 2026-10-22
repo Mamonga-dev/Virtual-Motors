@@ -8,7 +8,29 @@ $headerBasePath = $headerBasePath ?? '../';
 $headerPaginaInicial = $headerPaginaInicial ?? false;
 $headerEmail = $_SESSION['usuario_email'] ?? null;
 $headerTipoUsuario = $_SESSION['tipo_usuario'] ?? null;
-$headerNome = $headerEmail !== null ? explode('@', $headerEmail)[0] : null;
+$headerNome = $_SESSION['usuario_nome'] ?? null;
+if ($headerEmail !== null && (!is_string($headerNome) || $headerNome === '')) {
+    $headerIdUsuario = filter_var($_SESSION['usuario_id'] ?? null, FILTER_VALIDATE_INT);
+    if ($headerIdUsuario !== false && $headerIdUsuario !== null && $headerIdUsuario > 0) {
+        try {
+            require_once __DIR__ . '/database.php';
+            $consultaNome = \VirtualMotors\Core\Database::getConnection()->prepare(
+                'SELECT nome FROM usuario WHERE id_usuario = :id_usuario LIMIT 1'
+            );
+            $consultaNome->execute(['id_usuario' => $headerIdUsuario]);
+            $nomeEncontrado = $consultaNome->fetchColumn();
+            if (is_string($nomeEncontrado) && $nomeEncontrado !== '') {
+                $headerNome = $nomeEncontrado;
+                $_SESSION['usuario_nome'] = $nomeEncontrado;
+            }
+        } catch (\PDOException $exception) {
+            error_log($exception->getMessage());
+        }
+    }
+}
+$headerNome = is_string($headerNome) && $headerNome !== ''
+    ? $headerNome
+    : ($headerEmail !== null ? explode('@', (string) $headerEmail)[0] : null);
 $headerCarrinho = $_SESSION['virtual_motors_carrinho'] ?? [];
 $headerPaginaSobreNos = $headerPaginaSobreNos ?? false;
 $headerQuantidadeCarrinho = is_array($headerCarrinho)
@@ -23,6 +45,7 @@ $headerCarrinhoHref = $headerPaginaInicial || $headerPaginaSobreNos
     : 'carrinho.php';
 $headerLogin = $headerBasePath . 'src/login.php';
 $headerCadastro = $headerBasePath . 'src/cadastro.php';
+$headerPerfil = $headerBasePath . 'src/perfil.php';
 $headerLogout = $headerBasePath . 'src/logout.php';
 ?>
 <header class="header">
@@ -44,23 +67,30 @@ $headerLogout = $headerBasePath . 'src/logout.php';
 
         <div class="user-menu-right">
             <?php if ($headerEmail !== null): ?>
-                <span class="user-profile">
-                    <svg class="user-avatar" viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <circle cx="12" cy="9" r="3"></circle>
-                        <path d="M6.5 19a5.5 5.5 0 0 1 11 0"></path>
-                    </svg>
-                    <span class="welcome-text">Olá, <?= htmlspecialchars($headerNome, ENT_QUOTES, 'UTF-8') ?></span>
-                </span>
+                <details class="user-menu">
+                    <summary class="user-profile" aria-label="Abrir menu do perfil">
+                        <svg class="user-avatar" viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="9" r="3"></circle>
+                            <path d="M6.5 19a5.5 5.5 0 0 1 11 0"></path>
+                        </svg>
+                        <span class="welcome-text">Olá, <?= htmlspecialchars($headerNome, ENT_QUOTES, 'UTF-8') ?></span>
+                        <span class="user-menu-caret" aria-hidden="true">▾</span>
+                    </summary>
+                    <div class="user-menu-dropdown">
+                        <a href="<?= htmlspecialchars($headerPerfil, ENT_QUOTES, 'UTF-8') ?>">Meu perfil</a>
+                        <a class="logout-link" href="<?= htmlspecialchars($headerLogout, ENT_QUOTES, 'UTF-8') ?>">Sair</a>
+                    </div>
+                </details>
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ativar modo escuro" title="Ativar modo escuro">☾</button>
                 <?php if ($headerTipoUsuario === 'admin'): ?>
                     <a class="header-button" href="<?= htmlspecialchars($headerBasePath, ENT_QUOTES, 'UTF-8') ?>admin/dashboard.php">Administração</a>
                 <?php endif; ?>
-                <a class="logout-link" href="<?= htmlspecialchars($headerLogout, ENT_QUOTES, 'UTF-8') ?>">Sair</a>
             <?php else: ?>
                 <a class="header-button" href="<?= htmlspecialchars($headerLogin, ENT_QUOTES, 'UTF-8') ?>">Entrar</a>
                 <a class="header-button header-button-secondary" href="<?= htmlspecialchars($headerCadastro, ENT_QUOTES, 'UTF-8') ?>">Criar conta</a>
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ativar modo escuro" title="Ativar modo escuro">☾</button>
             <?php endif; ?>
-            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ativar modo escuro" title="Ativar modo escuro">☾</button>
         </div>
 
         <button class="menu-button" id="menuButton" aria-label="Abrir menu" type="button">☰</button>
