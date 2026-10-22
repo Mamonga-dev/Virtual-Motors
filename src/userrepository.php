@@ -34,16 +34,24 @@ class UserRepository
         return (bool) $stmt->fetchColumn();
     }
 
-    public function create(string $nome, string $email, string $senhaHash, string $tipoUsuario = 'cliente'): bool
+    public function create(
+        string $nome,
+        string $email,
+        string $senhaHash,
+        string $tipoUsuario = 'cliente',
+        string $telefone = ''
+    ): bool
     {
         $stmt = $this->connection->prepare(
-            'INSERT INTO usuario (nome, email, senha, tipo_usuario) VALUES (:nome, :email, :senha, :tipo_usuario)'
+            'INSERT INTO usuario (nome, email, senha, telefone, tipo_usuario) '
+            . 'VALUES (:nome, :email, :senha, :telefone, :tipo_usuario)'
         );
 
         return $stmt->execute([
             'nome' => $nome,
             'email' => $email,
             'senha' => $senhaHash,
+            'telefone' => $telefone,
             'tipo_usuario' => $tipoUsuario,
         ]);
     }
