@@ -134,7 +134,7 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
                         <div class="checkout-field checkout-cep-field">
                             <label for="cep">CEP</label>
                             <div class="cep-input-row">
-                                <input id="cep" name="cep" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="9" placeholder="00000-000">
+                                <input id="cep" name="cep" type="text" form="checkoutReviewForm" inputmode="numeric" autocomplete="postal-code" maxlength="9" placeholder="00000-000" required>
                                 <button class="button button-outline checkout-cep-button" id="consultCep" type="button" data-endpoint="consulta_cep.php">Consultar CEP</button>
                             </div>
                             <p class="checkout-help" id="cepStatus" role="status" aria-live="polite">Informe o CEP e consulte para preencher o endereço automaticamente.</p>
@@ -143,27 +143,27 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
                         <div class="checkout-fields-grid">
                             <div class="checkout-field checkout-field-wide">
                                 <label for="address">Rua / avenida</label>
-                                <input id="address" name="address" type="text" autocomplete="street-address" placeholder="Nome da rua ou avenida">
+                                <input id="address" name="address" type="text" form="checkoutReviewForm" autocomplete="street-address" placeholder="Nome da rua ou avenida" required>
                             </div>
                             <div class="checkout-field">
                                 <label for="addressNumber">Número</label>
-                                <input id="addressNumber" name="addressNumber" type="text" autocomplete="address-line2" placeholder="Nº">
+                                <input id="addressNumber" name="addressNumber" type="text" form="checkoutReviewForm" autocomplete="address-line2" placeholder="Nº" required>
                             </div>
                             <div class="checkout-field">
                                 <label for="addressComplement">Complemento <span>(opcional)</span></label>
-                                <input id="addressComplement" name="addressComplement" type="text" placeholder="Apartamento, bloco...">
+                                <input id="addressComplement" name="addressComplement" type="text" form="checkoutReviewForm" placeholder="Apartamento, bloco...">
                             </div>
                             <div class="checkout-field">
                                 <label for="neighborhood">Bairro</label>
-                                <input id="neighborhood" name="neighborhood" type="text" autocomplete="address-level3" placeholder="Bairro">
+                                <input id="neighborhood" name="neighborhood" type="text" form="checkoutReviewForm" autocomplete="address-level3" placeholder="Bairro" required>
                             </div>
                             <div class="checkout-field">
                                 <label for="city">Cidade</label>
-                                <input id="city" name="city" type="text" autocomplete="address-level2" placeholder="Cidade">
+                                <input id="city" name="city" type="text" form="checkoutReviewForm" autocomplete="address-level2" placeholder="Cidade" required>
                             </div>
                             <div class="checkout-field">
                                 <label for="state">Estado</label>
-                                <select id="state" name="state" autocomplete="address-level1">
+                                <select id="state" name="state" form="checkoutReviewForm" autocomplete="address-level1" required>
                                     <option value="">Selecione</option>
                                     <option value="AC">Acre</option>
                                     <option value="AL">Alagoas</option>
@@ -208,22 +208,22 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
 
                         <div class="payment-methods">
                             <label class="payment-method">
-                                <input type="radio" name="paymentMethod" value="pix" checked>
+                                <input type="radio" name="paymentMethod" value="pix" form="checkoutReviewForm" checked>
                                 <span><strong>Pix</strong><small>Pagamento instantâneo</small></span>
                             </label>
                             <label class="payment-method">
-                                <input type="radio" name="paymentMethod" value="credit">
+                                <input type="radio" name="paymentMethod" value="credit" form="checkoutReviewForm">
                                 <span><strong>Cartão de crédito</strong><small>Dados não serão enviados</small></span>
                             </label>
                             <label class="payment-method">
-                                <input type="radio" name="paymentMethod" value="boleto">
+                                <input type="radio" name="paymentMethod" value="boleto" form="checkoutReviewForm">
                                 <span><strong>Boleto</strong><small>Opção demonstrativa</small></span>
                             </label>
                         </div>
                         <p class="payment-method-message" id="paymentMethodMessage" role="status">A opção Pix será disponibilizada quando a integração de pagamento estiver pronta.</p>
                     </section>
 
-                    <form class="checkout-review-form" method="post" action="qrcode.php">
+                    <form class="checkout-review-form" id="checkoutReviewForm" method="post" action="qrcode.php">
                         <input type="hidden" name="acao" value="revisar">
                         <input type="hidden" name="tema" value="">
                         <input
