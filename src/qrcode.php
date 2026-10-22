@@ -2,6 +2,10 @@
 
 session_start();
 
+require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/carrorepository.php';
+require_once __DIR__ . '/pedidorepository.php';
+
 $chavePedidoPendente = 'virtual_motors_pedido_pendente_qr';
 $chavePedidoAutorizado = 'virtual_motors_pedido_qr_autorizado';
 $chaveTema = 'virtual_motors_pedido_tema';
@@ -27,6 +31,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         http_response_code(400);
         $mensagemErro = 'Não foi possível validar esta etapa. Volte ao pagamento e tente novamente.';
     } elseif (($_POST['acao'] ?? '') === 'revisar' && !empty($pedidoPendente['itens'])) {
+        $camposEndereco = [
+            'cep' => 'CEP',
+            'address' => 'rua/avenida',
+            'addressNumber' => 'número',
+            'neighborhood' => 'bairro',
+            'city' => 'cidade',
+            'state' => 'estado',
+        ];
+        $endereco = [];
+        foreach ($camposEndereco as $campo => $rotulo) {
+            $valor = $_POST[$campo] ?? '';
+            if (!is_string($valor) || trim($valor) === '') {
+                http_response_code(422);
+                $mensagemErro = 'Preencha o endereço de entrega completo para continuar.';
+                break;
+            }
+            $endereco[$campo] = trim($valor);
+        }
+
+        $cepNumerico = preg_replace('/\D/', '', $endereco['cep'] ?? '');
+        $formaPagamento = $_POST['paymentMethod'] ?? '';
+        if ($mensagemErro === null && (strlen($cepNumerico) !== 8 || !in_array($endereco['state'], ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'], true))) {
+            http_response_code(422);
+            $mensagemErro = 'Confira o CEP e o estado informados.';
+        } elseif ($mensagemErro === null && !in_array($formaPagamento, ['pix', 'credit', 'boleto'], true)) {
+            http_response_code(422);
+            $mensagemErro = 'Selecione uma forma de pagamento válida.';
+        }
+
+        if ($mensagemErro !== null) {
+            $_SESSION[$chavePedidoAutorizado] = true;
+        } else {
+            $enderecoCompleto = implode(', ', array_filter([
+                $endereco['address'] . ', ' . $endereco['addressNumber'],
+                trim((string) ($_POST['addressComplement'] ?? '')),
+                $endereco['neighborhood'],
+                $endereco['city'] . '/' . $endereco['state'],
+                $endereco['cep'],
+            ]));
+            $formasPagamento = ['pix' => 'Pix', 'credit' => 'Cartão de crédito', 'boleto' => 'Boleto'];
+            $_SESSION['virtual_motors_checkout'] = [
+                'endereco_entrega' => $enderecoCompleto,
+                'pagamento' => $formasPagamento[$formaPagamento],
+            ];
+        }
+
+        if ($mensagemErro === null) {
         $temaEnviado = $_POST['tema'] ?? '';
         $_SESSION[$chaveTema] = in_array($temaEnviado, ['light', 'dark'], true)
             ? $temaEnviado
@@ -34,16 +85,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION[$chavePedidoAutorizado] = true;
         header('Location: qrcode.php');
         exit;
+        }
     } elseif (($_POST['acao'] ?? '') === 'confirmar' && !empty($_SESSION[$chavePedidoAutorizado])) {
-        $_SESSION[$chaveCarrinho] = [];
-        unset(
-            $_SESSION['virtual_motors_compra_direta'],
-            $_SESSION[$chavePedidoPendente],
-            $_SESSION[$chavePedidoAutorizado]
-        );
-        $_SESSION[$chaveSucesso] = true;
-        header('Location: qrcode.php');
-        exit;
+        try {
+            $checkout = $_SESSION['virtual_motors_checkout'] ?? null;
+            $itensPedido = is_array($pedidoPendente['itens'] ?? null) ? $pedidoPendente['itens'] : [];
+            $idUsuario = (int) ($_SESSION['usuario_id'] ?? 0);
+            if ($idUsuario < 1 || !is_array($checkout) || $itensPedido === []) {
+                throw new \RuntimeException('Dados insuficientes para registrar o pedido.');
+            }
+
+            $veiculos = (new \VirtualMotors\Repository\CarroRepository())->buscarPorIds(array_keys($itensPedido));
+            if (count($veiculos) !== count($itensPedido)) {
+                throw new \RuntimeException('Um ou mais veículos não estão mais disponíveis.');
+            }
+
+            $itens = [];
+            $valorTotal = 0;
+            foreach ($veiculos as $veiculo) {
+                $idCarro = (int) $veiculo['id_carro'];
+                $quantidade = (int) ($itensPedido[$idCarro] ?? 0);
+                $preco = (float) $veiculo['preco'];
+                if ($quantidade < 1 || $preco < 0) {
+                    throw new \RuntimeException('Os itens do pedido são inválidos.');
+                }
+                $itens[] = [
+                    'id_carro' => $idCarro,
+                    'quantidade' => $quantidade,
+                    'preco_unitario' => $preco,
+                    'nome_carro' => $veiculo['nome'],
+                    'jogo_origem' => $veiculo['jogo_origem'],
+                ];
+                $valorTotal += $preco * $quantidade;
+            }
+
+            $idPedido = (new \VirtualMotors\Repository\PedidoRepository())->criar([
+                'id_usuario' => $idUsuario,
+                'valor_total' => $valorTotal,
+                'pagamento' => $checkout['pagamento'],
+                'endereco_entrega' => $checkout['endereco_entrega'],
+                'itens' => $itens,
+            ]);
+
+            $_SESSION['virtual_motors_ultimo_pedido'] = $idPedido;
+            $_SESSION[$chaveCarrinho] = [];
+            unset(
+                $_SESSION['virtual_motors_compra_direta'],
+                $_SESSION[$chavePedidoPendente],
+                $_SESSION['virtual_motors_checkout'],
+                $_SESSION[$chavePedidoAutorizado]
+            );
+            $_SESSION[$chaveSucesso] = true;
+            header('Location: qrcode.php');
+            exit;
+        } catch (\Throwable $erro) {
+            error_log($erro->getMessage());
+            http_response_code(503);
+            $mensagemErro = 'Não foi possível registrar sua compra. Seus itens continuam no carrinho; tente novamente.';
+        }
     } else {
         http_response_code(400);
         $mensagemErro = 'Não foi possível continuar com este pedido. Volte ao pagamento e tente novamente.';
@@ -73,9 +172,6 @@ if ($pagamentoConcluido) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
-    <?php if ($pagamentoConcluido): ?>
-        <meta http-equiv="refresh" content="3;url=../index.php">
-    <?php endif; ?>
     <meta name="description" content="Revise seu pedido e veja o QR Code demonstrativo da Virtual Motors.">
     <title><?= $pagamentoConcluido ? 'Pagamento realizado' : 'Pagamento por QR Code' ?> - Virtual Motors</title>
     <link rel="stylesheet" href="../style.css">
@@ -101,9 +197,10 @@ if ($pagamentoConcluido) {
             <?php if ($pagamentoConcluido): ?>
                 <h1 id="qrPaymentTitle">Pagamento realizado</h1>
                 <p class="qr-payment-success" role="status" aria-live="polite">
-                    Obrigado pela preferência!
+                    Compra #<?= (int) ($_SESSION['virtual_motors_ultimo_pedido'] ?? 0) ?> confirmada. Obrigado pela preferência!
                 </p>
-                <p>Você será direcionado à página inicial em instantes.</p>
+                <p>Seu pedido já está disponível no histórico de compras.</p>
+                <a class="button button-primary" href="minhas-compras.php">Consultar minhas compras</a>
                 <a class="button button-primary" href="../index.php">Ir para a página inicial</a>
             <?php else: ?>
                 <span class="qr-payment-brand">Virtual Motors</span>
