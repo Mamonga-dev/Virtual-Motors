@@ -31,3 +31,6 @@ TestResults.xml
 # Cada computador cria o seu; nunca vai pro GitHub
 config.producao.php
 /database.config.php
+/vendor/
+/email-test.config.php
+/var/email-test/
