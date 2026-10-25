@@ -34,3 +34,5 @@ config.producao.php
 /vendor/
 /email-test.config.php
 /var/email-test/
+
+composer.phar
