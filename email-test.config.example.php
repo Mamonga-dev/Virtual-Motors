@@ -8,7 +8,7 @@ return [
     'SMTP_HOST' => 'smtp.gmail.com',
     'SMTP_PORT' => '587',
     'SMTP_SECURITY' => 'tls',
-    'SMTP_USER' => 'sua-conta@gmail.com',
+    'SMTP_USER' => 'sua-conta@gm ail.com',
     'SMTP_PASS' => 'senha-de-app-do-provedor',
     'SMTP_FROM_EMAIL' => 'sua-conta@gmail.com',
     'SMTP_FROM_NAME' => 'Virtual Motors - teste',

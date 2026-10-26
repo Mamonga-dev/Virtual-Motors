@@ -36,3 +36,8 @@ config.producao.php
 /var/email-test/
 
 composer.phar
+# Variáveis e segredos de ambiente (mantenha exemplos versionados)
+.env
+.env.*
+!.env.example
+!.env.*.example

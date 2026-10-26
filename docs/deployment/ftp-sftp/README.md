@@ -1,0 +1,19 @@
+# Modelo seguro de publicação por FTP no VS Code
+
+Este modelo é para a extensão `liximomo.vscode-sftp` e parte de um host que aceita FTP na porta 21. O protocolo FTP simples não cifra usuário, senha nem arquivos durante o transporte. Se a hospedagem oferecer FTPS, confirme os parâmetros com o provedor antes de ativar `secure`; não troque o protocolo por SFTP sem suporte do servidor.
+
+## Configuração
+
+1. Copie `sftp.json.example` para `.vscode/sftp.json` na raiz do projeto.
+2. Preencha `host`, `username` e `remotePath` localmente. Não adicione `password`: a extensão pode solicitá-la ao conectar.
+3. Mantenha `.vscode/` no `.gitignore`. Nunca envie `sftp.json` ao GitHub.
+4. Primeiro publique somente um arquivo não sensível e confirme o diretório remoto correto.
+5. Para atualizações, prefira `SFTP: Upload Active File` após revisar o arquivo. Mantenha `uploadOnSave` desligado.
+
+`syncOption.delete` está definido como `false` para impedir que o comando Sync apague arquivos que existam apenas no servidor. Evite comandos de exclusão remota e comandos que ignorem a lista `ignore`. Os arquivos de configuração e dumps locais também estão excluídos de transferências normais. A cópia do projeto no servidor deve manter sua configuração de banco já existente; não baixe nem publique essa configuração sem necessidade.
+
+## Configuração do banco
+
+Guarde arquivos reais de produção fora do Git, por exemplo `config.producao.php` e `database.config.php`, e mantenha apenas exemplos com placeholders no repositório. A aplicação precisa carregar a configuração de produção que a hospedagem já usa; este modelo de FTP não cria nem corrige a conexão do banco.
+
+A lista `ignore` ajuda a evitar uploads locais acidentais, mas não substitui backups do servidor. O perfil limita o modo de operação configurando upload manual e Sync sem exclusões.
