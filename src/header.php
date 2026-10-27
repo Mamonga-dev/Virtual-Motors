@@ -47,6 +47,7 @@ $headerLogin = $headerBasePath . 'src/login.php';
 $headerCadastro = $headerBasePath . 'src/cadastro.php';
 $headerPerfil = $headerBasePath . 'src/perfil.php';
 $headerLogout = $headerBasePath . 'src/logout.php';
+$headerCompras = $headerBasePath . 'src/minhas-compras.php';
 ?>
 <header class="header">
     <div class="container header-content">
@@ -63,6 +64,9 @@ $headerLogout = $headerBasePath . 'src/logout.php';
             >Sobre nós</a>
             <a href="<?= htmlspecialchars($headerContato, ENT_QUOTES, 'UTF-8') ?>">Contato</a>
             <a href="<?= htmlspecialchars($headerCarrinhoHref, ENT_QUOTES, 'UTF-8') ?>">Carrinho (<?= $headerQuantidadeCarrinho ?>)</a>
+            <?php if ($headerEmail !== null): ?>
+                <a href="<?= htmlspecialchars($headerCompras, ENT_QUOTES, 'UTF-8') ?>" <?= !empty($headerPaginaCompras) ? 'aria-current="page"' : '' ?>>Minhas compras</a>
+            <?php endif; ?>
         </nav>
 
         <div class="user-menu-right">
