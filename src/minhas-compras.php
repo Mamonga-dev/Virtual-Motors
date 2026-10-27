@@ -46,17 +46,17 @@ $headerPaginaCompras = true;
             <p>Acompanhe seus pedidos, itens e dados de entrega.</p>
         </div>
 
-        <?php if ($erroBanco): ?>
+        <?php if ($erroBanco) : ?>
             <p class="cart-message cart-error" role="alert">Não foi possível carregar seu histórico. Tente novamente em instantes.</p>
-        <?php elseif ($pedidos === []): ?>
+        <?php elseif ($pedidos === []) : ?>
             <section class="purchase-history-empty">
                 <h2>Nenhuma compra por aqui ainda</h2>
                 <p>Quando você confirmar um pedido, ele aparecerá nesta página com todos os detalhes.</p>
                 <a class="button button-primary" href="../index.php#veiculos">Explorar veículos</a>
             </section>
-        <?php else: ?>
+        <?php else : ?>
             <div class="purchase-history-list">
-                <?php foreach ($pedidos as $pedido): ?>
+                <?php foreach ($pedidos as $pedido) : ?>
                     <article class="purchase-order" aria-labelledby="order-<?= (int) $pedido['id_pedido'] ?>">
                         <header class="purchase-order-header">
                             <div>
@@ -71,7 +71,7 @@ $headerPaginaCompras = true;
                         <div class="purchase-order-content">
                             <section class="purchase-order-items" aria-label="Itens do pedido">
                                 <h3>Itens comprados</h3>
-                                <?php foreach ($pedido['itens'] as $item): ?>
+                                <?php foreach ($pedido['itens'] as $item) : ?>
                                     <div class="purchase-order-item">
                                         <div>
                                             <strong><?= htmlspecialchars($item['nome_carro'] ?: 'Veículo', ENT_QUOTES, 'UTF-8') ?></strong>

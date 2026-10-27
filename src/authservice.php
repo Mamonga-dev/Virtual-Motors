@@ -34,8 +34,7 @@ class AuthService
         string $senha,
         string $tipoUsuario = 'cliente',
         string $telefone = ''
-    ): bool
-    {
+    ): bool {
         if ($this->userRepository->emailExists($email)) {
             return false;
         }

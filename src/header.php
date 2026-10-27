@@ -64,13 +64,13 @@ $headerCompras = $headerBasePath . 'src/minhas-compras.php';
             >Sobre nós</a>
             <a href="<?= htmlspecialchars($headerContato, ENT_QUOTES, 'UTF-8') ?>">Contato</a>
             <a href="<?= htmlspecialchars($headerCarrinhoHref, ENT_QUOTES, 'UTF-8') ?>">Carrinho (<?= $headerQuantidadeCarrinho ?>)</a>
-            <?php if ($headerEmail !== null): ?>
+            <?php if ($headerEmail !== null) : ?>
                 <a href="<?= htmlspecialchars($headerCompras, ENT_QUOTES, 'UTF-8') ?>" <?= !empty($headerPaginaCompras) ? 'aria-current="page"' : '' ?>>Minhas compras</a>
             <?php endif; ?>
         </nav>
 
         <div class="user-menu-right">
-            <?php if ($headerEmail !== null): ?>
+            <?php if ($headerEmail !== null) : ?>
                 <details class="user-menu">
                     <summary class="user-profile" aria-label="Abrir menu do perfil">
                         <svg class="user-avatar" viewBox="0 0 24 24" aria-hidden="true">
@@ -87,10 +87,10 @@ $headerCompras = $headerBasePath . 'src/minhas-compras.php';
                     </div>
                 </details>
                 <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ativar modo escuro" title="Ativar modo escuro">☾</button>
-                <?php if ($headerTipoUsuario === 'admin'): ?>
+                <?php if ($headerTipoUsuario === 'admin') : ?>
                     <a class="header-button" href="<?= htmlspecialchars($headerBasePath, ENT_QUOTES, 'UTF-8') ?>admin/dashboard.php">Administração</a>
                 <?php endif; ?>
-            <?php else: ?>
+            <?php else : ?>
                 <a class="header-button" href="<?= htmlspecialchars($headerLogin, ENT_QUOTES, 'UTF-8') ?>">Entrar</a>
                 <a class="header-button header-button-secondary" href="<?= htmlspecialchars($headerCadastro, ENT_QUOTES, 'UTF-8') ?>">Criar conta</a>
                 <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ativar modo escuro" title="Ativar modo escuro">☾</button>
