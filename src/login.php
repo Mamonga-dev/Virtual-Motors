@@ -23,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 session_regenerate_id(true);
                 $_SESSION['usuario_id'] = $usuario['id'];
                 $_SESSION['usuario_email'] = $usuario['email'];
+                $_SESSION['usuario_nome'] = $usuario['nome'];
                 $_SESSION['tipo_usuario'] = $usuario['tipo_usuario'];
                 $destinoLogin = isset($_SESSION['virtual_motors_compra_direta'])
                     ? 'pagamento.php'
