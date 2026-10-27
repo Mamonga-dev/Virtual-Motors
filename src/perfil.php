@@ -18,7 +18,7 @@ if ($idUsuario === false || $idUsuario === null || $idUsuario < 1) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <title>Meu perfil · Virtual Motors</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../public/style.css">
 </head>
 <body>
     <?php

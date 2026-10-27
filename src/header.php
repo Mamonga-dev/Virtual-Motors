@@ -52,7 +52,7 @@ $headerCompras = $headerBasePath . 'src/minhas-compras.php';
 <header class="header">
     <div class="container header-content">
         <a href="<?= htmlspecialchars($headerInicio, ENT_QUOTES, 'UTF-8') ?>" class="logo">
-            <img src="<?= htmlspecialchars($headerBasePath, ENT_QUOTES, 'UTF-8') ?>VM.png" alt="Virtual Motors">
+            <img src="<?= htmlspecialchars($headerBasePath, ENT_QUOTES, 'UTF-8') ?>assets/virtual-motors.png" alt="Virtual Motors">
         </a>
 
         <nav class="nav" id="mainNav">

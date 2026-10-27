@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="apple-touch-icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="shortcut icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../public/style.css">
     <style>
         /* Estilos específicos para a tela de login idêntica à referência */
         .login-card {
@@ -241,6 +241,6 @@ require __DIR__ . '/header.php';
     </div>
     </main>
 
-    <script src="../script.js" defer></script>
+    <script src="../public/script.js" defer></script>
 </body>
 </html>

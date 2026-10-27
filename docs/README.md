@@ -77,7 +77,7 @@ A branch `rayray` está com commits recentes voltados para cálculo de parcelas,
 - **Front-end:** HTML, CSS, JavaScript
 - **Back-end:** PHP
 - **Banco de dados:** MySQL / SQL
-- **Estrutura:** organização em `public/`, `src/`, `assets/` e `docs/`
+- **Estrutura:** estilos e scripts em `public/`, imagens em `assets/`, código PHP em `src/` e documentação em `docs/`. O `index.php` permanece na raiz como entrada do servidor PHP.
 
 ---
 
@@ -101,14 +101,16 @@ A branch `rayray` está com commits recentes voltados para cálculo de parcelas,
 2. Crie o banco `loja_carros` e importe `dump/virtualmotors/loja_carros_carros.sql`.
 3. Para bancos já existentes, execute uma vez `database/migrations/20261015_add_car_image_url.sql` para habilitar links de imagem nos produtos.
 4. Execute uma vez `database/migrations/20261022_add_purchase_history.sql` para habilitar o registro e a consulta de compras.
-5. Para desenvolvimento local, copie `database.config.php.example` para `database.config.php` e ajuste os dados locais. O arquivo `database.config.php` é privado e não deve ser versionado.
+5. Para desenvolvimento local, copie `config/database.config.php.example` para `config/database.config.php` (remova `.example`) e preencha os dados locais. O arquivo real é privado e não deve ser versionado.
 6. Na raiz do projeto, execute `php -S localhost:8000` e acesse `http://localhost:8000`.
 
 A listagem e a busca da página inicial consultam a tabela `carros`. O banco deve estar ativo para exibir os veículos.
 
+Para configurar o teste isolado de e-mail, consulte [Configuração do teste isolado de e-mail](EMAIL_TEST_SETUP.md).
+
 ### Configuração do servidor
 
-Crie `database.config.php` na raiz publicada do projeto, usando `database.config.php.example` como modelo e preenchendo `production` com as credenciais fornecidas pela hospedagem. O código escolhe `local` para `localhost` e `127.0.0.1`, e `production` para os demais hosts. Envie esse arquivo privado uma única vez pelo SFTP; depois, configure-o como exclusão da sincronização para evitar sobrescrevê-lo. O `.gitignore` impede o envio pelo GitHub, mas não controla as exclusões da extensão SFTP.
+Na hospedagem, copie `config/database.config.php.example` para `config/database.config.php` (remova `.example`) e preencha `production` com as credenciais fornecidas pela hospedagem. O código escolhe `local` para `localhost` e `127.0.0.1`, e `production` para os demais hosts. Envie esse arquivo privado uma única vez pelo SFTP; depois, configure-o como exclusão da sincronização para evitar sobrescrevê-lo. O `.gitignore` impede o envio pelo GitHub, mas não controla as exclusões da extensão SFTP.
 
 ---
 

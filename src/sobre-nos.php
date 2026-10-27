@@ -13,7 +13,7 @@ session_start();
         name="description"
         content="Conheça a Virtual Motors, nosso propósito e os valores que orientam cada experiência."
     >
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../public/style.css">
     <link rel="icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="apple-touch-icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="shortcut icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
@@ -125,7 +125,7 @@ session_start();
     <footer class="footer">
         <div class="container footer-content">
             <div class="footer-brand">
-                <img src="../VM.png" alt="Virtual Motors">
+                <img src="../assets/virtual-motors.png" alt="Virtual Motors">
                 <p>Seu próximo veículo começa aqui.</p>
             </div>
 
@@ -151,7 +151,7 @@ session_start();
         </div>
     </footer>
 
-    <script src="../script.js" defer></script>
+    <script src="../public/script.js" defer></script>
 </body>
 
 </html>
