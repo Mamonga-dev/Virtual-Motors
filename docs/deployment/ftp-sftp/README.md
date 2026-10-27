@@ -14,6 +14,6 @@ Este modelo é para a extensão `liximomo.vscode-sftp` e parte de um host que ac
 
 ## Configuração do banco
 
-Guarde arquivos reais de produção fora do Git, por exemplo `config.producao.php` e `database.config.php`, e mantenha apenas exemplos com placeholders no repositório. A aplicação precisa carregar a configuração de produção que a hospedagem já usa; este modelo de FTP não cria nem corrige a conexão do banco.
+Guarde os arquivos reais de produção fora do Git. Para novas configurações, copie `config/database.config.php.example` para `config/database.config.php` (remova `.example`) e preencha as credenciais. A aplicação precisa carregar a configuração de produção que a hospedagem já usa; este modelo de FTP não cria nem corrige a conexão do banco.
 
 A lista `ignore` ajuda a evitar uploads locais acidentais, mas não substitui backups do servidor. O perfil limita o modo de operação configurando upload manual e Sync sem exclusões.

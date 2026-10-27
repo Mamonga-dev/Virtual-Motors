@@ -8,7 +8,7 @@ Na pasta do projeto, execute `composer install`. O projeto usa PHPMailer instala
 
 ## 2. Configure SMTP
 
-Copie `email-test.config.example.php` para `email-test.config.php` e preencha:
+Copie `config/email-test.config.example.php` para `config/email-test.config.php` (remova `.example`) e preencha:
 
 - `SMTP_HOST`: servidor SMTP do provedor.
 - `SMTP_PORT`: normalmente `587` para TLS ou `465` para SSL.
@@ -17,7 +17,7 @@ Copie `email-test.config.example.php` para `email-test.config.php` e preencha:
 - `SMTP_FROM_EMAIL`: endereço autorizado pelo provedor para envio.
 - `EMAIL_TEST_SECRET`: segredo aleatório com pelo menos 32 caracteres.
 
-O arquivo local `email-test.config.php` está no `.gitignore`; não o adicione ao Git. Alternativamente, defina os mesmos nomes como variáveis de ambiente. Valores de ambiente têm prioridade sobre o arquivo local.
+O arquivo local `config/email-test.config.php` está no `.gitignore`; não o adicione ao Git. Alternativamente, defina os mesmos nomes como variáveis de ambiente. Valores de ambiente têm prioridade sobre o arquivo local.
 
 Para gerar um segredo aleatório com PHP:
 

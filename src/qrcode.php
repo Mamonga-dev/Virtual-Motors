@@ -78,7 +78,7 @@ if ($pagamentoConcluido) {
     <?php endif; ?>
     <meta name="description" content="Revise seu pedido e veja o QR Code demonstrativo da Virtual Motors.">
     <title><?= $pagamentoConcluido ? 'Pagamento realizado' : 'Pagamento por QR Code' ?> - Virtual Motors</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../public/style.css">
     <link rel="icon" href="../assets/vm.png" type="image/png">
 </head>
 <body class="<?= $pagamentoConcluido ? 'qr-payment-success-page' : 'qr-payment-page' ?>">
@@ -142,6 +142,6 @@ if ($pagamentoConcluido) {
         </section>
     </main>
 
-    <script src="../script.js" defer></script>
+    <script src="../public/script.js" defer></script>
 </body>
 </html>

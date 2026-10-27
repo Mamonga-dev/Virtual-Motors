@@ -18,7 +18,7 @@ if (
     exit('Este protótipo só pode ser acessado localmente.');
 }
 
-$localConfigPath = __DIR__ . '/email-test.config.php';
+$localConfigPath = __DIR__ . '/config/email-test.config.php';
 $localConfig = is_file($localConfigPath) ? require $localConfigPath : [];
 if (!is_array($localConfig)) {
     http_response_code(500);
@@ -152,7 +152,7 @@ if (isset($_GET['token'])) {
         $verificationSecret = (string) $config('EMAIL_TEST_SECRET');
 
         if ($smtpHost === '' || $smtpUser === '' || $smtpPassword === '' || $fromEmail === '') {
-            $message = 'Configure SMTP_HOST, SMTP_USER, SMTP_PASS e SMTP_FROM_EMAIL em email-test.config.php ou no ambiente.';
+            $message = 'Configure SMTP_HOST, SMTP_USER, SMTP_PASS e SMTP_FROM_EMAIL em config/email-test.config.php ou no ambiente.';
             $messageType = 'error';
         } elseif (strlen($verificationSecret) < 32) {
             $message = 'Configure EMAIL_TEST_SECRET com pelo menos 32 caracteres aleatórios.';
@@ -272,7 +272,7 @@ if (isset($_GET['token'])) {
         <button type="submit">Enviar confirmação</button>
     </form>
     <h2>Configuração necessária</h2>
-    <p>Copie <code>email-test.config.example.php</code> para <code>email-test.config.php</code> e preencha os dados SMTP e o segredo de confirmação. Consulte <code>EMAIL_TEST_SETUP.md</code>.</p>
+    <p>Copie <code>config/email-test.config.example.php</code> para <code>config/email-test.config.php</code> e preencha os dados SMTP e o segredo de confirmação. Consulte <code>docs/EMAIL_TEST_SETUP.md</code>.</p>
 </main>
 </body>
 </html>

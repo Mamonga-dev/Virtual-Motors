@@ -2,9 +2,8 @@
 /.env
 /.env.*
 !/.env.example
-/database.config.php
-/config.producao.php
-/email-test.config.php
+/config/*.php
+!/config/*.example
 /.vscode/
 
 # Dados e artefatos locais

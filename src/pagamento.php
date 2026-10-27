@@ -91,7 +91,7 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
     <meta name="color-scheme" content="light dark">
     <meta name="description" content="Confira seu pedido Virtual Motors e preencha os dados de entrega.">
     <title>Pagamento - Virtual Motors</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../public/style.css">
     <link rel="icon" href="../assets/vm.png" type="image/png">
 </head>
 <body<?= $modoVisualizacao ? ' class="checkout-preview"' : '' ?>>
@@ -267,6 +267,6 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
         <?php endif; ?>
     </main>
 
-    <script src="../script.js" defer></script>
+    <script src="../public/script.js" defer></script>
 </body>
 </html>

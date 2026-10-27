@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-/* Copie este arquivo para email-test.config.php e substitua os exemplos. */
+/* Copie este arquivo para config/email-test.config.php e substitua os exemplos. */
 return [
     // Exemplo para Gmail: smtp.gmail.com, porta 587, tls.
     // Use uma senha de app SMTP; não use a senha normal da conta.
     'SMTP_HOST' => 'smtp.gmail.com',
     'SMTP_PORT' => '587',
     'SMTP_SECURITY' => 'tls',
-    'SMTP_USER' => 'sua-conta@gm ail.com',
+    'SMTP_USER' => 'sua-conta@gmail.com',
     'SMTP_PASS' => 'senha-de-app-do-provedor',
     'SMTP_FROM_EMAIL' => 'sua-conta@gmail.com',
     'SMTP_FROM_NAME' => 'Virtual Motors - teste',

@@ -13,8 +13,8 @@ class Database
     {
         $servidorNome = $_SERVER['SERVER_NAME'] ?? '';
         $ambienteLocal = in_array($servidorNome, ['localhost', '127.0.0.1'], true);
-        $arquivoConfigPrivada = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'database.config.php';
-        $arquivoConfigProducao = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config.producao.php';
+        $arquivoConfigPrivada = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'database.config.php';
+        $arquivoConfigProducao = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.producao.php';
 
         if (is_file($arquivoConfigPrivada)) {
             $configuracoes = require $arquivoConfigPrivada;
