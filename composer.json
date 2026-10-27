@@ -20,7 +20,7 @@
         "squizlabs/php_codesniffer": "^4.0"
     },
     "scripts": {
-        "phpstan": "phpstan analyse --configuration=phpstan.neon --no-progress",
-        "phpcs": "phpcs --standard=phpcs.xml"
+        "phpstan": "@php vendor/bin/phpstan analyse --configuration=phpstan.neon --no-progress",
+        "phpcs": "@php vendor/bin/phpcs --standard=phpcs.xml"
     }
 }
