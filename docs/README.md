@@ -100,8 +100,9 @@ A branch `rayray` está com commits recentes voltados para cálculo de parcelas,
 1. Instale PHP com as extensões PDO e PDO MySQL, além de MySQL ou MariaDB.
 2. Crie o banco `loja_carros` e importe `dump/virtualmotors/loja_carros_carros.sql`.
 3. Para bancos já existentes, execute uma vez `database/migrations/20261015_add_car_image_url.sql` para habilitar links de imagem nos produtos.
-4. Para desenvolvimento local, copie `config/database.config.php.example` para `config/database.config.php` (remova `.example`) e preencha os dados locais. O arquivo real é privado e não deve ser versionado.
-5. Na raiz do projeto, execute `php -S localhost:8000` e acesse `http://localhost:8000`.
+4. Execute uma vez `database/migrations/20261022_add_purchase_history.sql` para habilitar o registro e a consulta de compras.
+5. Para desenvolvimento local, copie `config/database.config.php.example` para `config/database.config.php` (remova `.example`) e preencha os dados locais. O arquivo real é privado e não deve ser versionado.
+6. Na raiz do projeto, execute `php -S localhost:8000` e acesse `http://localhost:8000`.
 
 A listagem e a busca da página inicial consultam a tabela `carros`. O banco deve estar ativo para exibir os veículos.
 
