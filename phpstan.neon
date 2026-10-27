@@ -1,0 +1,8 @@
+parameters:
+    level: 1
+    phpVersion: 80212
+    paths:
+        - src
+        - admin
+        - index.php
+        - test.php
