@@ -55,6 +55,7 @@ A branch `rayray` está com commits recentes voltados para cálculo de parcelas,
 ### Dados
 - Dumps SQL do banco em `dump/virtualmotors/`
 - Base inicial para continuidade do desenvolvimento
+- Mapa dos dumps SQL, migrations, relações e arquivos que acessam o banco em [`mapa-banco-de-dados.md`](mapa-banco-de-dados.md)
 
 ### Front-end
 - Estrutura inicial da landing page
