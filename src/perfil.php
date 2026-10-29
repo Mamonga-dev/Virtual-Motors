@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+use VirtualMotors\Repository\PedidoRepository;
+
+require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/pedidorepository.php';
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
@@ -10,6 +15,16 @@ $idUsuario = filter_var($_SESSION['usuario_id'] ?? null, FILTER_VALIDATE_INT);
 if ($idUsuario === false || $idUsuario === null || $idUsuario < 1) {
     header('Location: login.php');
     exit;
+}
+
+$pedidosRecentes = [];
+$erroBanco = false;
+try {
+    $pedidosRecentes = (new PedidoRepository())->buscarRecentesPorUsuario($idUsuario);
+} catch (PDOException $erro) {
+    error_log($erro->getMessage());
+    http_response_code(503);
+    $erroBanco = true;
 }
 ?>
 <!DOCTYPE html>
@@ -26,10 +41,48 @@ if ($idUsuario === false || $idUsuario === null || $idUsuario < 1) {
     $headerBasePath = '../';
     require __DIR__ . '/header.php';
     ?>
-    <main class="container profile-placeholder">
-        <h1>Meu perfil</h1>
-        <p>A área para consultar e atualizar seus dados será implementada em breve.</p>
+    <main class="purchase-history-wrapper">
+        <div class="purchase-history-heading">
+            <span class="section-tag">ÁREA DO CLIENTE</span>
+            <h1>Meu perfil</h1>
+            <p>Acompanhe um resumo das suas compras recentes.</p>
+        </div>
+
+        <section class="profile-purchases" aria-labelledby="profilePurchasesTitle">
+            <div class="profile-purchases-heading">
+                <h2 id="profilePurchasesTitle">Minhas compras</h2>
+                <a class="button button-outline" href="minhas-compras.php">Ver todas as compras</a>
+            </div>
+
+            <?php if ($erroBanco) : ?>
+                <p class="cart-message cart-error" role="alert">Não foi possível carregar suas compras recentes. Tente novamente em instantes.</p>
+            <?php elseif ($pedidosRecentes === []) : ?>
+                <section class="purchase-history-empty">
+                    <h3>Nenhuma compra por aqui ainda</h3>
+                    <p>Quando você confirmar um pedido, ele aparecerá aqui.</p>
+                    <a class="button button-primary" href="../index.php#veiculos">Explorar veículos</a>
+                </section>
+            <?php else : ?>
+                <div class="purchase-history-list">
+                    <?php foreach ($pedidosRecentes as $pedido) : ?>
+                        <article class="purchase-order profile-purchase-order">
+                            <header class="purchase-order-header">
+                                <div>
+                                    <span class="purchase-order-label">Pedido #<?= (int) $pedido['id_pedido'] ?></span>
+                                    <h3><?= htmlspecialchars(date('d/m/Y \à\s H:i', strtotime($pedido['criado_em'])), ENT_QUOTES, 'UTF-8') ?></h3>
+                                </div>
+                                <span class="purchase-order-status"><?= htmlspecialchars($pedido['status_pedido'], ENT_QUOTES, 'UTF-8') ?></span>
+                            </header>
+                            <footer class="purchase-order-total">
+                                <span>Total do pedido</span>
+                                <strong>R$ <?= number_format((float) $pedido['valor_total'], 2, ',', '.') ?></strong>
+                            </footer>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </section>
     </main>
-    <script src="../script.js" defer></script>
+    <script src="../public/script.js" defer></script>
 </body>
 </html>

@@ -107,7 +107,7 @@ $headerPaginaCompras = true;
     <footer class="footer">
         <div class="container footer-content">
             <div class="footer-brand">
-                <img src="../VM.png" alt="Virtual Motors">
+                <img src="../assets/virtual-motors.png" alt="Virtual Motors">
                 <p>Seu próximo veículo começa aqui.</p>
             </div>
             <div class="footer-column">
@@ -129,6 +129,6 @@ $headerPaginaCompras = true;
             </div>
         </div>
     </footer>
-    <script src="../script.js" defer></script>
+    <script src="../public/script.js" defer></script>
 </body>
 </html>

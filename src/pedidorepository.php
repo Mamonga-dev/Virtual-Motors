@@ -100,4 +100,17 @@ class PedidoRepository
 
         return array_values($pedidos);
     }
+
+    public function buscarRecentesPorUsuario(int $idUsuario, int $limite = 3): array
+    {
+        $limite = max(1, min($limite, 10));
+        $consulta = $this->connection->prepare(
+            'SELECT id_pedido, criado_em, valor_total, status_pedido '
+            . 'FROM pedido WHERE id_usuario = :id_usuario '
+            . 'ORDER BY criado_em DESC, id_pedido DESC LIMIT ' . $limite
+        );
+        $consulta->execute(['id_usuario' => $idUsuario]);
+
+        return $consulta->fetchAll();
+    }
 }
