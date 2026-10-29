@@ -1,0 +1,31 @@
+{
+  "name": "FTP deployment (manual and non-destructive)",
+  "host": "ftp.example.invalid",
+  "protocol": "ftp",
+  "port": 21,
+  "secure": false,
+  "username": "REPLACE_WITH_FTP_USERNAME",
+  "remotePath": "/REPLACE_WITH_DOCUMENT_ROOT",
+  "uploadOnSave": false,
+  "downloadOnOpen": false,
+  "syncOption": {
+    "delete": false
+  },
+  "ignore": [
+    ".vscode/**",
+    ".git/**",
+    ".env",
+    ".env.*",
+    "**/config/database.config.php",
+    "**/config/config.producao.php",
+    "**/config/email-test.config.php",
+    "**/*.sql",
+    "**/*.sql.gz",
+    "**/*.sql.zip",
+    "dump/**",
+    "dumps/**",
+    "vendor/**",
+    "storage/**",
+    "logs/**"
+  ]
+}

@@ -1,0 +1,103 @@
+<?php
+
+namespace VirtualMotors\Repository;
+
+use PDO;
+use Throwable;
+use VirtualMotors\Core\Database;
+
+class PedidoRepository
+{
+    private PDO $connection;
+
+    public function __construct(?PDO $connection = null)
+    {
+        $this->connection = $connection ?? Database::getConnection();
+    }
+
+    public function criar(array $pedido): int
+    {
+        $this->connection->beginTransaction();
+
+        try {
+            $inserirPedido = $this->connection->prepare(
+                'INSERT INTO pedido (id_usuario, valor_total, pagamento, status_pedido, endereco_entrega) '
+                . 'VALUES (:id_usuario, :valor_total, :pagamento, :status_pedido, :endereco_entrega)'
+            );
+            $inserirPedido->execute([
+                'id_usuario' => $pedido['id_usuario'],
+                'valor_total' => $pedido['valor_total'],
+                'pagamento' => $pedido['pagamento'],
+                'status_pedido' => 'Confirmado (demonstração)',
+                'endereco_entrega' => $pedido['endereco_entrega'],
+            ]);
+
+            $idPedido = (int) $this->connection->lastInsertId();
+            $inserirItem = $this->connection->prepare(
+                'INSERT INTO item_pedido '
+                . '(id_pedido, id_carro, quantidade, preco_unitario, nome_carro, jogo_origem) '
+                . 'VALUES (:id_pedido, :id_carro, :quantidade, :preco_unitario, :nome_carro, :jogo_origem)'
+            );
+
+            foreach ($pedido['itens'] as $item) {
+                $inserirItem->execute([
+                    'id_pedido' => $idPedido,
+                    'id_carro' => $item['id_carro'],
+                    'quantidade' => $item['quantidade'],
+                    'preco_unitario' => $item['preco_unitario'],
+                    'nome_carro' => $item['nome_carro'],
+                    'jogo_origem' => $item['jogo_origem'],
+                ]);
+            }
+
+            $this->connection->commit();
+
+            return $idPedido;
+        } catch (Throwable $erro) {
+            if ($this->connection->inTransaction()) {
+                $this->connection->rollBack();
+            }
+
+            throw $erro;
+        }
+    }
+
+    public function buscarPorUsuario(int $idUsuario): array
+    {
+        $consulta = $this->connection->prepare(
+            'SELECT p.id_pedido, p.criado_em, p.valor_total, p.pagamento, p.status_pedido, '
+            . 'p.endereco_entrega, i.id_carro, i.nome_carro, i.jogo_origem, '
+            . 'i.quantidade, i.preco_unitario '
+            . 'FROM pedido p LEFT JOIN item_pedido i ON i.id_pedido = p.id_pedido '
+            . 'WHERE p.id_usuario = :id_usuario ORDER BY p.criado_em DESC, p.id_pedido DESC'
+        );
+        $consulta->execute(['id_usuario' => $idUsuario]);
+
+        $pedidos = [];
+        foreach ($consulta->fetchAll() as $linha) {
+            $idPedido = (int) $linha['id_pedido'];
+            if (!isset($pedidos[$idPedido])) {
+                $pedidos[$idPedido] = [
+                    'id_pedido' => $idPedido,
+                    'criado_em' => $linha['criado_em'],
+                    'valor_total' => $linha['valor_total'],
+                    'pagamento' => $linha['pagamento'],
+                    'status_pedido' => $linha['status_pedido'],
+                    'endereco_entrega' => $linha['endereco_entrega'],
+                    'itens' => [],
+                ];
+            }
+
+            if ($linha['id_carro'] !== null) {
+                $pedidos[$idPedido]['itens'][] = [
+                    'nome_carro' => $linha['nome_carro'],
+                    'jogo_origem' => $linha['jogo_origem'],
+                    'quantidade' => (int) $linha['quantidade'],
+                    'preco_unitario' => $linha['preco_unitario'],
+                ];
+            }
+        }
+
+        return array_values($pedidos);
+    }
+}

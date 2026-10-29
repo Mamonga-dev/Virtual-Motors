@@ -29,5 +29,18 @@ TestResults.xml
 
 # Credenciais do banco de produção (InfinityFree)
 # Cada computador cria o seu; nunca vai pro GitHub
-config.producao.php
+/config/*.php
+!/config/*.example
+# Arquivos antigos na raiz permanecem ignorados por segurança
+/config.producao.php
 /database.config.php
+/email-test.config.php
+/vendor/
+/var/email-test/
+
+composer.phar
+# Variáveis e segredos de ambiente (mantenha exemplos versionados)
+.env
+.env.*
+!.env.example
+!.env.*.example

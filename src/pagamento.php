@@ -91,7 +91,7 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
     <meta name="color-scheme" content="light dark">
     <meta name="description" content="Confira seu pedido Virtual Motors e preencha os dados de entrega.">
     <title>Pagamento - Virtual Motors</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../public/style.css">
     <link rel="icon" href="../assets/vm.png" type="image/png">
 </head>
 <body<?= $modoVisualizacao ? ' class="checkout-preview"' : '' ?>>
@@ -107,15 +107,15 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
             <p>Preencha os dados para revisar seu pedido.</p>
         </div>
 
-        <?php if ($erroBanco): ?>
+        <?php if ($erroBanco) : ?>
             <p class="cart-message cart-error" role="alert">Não foi possível consultar os itens do pedido. Verifique a conexão com o banco e tente novamente.</p>
             <a class="button button-primary" href="carrinho.php">Voltar ao carrinho</a>
-        <?php elseif ($veiculos === []): ?>
+        <?php elseif ($veiculos === []) : ?>
             <div class="empty-cart">
                 <p>Não encontramos os veículos deste pedido no estoque.</p>
                 <a href="carrinho.php" class="button button-primary">Voltar ao carrinho</a>
             </div>
-        <?php else: ?>
+        <?php else : ?>
             <div class="checkout-layout">
                 <div class="checkout-form">
                     <p class="checkout-notice" role="note">
@@ -134,7 +134,7 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
                         <div class="checkout-field checkout-cep-field">
                             <label for="cep">CEP</label>
                             <div class="cep-input-row">
-                                <input id="cep" name="cep" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="9" placeholder="00000-000">
+                                <input id="cep" name="cep" type="text" form="checkoutReviewForm" inputmode="numeric" autocomplete="postal-code" maxlength="9" placeholder="00000-000" required>
                                 <button class="button button-outline checkout-cep-button" id="consultCep" type="button" data-endpoint="consulta_cep.php">Consultar CEP</button>
                             </div>
                             <p class="checkout-help" id="cepStatus" role="status" aria-live="polite">Informe o CEP e consulte para preencher o endereço automaticamente.</p>
@@ -143,27 +143,27 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
                         <div class="checkout-fields-grid">
                             <div class="checkout-field checkout-field-wide">
                                 <label for="address">Rua / avenida</label>
-                                <input id="address" name="address" type="text" autocomplete="street-address" placeholder="Nome da rua ou avenida">
+                                <input id="address" name="address" type="text" form="checkoutReviewForm" autocomplete="street-address" placeholder="Nome da rua ou avenida" required>
                             </div>
                             <div class="checkout-field">
                                 <label for="addressNumber">Número</label>
-                                <input id="addressNumber" name="addressNumber" type="text" autocomplete="address-line2" placeholder="Nº">
+                                <input id="addressNumber" name="addressNumber" type="text" form="checkoutReviewForm" autocomplete="address-line2" placeholder="Nº" required>
                             </div>
                             <div class="checkout-field">
                                 <label for="addressComplement">Complemento <span>(opcional)</span></label>
-                                <input id="addressComplement" name="addressComplement" type="text" placeholder="Apartamento, bloco...">
+                                <input id="addressComplement" name="addressComplement" type="text" form="checkoutReviewForm" placeholder="Apartamento, bloco...">
                             </div>
                             <div class="checkout-field">
                                 <label for="neighborhood">Bairro</label>
-                                <input id="neighborhood" name="neighborhood" type="text" autocomplete="address-level3" placeholder="Bairro">
+                                <input id="neighborhood" name="neighborhood" type="text" form="checkoutReviewForm" autocomplete="address-level3" placeholder="Bairro" required>
                             </div>
                             <div class="checkout-field">
                                 <label for="city">Cidade</label>
-                                <input id="city" name="city" type="text" autocomplete="address-level2" placeholder="Cidade">
+                                <input id="city" name="city" type="text" form="checkoutReviewForm" autocomplete="address-level2" placeholder="Cidade" required>
                             </div>
                             <div class="checkout-field">
                                 <label for="state">Estado</label>
-                                <select id="state" name="state" autocomplete="address-level1">
+                                <select id="state" name="state" form="checkoutReviewForm" autocomplete="address-level1" required>
                                     <option value="">Selecione</option>
                                     <option value="AC">Acre</option>
                                     <option value="AL">Alagoas</option>
@@ -208,22 +208,22 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
 
                         <div class="payment-methods">
                             <label class="payment-method">
-                                <input type="radio" name="paymentMethod" value="pix" checked>
+                                <input type="radio" name="paymentMethod" value="pix" form="checkoutReviewForm" checked>
                                 <span><strong>Pix</strong><small>Pagamento instantâneo</small></span>
                             </label>
                             <label class="payment-method">
-                                <input type="radio" name="paymentMethod" value="credit">
+                                <input type="radio" name="paymentMethod" value="credit" form="checkoutReviewForm">
                                 <span><strong>Cartão de crédito</strong><small>Dados não serão enviados</small></span>
                             </label>
                             <label class="payment-method">
-                                <input type="radio" name="paymentMethod" value="boleto">
+                                <input type="radio" name="paymentMethod" value="boleto" form="checkoutReviewForm">
                                 <span><strong>Boleto</strong><small>Opção demonstrativa</small></span>
                             </label>
                         </div>
                         <p class="payment-method-message" id="paymentMethodMessage" role="status">A opção Pix será disponibilizada quando a integração de pagamento estiver pronta.</p>
                     </section>
 
-                    <form class="checkout-review-form" method="post" action="qrcode.php">
+                    <form class="checkout-review-form" id="checkoutReviewForm" method="post" action="qrcode.php">
                         <input type="hidden" name="acao" value="revisar">
                         <input type="hidden" name="tema" value="">
                         <input
@@ -237,7 +237,7 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
 
                 <aside class="order-summary checkout-summary">
                     <h2>Resumo do pedido</h2>
-                    <?php foreach ($veiculos as $veiculo): ?>
+                    <?php foreach ($veiculos as $veiculo) : ?>
                         <?php
                         $idCarro = (int) $veiculo['id_carro'];
                         $quantidade = (int) ($itensPedido[$idCarro] ?? 1);
@@ -267,6 +267,6 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
         <?php endif; ?>
     </main>
 
-    <script src="../script.js" defer></script>
+    <script src="../public/script.js" defer></script>
 </body>
 </html>

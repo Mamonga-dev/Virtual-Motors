@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 require_once __DIR__ . '/../src/admin_guard.php';
@@ -285,6 +286,7 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
     <p class="marca">Virtual Motors</p>
     <a href="dashboard.php">Painel</a>
     <a href="produtos.php" aria-current="page">Produtos</a>
+    <a href="usuarios.php">Usuários</a>
     <a class="sair" href="../index.php">Voltar à loja</a>
 </nav>
 
@@ -295,21 +297,21 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
     <h1>Gerenciar produtos</h1>
     <p class="admin-sub">Cadastre, pesquise e atualize os carros disponíveis no catálogo.</p>
 
-    <?php if ($mensagem !== ''): ?>
+    <?php if ($mensagem !== '') : ?>
         <p class="admin-message<?= $erro ? ' error' : '' ?>" role="<?= $erro ? 'alert' : 'status' ?>"><?= produtos_escape($mensagem) ?></p>
     <?php endif; ?>
 
     <section class="admin-section">
         <div class="admin-section-heading">
             <h2><?= $produtoEditando !== null ? 'Editar produto' : 'Cadastrar produto' ?></h2>
-            <?php if ($produtoEditando !== null): ?>
+            <?php if ($produtoEditando !== null) : ?>
                 <a href="produtos.php">Cancelar edição</a>
             <?php endif; ?>
         </div>
         <form class="admin-form" method="post" action="produtos.php<?= $produtoEditando !== null ? '?editar=' . (int) $produtoEditando['id_carro'] : '' ?>">
             <input type="hidden" name="csrf_token" value="<?= produtos_escape($csrfToken) ?>">
             <input type="hidden" name="acao" value="<?= $produtoEditando !== null ? 'atualizar' : 'criar' ?>">
-            <?php if ($produtoEditando !== null): ?>
+            <?php if ($produtoEditando !== null) : ?>
                 <input type="hidden" name="id_carro" value="<?= (int) $produtoEditando['id_carro'] ?>">
             <?php endif; ?>
             <div class="admin-field">
@@ -350,17 +352,17 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
             </div>
             <div class="admin-actions">
                 <button class="admin-button" type="submit">Pesquisar</button>
-                <?php if ($busca !== ''): ?>
+                <?php if ($busca !== '') : ?>
                     <a class="admin-button secondary" href="produtos.php">Limpar busca</a>
                 <?php endif; ?>
             </div>
         </form>
 
-        <?php if ($erro && $produtos === [] && $mensagem === 'Não foi possível carregar os produtos.'): ?>
+        <?php if ($erro && $produtos === [] && $mensagem === 'Não foi possível carregar os produtos.') : ?>
             <p class="admin-state error" role="alert"><?= produtos_escape($mensagem) ?></p>
-        <?php elseif ($produtos === []): ?>
+        <?php elseif ($produtos === []) : ?>
             <p class="admin-state"><?= $busca !== '' ? 'Nenhum produto corresponde à pesquisa.' : 'Nenhum produto cadastrado ainda.' ?></p>
-        <?php else: ?>
+        <?php else : ?>
             <div class="admin-table-wrap">
                 <table class="admin-table">
                     <thead>
@@ -375,7 +377,7 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($produtos as $produto): ?>
+                    <?php foreach ($produtos as $produto) : ?>
                         <tr>
                             <td><?= (int) $produto['id_carro'] ?></td>
                             <td><?= produtos_escape($produto['nome']) ?></td>
@@ -383,9 +385,9 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
                             <td>R$ <?= number_format((float) $produto['preco'], 2, ',', '.') ?></td>
                             <td><?= produtos_escape($produto['jogo_origem']) ?></td>
                             <td>
-                                <?php if (is_string($produto['imagem_url']) && produtos_imagem_url_valida($produto['imagem_url'])): ?>
+                                <?php if (is_string($produto['imagem_url']) && produtos_imagem_url_valida($produto['imagem_url'])) : ?>
                                     <a class="admin-link" href="<?= produtos_escape($produto['imagem_url']) ?>" target="_blank" rel="noopener noreferrer">Ver imagem</a>
-                                <?php else: ?>
+                                <?php else : ?>
                                     Sem imagem
                                 <?php endif; ?>
                             </td>
@@ -409,10 +411,10 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
             <div class="admin-actions" style="justify-content:space-between; margin-top:12px">
                 <span>Página <?= $pagina ?> de <?= $totalPaginas ?></span>
                 <div class="admin-actions">
-                    <?php if ($paginaAnterior !== null): ?>
+                    <?php if ($paginaAnterior !== null) : ?>
                         <a class="admin-button secondary" href="produtos.php?<?= produtos_escape(http_build_query(['busca' => $busca, 'pagina' => $paginaAnterior])) ?>">Anterior</a>
                     <?php endif; ?>
-                    <?php if ($proximaPagina !== null): ?>
+                    <?php if ($proximaPagina !== null) : ?>
                         <a class="admin-button secondary" href="produtos.php?<?= produtos_escape(http_build_query(['busca' => $busca, 'pagina' => $proximaPagina])) ?>">Próxima</a>
                     <?php endif; ?>
                 </div>

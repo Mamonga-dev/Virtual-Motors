@@ -251,6 +251,10 @@ body.admin-layout {
     color: var(--admin-tinta);
 }
 
+.admin-button.danger {
+    background: #a32d2d;
+}
+
 .admin-actions {
     display: flex;
     flex-wrap: wrap;
@@ -260,6 +264,18 @@ body.admin-layout {
 
 .admin-actions form {
     display: inline;
+}
+
+.admin-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.admin-pagination a {
+    text-decoration: none;
 }
 
 .admin-message {

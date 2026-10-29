@@ -1,4 +1,5 @@
 <?php
+
 use VirtualMotors\Service\AuthService;
 
 require_once __DIR__ . '/database.php';
@@ -23,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 session_regenerate_id(true);
                 $_SESSION['usuario_id'] = $usuario['id'];
                 $_SESSION['usuario_email'] = $usuario['email'];
+                $_SESSION['usuario_nome'] = $usuario['nome'];
                 $_SESSION['tipo_usuario'] = $usuario['tipo_usuario'];
                 $destinoLogin = isset($_SESSION['virtual_motors_compra_direta'])
                     ? 'pagamento.php'
@@ -38,7 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             http_response_code(503);
             $mensagem = "Não foi possível acessar o banco de dados. Inicie o MySQL no XAMPP e tente novamente.";
         }
-
     } else {
         $mensagem = "Preencha todos os campos.";
     }
@@ -55,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="apple-touch-icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="shortcut icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../public/style.css">
     <style>
         /* Estilos específicos para a tela de login idêntica à referência */
         .login-card {
@@ -207,7 +208,7 @@ require __DIR__ . '/header.php';
         <h2>VM ID</h2>
         <p class="subtitle">Acesse sua conta VM ID para continuar</p>
 
-        <?php if (!empty($mensagem)): ?>
+        <?php if (!empty($mensagem)) : ?>
             <p class="error-msg" role="alert"><?php echo htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8'); ?></p>
         <?php endif; ?>
 
@@ -240,6 +241,6 @@ require __DIR__ . '/header.php';
     </div>
     </main>
 
-    <script src="../script.js" defer></script>
+    <script src="../public/script.js" defer></script>
 </body>
 </html>

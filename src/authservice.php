@@ -28,14 +28,19 @@ class AuthService
         return $usuario;
     }
 
-    public function register(string $nome, string $email, string $senha, string $tipoUsuario = 'cliente'): bool
-    {
+    public function register(
+        string $nome,
+        string $email,
+        string $senha,
+        string $tipoUsuario = 'cliente',
+        string $telefone = ''
+    ): bool {
         if ($this->userRepository->emailExists($email)) {
             return false;
         }
 
         $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-        return $this->userRepository->create($nome, $email, $senhaHash, $tipoUsuario);
+        return $this->userRepository->create($nome, $email, $senhaHash, $tipoUsuario, $telefone);
     }
 }

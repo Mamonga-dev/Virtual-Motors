@@ -1,4 +1,5 @@
 <?php
+
 use VirtualMotors\Service\AuthService;
 
 session_start();
@@ -10,15 +11,23 @@ require_once __DIR__ . '/authservice.php';
 $mensagem = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nomeEnviado = $_POST['nome'] ?? '';
     $emailEnviado = $_POST['email'] ?? '';
+    $telefoneEnviado = $_POST['telefone'] ?? '';
     $senhaEnviada = $_POST['senha'] ?? '';
     $confirmacaoEnviada = $_POST['confirma_senha'] ?? '';
+    $nome = is_string($nomeEnviado) ? trim($nomeEnviado) : '';
     $email = is_string($emailEnviado) ? trim($emailEnviado) : '';
+    $telefone = is_string($telefoneEnviado) ? trim($telefoneEnviado) : '';
     $senha = is_string($senhaEnviada) ? trim($senhaEnviada) : '';
     $confirma_senha = is_string($confirmacaoEnviada) ? trim($confirmacaoEnviada) : '';
 
-    if (!empty($email) && !empty($senha) && !empty($confirma_senha)) {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!empty($nome) && !empty($email) && !empty($telefone) && !empty($senha) && !empty($confirma_senha)) {
+        if (strlen($nome) > 100) {
+            $mensagem = "O nome deve ter no máximo 100 caracteres.";
+        } elseif (strlen($telefone) > 20) {
+            $mensagem = "O telefone deve ter no máximo 20 caracteres.";
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $mensagem = "Informe um e-mail válido.";
         } elseif (strlen($email) > 100) {
             $mensagem = "O e-mail deve ter no máximo 100 caracteres.";
@@ -26,10 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mensagem = "As senhas não coincidem.";
         } else {
             try {
-                $nome = substr(strstr($email, '@', true) ?: 'Cliente', 0, 100);
                 $authService = new AuthService();
 
-                if (!$authService->register($nome, $email, $senha)) {
+                if (!$authService->register($nome, $email, $senha, 'cliente', $telefone)) {
                     $mensagem = "Este e-mail já está cadastrado.";
                 } else {
                     echo "<script>
@@ -60,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="apple-touch-icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="shortcut icon" href="../assets/vm.png" type="image/png" sizes="2048x2048">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../public/style.css">
     <style>
         .login-card {
             background: var(--surface);
@@ -196,24 +204,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2>Criar VM ID</h2>
         <p class="subtitle">Crie sua conta para acessar o e-commerce</p>
 
-        <?php if (!empty($mensagem)): ?>
+        <?php if (!empty($mensagem)) : ?>
             <p class="error-msg"><?php echo htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8'); ?></p>
         <?php endif; ?>
 
         <form method="POST" action="cadastro.php" autocomplete="off">
             <div class="form-group">
-                <label>E-MAIL</label>
-                <input type="email" name="email" maxlength="100" autocomplete="off" required placeholder="exemplo@email.com">
+                <label for="nome">NOME</label>
+                <input type="text" id="nome" name="nome" maxlength="100" autocomplete="name" required placeholder="Seu nome completo">
             </div>
 
             <div class="form-group">
-                <label>SENHA</label>
-                <input type="password" name="senha" autocomplete="new-password" required placeholder="••••••••••••">
+                <label for="email">E-MAIL</label>
+                <input type="email" id="email" name="email" maxlength="100" autocomplete="email" required placeholder="exemplo@email.com">
             </div>
 
             <div class="form-group">
-                <label>CONFIRMAR SENHA</label>
-                <input type="password" name="confirma_senha" autocomplete="new-password" required placeholder="••••••••••••">
+                <label for="telefone">TELEFONE</label>
+                <input type="tel" id="telefone" name="telefone" maxlength="20" autocomplete="tel" required placeholder="(00) 00000-0000">
+            </div>
+
+            <div class="form-group">
+                <label for="senha">SENHA</label>
+                <input type="password" id="senha" name="senha" autocomplete="new-password" required placeholder="••••••••••••">
+            </div>
+
+            <div class="form-group">
+                <label for="confirma_senha">CONFIRMAR SENHA</label>
+                <input type="password" id="confirma_senha" name="confirma_senha" autocomplete="new-password" required placeholder="••••••••••••">
             </div>
 
             <button type="submit" class="btn-submit">Cadastrar</button>
@@ -230,6 +248,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
     </main>
 
-    <script src="../script.js" defer></script>
+    <script src="../public/script.js" defer></script>
 </body>
 </html>

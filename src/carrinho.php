@@ -96,7 +96,7 @@ $totalCarrinho = 0;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
     <title>Carrinho - Virtual Motors</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../public/style.css">
 </head>
 <body>
     <?php
@@ -110,25 +110,25 @@ $totalCarrinho = 0;
             <h1>Carrinho de compras</h1>
         </div>
 
-        <?php if ($mensagem !== ''): ?>
+        <?php if ($mensagem !== '') : ?>
             <p class="cart-message" role="status"><?= htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8') ?></p>
         <?php endif; ?>
 
-        <?php if ($erroBanco): ?>
+        <?php if ($erroBanco) : ?>
             <p class="cart-message cart-error" role="alert">Não foi possível carregar o carrinho. Verifique a conexão com o banco de dados.</p>
-        <?php elseif ($veiculos === []): ?>
+        <?php elseif ($veiculos === []) : ?>
             <div class="empty-cart">
                 <p>Seu carrinho está vazio.</p>
                 <a href="../index.php#veiculos" class="button button-primary">Ver veículos</a>
             </div>
-        <?php else: ?>
+        <?php else : ?>
             <form id="atualizar-carrinho" method="post" action="carrinho.php">
                 <input type="hidden" name="acao" value="atualizar">
             </form>
 
             <div class="cart-layout">
                 <section class="cart-items" aria-label="Itens do carrinho">
-                    <?php foreach ($veiculos as $veiculo): ?>
+                    <?php foreach ($veiculos as $veiculo) : ?>
                         <?php
                         $idCarro = (int) $veiculo['id_carro'];
                         $quantidade = (int) ($_SESSION[$chaveCarrinho][$idCarro] ?? 1);
@@ -142,7 +142,7 @@ $totalCarrinho = 0;
                                     <h2><?= htmlspecialchars($veiculo['nome'], ENT_QUOTES, 'UTF-8') ?></h2>
                                     <div class="cart-item-tags">
                                         <span class="tag"><?= htmlspecialchars($veiculo['jogo_origem'], ENT_QUOTES, 'UTF-8') ?></span>
-                                        <?php if ($veiculo['cor'] !== null && $veiculo['cor'] !== ''): ?>
+                                        <?php if ($veiculo['cor'] !== null && $veiculo['cor'] !== '') : ?>
                                             <span class="tag"><?= htmlspecialchars($veiculo['cor'], ENT_QUOTES, 'UTF-8') ?></span>
                                         <?php endif; ?>
                                     </div>
@@ -179,6 +179,6 @@ $totalCarrinho = 0;
         <?php endif; ?>
     </main>
 
-    <script src="../script.js" defer></script>
+    <script src="../public/script.js" defer></script>
 </body>
 </html>

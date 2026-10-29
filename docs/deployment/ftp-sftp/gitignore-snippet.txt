@@ -1,0 +1,17 @@
+# Credenciais e configurações específicas do ambiente
+/.env
+/.env.*
+!/.env.example
+/config/*.php
+!/config/*.example
+/.vscode/
+
+# Dados e artefatos locais
+/dump/
+/dumps/
+*.sql
+*.sql.gz
+*.sql.zip
+/vendor/
+/storage/
+/logs/

@@ -16,7 +16,7 @@ session_start();
         content="Encontre seu próximo veículo na Virtual Motors."
     >
 
-    <link rel="stylesheet" href="./style.css?v=main-merge">
+    <link rel="stylesheet" href="./public/style.css?v=main-merge">
     <link rel="icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="apple-touch-icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
     <link rel="shortcut icon" href="./assets/vm.png" type="image/png" sizes="2048x2048">
@@ -337,7 +337,7 @@ session_start();
             <div class="footer-brand">
 
                 <img
-                    src="./VM.png"
+                    src="./assets/virtual-motors.png"
                     alt="Virtual Motors"
                 >
 
@@ -408,7 +408,7 @@ session_start();
     </footer>
 
 
-    <script src="script.js?v=main-merge" defer></script>
+    <script src="public/script.js?v=main-merge" defer></script>
 
 </body>
 
