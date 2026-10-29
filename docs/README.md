@@ -161,7 +161,7 @@ A branch principal deve conter a versão integrada e revisada do projeto. Os nom
 
 3. Crie o banco de dados `loja_carros`.
 4. Importe o dump SQL `dump/virtualmotors/loja_carros_carros.sql`.
-5. Para bancos já existentes, verifique se as migrations abaixo já foram aplicadas. Execute cada uma somente uma vez:
+5. Após importar o dump, verifique se as migrations abaixo já foram aplicadas ao banco. Elas são necessárias para os recursos atuais e devem ser executadas somente uma vez:
 
    - `database/migrations/20261015_add_car_image_url.sql`
    - `database/migrations/20261022_add_purchase_history.sql`
