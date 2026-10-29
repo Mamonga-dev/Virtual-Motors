@@ -67,6 +67,7 @@ Os estados devem ser atualizados conforme cada funcionalidade for testada e inte
 - Banco `loja_carros`.
 - Tabela `carros` utilizada pela listagem e busca.
 - Dumps SQL em `dump/virtualmotors/`.
+- Mapa do banco de dados: [dumps, migrations e relações](mapa-banco-de-dados.md).
 - Migrations organizadas em `database/migrations/`.
 
 ### Front-end
