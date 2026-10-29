@@ -1667,6 +1667,10 @@ select {
     width: 100%;
 }
 
+.qr-payment-card .button + .button {
+    margin-top: 12px;
+}
+
 .qr-payment-success {
     margin: 18px 0;
     color: #15803d;
@@ -2561,6 +2565,30 @@ select {
     color: var(--muted);
 }
 
+.profile-purchases {
+    display: grid;
+    gap: 18px;
+}
+
+.profile-purchases-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.profile-purchases-heading h2 {
+    font-size: 22px;
+}
+
+.profile-purchase-order .purchase-order-header {
+    background: var(--surface);
+}
+
+:root[data-theme="dark"] .profile-purchase-order .purchase-order-header {
+    background: var(--gray-light);
+}
+
 :root[data-theme="dark"] {
     color-scheme: dark;
     --page-bg: #111315;
@@ -2597,6 +2625,11 @@ select {
     .auth-main {
         min-height: calc(100vh - 72px);
         padding: 28px 14px;
+    }
+
+    .profile-purchases-heading {
+        align-items: flex-start;
+        flex-direction: column;
     }
 
     .theme-toggle {

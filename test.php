@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use PHPMailer\PHPMailer\Exception as MailException;
@@ -258,10 +259,10 @@ if (isset($_GET['token'])) {
         <strong>Como funciona:</strong> a sintaxe é validada primeiro; DNS é apenas um diagnóstico. A confirmação ocorre quando o link enviado é aberto.
         O link vale por 30 minutos, é de uso único e pode ser aberto em outro navegador. Para funcionar, esse navegador precisa alcançar a URL configurada.
     </div>
-    <?php if ($message !== ''): ?>
+    <?php if ($message !== '') : ?>
         <div class="message <?= $escape($messageType) ?>" role="status"><?= $escape($message) ?></div>
     <?php endif; ?>
-    <?php if ($dnsResult !== ''): ?>
+    <?php if ($dnsResult !== '') : ?>
         <div class="message info"><?= $escape($dnsResult) ?></div>
     <?php endif; ?>
     <form method="post" action="">

@@ -1,4 +1,5 @@
 <?php
+
 use VirtualMotors\Service\AuthService;
 
 session_start();
@@ -203,7 +204,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2>Criar VM ID</h2>
         <p class="subtitle">Crie sua conta para acessar o e-commerce</p>
 
-        <?php if (!empty($mensagem)): ?>
+        <?php if (!empty($mensagem)) : ?>
             <p class="error-msg"><?php echo htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8'); ?></p>
         <?php endif; ?>
 

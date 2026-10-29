@@ -1,5 +1,6 @@
 {
     "name": "knox4/virtual-motors",
+    "description": "Virtual Motors e-commerce application built with PHP.",
     "require": {
         "phpmailer/phpmailer": "^7.1"
     },

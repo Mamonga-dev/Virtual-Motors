@@ -1,4 +1,5 @@
 <?php
+
 use VirtualMotors\Service\AuthService;
 
 require_once __DIR__ . '/database.php';
@@ -39,7 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             http_response_code(503);
             $mensagem = "Não foi possível acessar o banco de dados. Inicie o MySQL no XAMPP e tente novamente.";
         }
-
     } else {
         $mensagem = "Preencha todos os campos.";
     }
@@ -208,7 +208,7 @@ require __DIR__ . '/header.php';
         <h2>VM ID</h2>
         <p class="subtitle">Acesse sua conta VM ID para continuar</p>
 
-        <?php if (!empty($mensagem)): ?>
+        <?php if (!empty($mensagem)) : ?>
             <p class="error-msg" role="alert"><?php echo htmlspecialchars($mensagem, ENT_QUOTES, 'UTF-8'); ?></p>
         <?php endif; ?>
 

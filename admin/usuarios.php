@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 require_once __DIR__ . '/../src/admin_guard.php';
@@ -347,21 +348,21 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
     <h1>Gerenciar usuários</h1>
     <p class="admin-sub">Cadastre, pesquise e atualize as contas e permissões da loja.</p>
 
-    <?php if ($mensagem !== ''): ?>
+    <?php if ($mensagem !== '') : ?>
         <p class="admin-message<?= $erro ? ' error' : '' ?>" role="<?= $erro ? 'alert' : 'status' ?>"><?= usuarios_escape($mensagem) ?></p>
     <?php endif; ?>
 
     <section class="admin-section">
         <div class="admin-section-heading">
             <h2><?= $usuarioEditando !== null ? 'Editar usuário' : 'Cadastrar usuário' ?></h2>
-            <?php if ($usuarioEditando !== null): ?>
+            <?php if ($usuarioEditando !== null) : ?>
                 <a href="usuarios.php">Cancelar edição</a>
             <?php endif; ?>
         </div>
         <form class="admin-form" method="post" action="usuarios.php<?= $usuarioEditando !== null ? '?editar=' . (int) $usuarioEditando['id_usuario'] : '' ?>">
             <input type="hidden" name="csrf_token" value="<?= usuarios_escape($csrfToken) ?>">
             <input type="hidden" name="acao" value="<?= $usuarioEditando !== null ? 'atualizar' : 'criar' ?>">
-            <?php if ($usuarioEditando !== null): ?>
+            <?php if ($usuarioEditando !== null) : ?>
                 <input type="hidden" name="id_usuario" value="<?= (int) $usuarioEditando['id_usuario'] ?>">
             <?php endif; ?>
             <div class="admin-field">
@@ -409,15 +410,15 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
             </div>
             <div class="admin-actions">
                 <button class="admin-button" type="submit">Pesquisar</button>
-                <?php if ($busca !== ''): ?>
+                <?php if ($busca !== '') : ?>
                     <a class="admin-button secondary" href="usuarios.php">Limpar busca</a>
                 <?php endif; ?>
             </div>
         </form>
 
-        <?php if ($usuarios === []): ?>
+        <?php if ($usuarios === []) : ?>
             <p class="admin-state"><?= $busca !== '' ? 'Nenhum usuário corresponde à pesquisa.' : 'Nenhum usuário cadastrado ainda.' ?></p>
-        <?php else: ?>
+        <?php else : ?>
             <div class="admin-table-wrap">
                 <table class="admin-table">
                     <thead>
@@ -432,7 +433,7 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($usuarios as $usuario): ?>
+                    <?php foreach ($usuarios as $usuario) : ?>
                         <tr>
                             <td><?= (int) $usuario['id_usuario'] ?></td>
                             <td><?= usuarios_escape($usuario['nome']) ?></td>
@@ -443,7 +444,7 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
                             <td>
                                 <div class="admin-actions">
                                     <a class="admin-button secondary" href="usuarios.php?editar=<?= (int) $usuario['id_usuario'] ?>">Editar</a>
-                                    <?php if ((int) $usuario['id_usuario'] !== (int) $_SESSION['usuario_id']): ?>
+                                    <?php if ((int) $usuario['id_usuario'] !== (int) $_SESSION['usuario_id']) : ?>
                                         <form method="post" action="usuarios.php" onsubmit="return confirm('Tem certeza que deseja excluir este usuário?');">
                                             <input type="hidden" name="csrf_token" value="<?= usuarios_escape($csrfToken) ?>">
                                             <input type="hidden" name="acao" value="excluir">
@@ -460,13 +461,13 @@ $proximaPagina = $pagina < $totalPaginas ? $pagina + 1 : null;
             </div>
         <?php endif; ?>
 
-        <?php if ($totalPaginas > 1): ?>
+        <?php if ($totalPaginas > 1) : ?>
             <nav class="admin-pagination" aria-label="Paginação de usuários">
-                <?php if ($paginaAnterior !== null): ?>
+                <?php if ($paginaAnterior !== null) : ?>
                     <a class="admin-button secondary" href="usuarios.php?<?= http_build_query(['busca' => $busca, 'pagina' => $paginaAnterior]) ?>">Anterior</a>
                 <?php endif; ?>
                 <span>Página <?= $pagina ?> de <?= $totalPaginas ?></span>
-                <?php if ($proximaPagina !== null): ?>
+                <?php if ($proximaPagina !== null) : ?>
                     <a class="admin-button secondary" href="usuarios.php?<?= http_build_query(['busca' => $busca, 'pagina' => $proximaPagina]) ?>">Próxima</a>
                 <?php endif; ?>
             </nav>

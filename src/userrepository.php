@@ -40,8 +40,7 @@ class UserRepository
         string $senhaHash,
         string $tipoUsuario = 'cliente',
         string $telefone = ''
-    ): bool
-    {
+    ): bool {
         $stmt = $this->connection->prepare(
             'INSERT INTO usuario (nome, email, senha, telefone, tipo_usuario) '
             . 'VALUES (:nome, :email, :senha, :telefone, :tipo_usuario)'

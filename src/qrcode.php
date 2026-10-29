@@ -78,13 +78,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($mensagemErro === null) {
-        $temaEnviado = $_POST['tema'] ?? '';
-        $_SESSION[$chaveTema] = in_array($temaEnviado, ['light', 'dark'], true)
+            $temaEnviado = $_POST['tema'] ?? '';
+            $_SESSION[$chaveTema] = in_array($temaEnviado, ['light', 'dark'], true)
             ? $temaEnviado
             : 'light';
-        $_SESSION[$chavePedidoAutorizado] = true;
-        header('Location: qrcode.php');
-        exit;
+            $_SESSION[$chavePedidoAutorizado] = true;
+            header('Location: qrcode.php');
+            exit;
         }
     } elseif (($_POST['acao'] ?? '') === 'confirmar' && !empty($_SESSION[$chavePedidoAutorizado])) {
         try {
@@ -178,7 +178,7 @@ if ($pagamentoConcluido) {
     <link rel="icon" href="../assets/vm.png" type="image/png">
 </head>
 <body class="<?= $pagamentoConcluido ? 'qr-payment-success-page' : 'qr-payment-page' ?>">
-    <?php if (!$pagamentoConcluido): ?>
+    <?php if (!$pagamentoConcluido) : ?>
         <iframe
             class="qr-payment-checkout-background"
             src="pagamento.php?visualizacao=1&amp;tema=<?= htmlspecialchars($temaQr, ENT_QUOTES, 'UTF-8') ?>"
@@ -194,7 +194,7 @@ if ($pagamentoConcluido) {
             aria-labelledby="qrPaymentTitle"
             <?= $pagamentoConcluido ? '' : 'role="dialog" aria-modal="true"' ?>
         >
-            <?php if ($pagamentoConcluido): ?>
+            <?php if ($pagamentoConcluido) : ?>
                 <h1 id="qrPaymentTitle">Pagamento realizado</h1>
                 <p class="qr-payment-success" role="status" aria-live="polite">
                     Compra #<?= (int) ($_SESSION['virtual_motors_ultimo_pedido'] ?? 0) ?> confirmada. Obrigado pela preferência!
@@ -202,7 +202,7 @@ if ($pagamentoConcluido) {
                 <p>Seu pedido já está disponível no histórico de compras.</p>
                 <a class="button button-primary" href="minhas-compras.php">Consultar minhas compras</a>
                 <a class="button button-primary" href="../index.php">Ir para a página inicial</a>
-            <?php else: ?>
+            <?php else : ?>
                 <span class="qr-payment-brand">Virtual Motors</span>
                 <a class="qr-payment-back" href="pagamento.php">← Voltar ao pagamento</a>
                 <h1 id="qrPaymentTitle">Realize o pagamento</h1>
@@ -219,12 +219,12 @@ if ($pagamentoConcluido) {
                 <p class="qr-payment-notice" role="note">
                     Esta é uma demonstração: o QR Code não processa pagamentos reais.
                 </p>
-                <?php if ($mensagemErro !== null): ?>
+                <?php if ($mensagemErro !== null) : ?>
                     <p class="cart-message cart-error" role="alert">
                         <?= htmlspecialchars($mensagemErro, ENT_QUOTES, 'UTF-8') ?>
                     </p>
                     <a class="button button-outline" href="pagamento.php">Voltar ao pagamento</a>
-                <?php else: ?>
+                <?php else : ?>
                     <form method="post" action="qrcode.php">
                         <input type="hidden" name="acao" value="confirmar">
                         <input

@@ -107,15 +107,15 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
             <p>Preencha os dados para revisar seu pedido.</p>
         </div>
 
-        <?php if ($erroBanco): ?>
+        <?php if ($erroBanco) : ?>
             <p class="cart-message cart-error" role="alert">Não foi possível consultar os itens do pedido. Verifique a conexão com o banco e tente novamente.</p>
             <a class="button button-primary" href="carrinho.php">Voltar ao carrinho</a>
-        <?php elseif ($veiculos === []): ?>
+        <?php elseif ($veiculos === []) : ?>
             <div class="empty-cart">
                 <p>Não encontramos os veículos deste pedido no estoque.</p>
                 <a href="carrinho.php" class="button button-primary">Voltar ao carrinho</a>
             </div>
-        <?php else: ?>
+        <?php else : ?>
             <div class="checkout-layout">
                 <div class="checkout-form">
                     <p class="checkout-notice" role="note">
@@ -237,7 +237,7 @@ if (!$modoVisualizacao && !$erroBanco && $veiculos !== []) {
 
                 <aside class="order-summary checkout-summary">
                     <h2>Resumo do pedido</h2>
-                    <?php foreach ($veiculos as $veiculo): ?>
+                    <?php foreach ($veiculos as $veiculo) : ?>
                         <?php
                         $idCarro = (int) $veiculo['id_carro'];
                         $quantidade = (int) ($itensPedido[$idCarro] ?? 1);
